@@ -1,0 +1,308 @@
+/* --- Variáveis de Cor (Tema Claro e Escuro) --- */
+:root {
+  --bg-color: #e0e5ec;
+  --text-color: #333;
+  --primary-color: #66DDAA;
+  --neumorphic-shadow-light: #ffffff;
+  --neumorphic-shadow-dark: #a3b1c6;
+  --neumorphic-inset-shadow-light: inset 6px 6px 12px #a3b1c6;
+  --neumorphic-inset-shadow-dark: inset -6px -6px 12px #ffffff;
+}
+
+[data-theme="dark"] {
+    --bg-color: #2c2c2c;
+    --text-color: #f0f0f0;
+    --primary-color: #66DDAA;
+    --neumorphic-shadow-light: #3a3a3a;
+    --neumorphic-shadow-dark: #1e1e1e;
+    --neumorphic-inset-shadow-light: inset 6px 6px 12px #1e1e1e;
+    --neumorphic-inset-shadow-dark: inset -6px -6px 12px #3a3a3a;
+}
+
+
+/* --- Estilos Globais --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    padding-bottom: 80px; /* Espaço para a navegação inferior */
+}
+
+/* --- Layout Principal --- */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    text-align: center;
+    background-color: var(--bg-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.theme-toggle {
+    background: var(--bg-color);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-color);
+    box-shadow: 4px 4px 8px var(--neumorphic-shadow-dark),
+                -4px -4px 8px var(--neumorphic-shadow-light);
+}
+
+.app-header h1 {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.content {
+    padding: 20px;
+}
+
+/* --- Navegação Inferior --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -4px 12px -4px var(--neumorphic-shadow-dark);
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 12px;
+    text-align: center;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* --- Estilos Neumórficos (Exemplo) --- */
+.card {
+    background: var(--bg-color);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 6px 6px 12px var(--neumorphic-shadow-dark),
+                -6px -6px 12px var(--neumorphic-shadow-light);
+}
+
+.card-inset {
+    background: var(--bg-color);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--neumorphic-inset-shadow-light),
+                var(--neumorphic-inset-shadow-dark);
+}
+
+/* --- Botão Flutuante (FAB) --- */
+.fab {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 36px;
+    line-height: 55px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: 4px 4px 10px var(--neumorphic-shadow-dark),
+                -4px -4px 10px var(--neumorphic-shadow-light);
+    transition: transform 0.2s;
+    z-index: 15;
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+/* --- Modal --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: var(--bg-color);
+    margin: 25% auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 12px 12px 24px var(--neumorphic-shadow-dark),
+                -12px -12px 24px var(--neumorphic-shadow-light);
+    position: relative;
+    animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    color: var(--text-color);
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- Formulário do Modal --- */
+#transaction-form input, #transaction-form button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-color);
+    box-shadow: var(--neumorphic-inset-shadow-light),
+                var(--neumorphic-inset-shadow-dark);
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+#transaction-form button {
+    box-shadow: 6px 6px 12px var(--neumorphic-shadow-dark),
+                -6px -6px 12px var(--neumorphic-shadow-light);
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+#transaction-form input:focus {
+    outline: none;
+}
+
+.type-toggle {
+    display: flex;
+    margin: 10px 0;
+}
+
+.type-toggle label {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background: var(--bg-color);
+    box-shadow: var(--neumorphic-inset-shadow-light),
+                var(--neumorphic-inset-shadow-dark);
+    cursor: pointer;
+}
+
+.type-toggle label:first-of-type {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.type-toggle label:last-of-type {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.type-toggle input[type="radio"] {
+    display: none;
+}
+
+.type-toggle input[type="radio"]:checked + span {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+
+/* --- Lista de Transações --- */
+.transaction-list {
+    list-style: none;
+    padding: 0;
+}
+
+.transaction-list li {
+    background: var(--bg-color);
+    box-shadow: 6px 6px 12px var(--neumorphic-shadow-dark),
+                -6px -6px 12px var(--neumorphic-shadow-light);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transaction-list .amount {
+    font-weight: bold;
+}
+
+.transaction-list .income .amount {
+    color: #2ecc71; /* Verde para entradas */
+}
+
+.transaction-list .expense .amount {
+    color: #e74c3c; /* Vermelho para saídas */
+}
+
+/* --- Container do Gráfico --- */
+.chart-container {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+/* --- Estilos do Formulário (adição) --- */
+#transaction-form select {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-color);
+    box-shadow: var(--neumorphic-inset-shadow-light),
+                var(--neumorphic-inset-shadow-dark);
+    font-size: 16px;
+    color: var(--text-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+#transaction-form select:focus {
+    outline: none;
+}
+
+#category-wrapper {
+    display: block; /* Oculto por padrão via JS */
+}
