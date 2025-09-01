@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/transactions.css">
 </head>
 <body>
     <!-- App Container -->
@@ -98,64 +99,143 @@
                 </div>
             </section>
 
-            <!-- Profits Page -->
-            <section id="profits" class="page">
+            <!-- Transações Page (Antiga página de Lucros) -->
+            <section id="transactions" class="page">
                 <div class="page-header">
-                    <h2>Monthly Profits</h2>
-                    <p class="subtitle">Total Profit Growth of 26%</p>
-                    <button class="menu-btn">
-                        <span class="icon">⋮</span>
-                    </button>
+                    <h2>Transações</h2>
+                    <p class="subtitle">Controle suas entradas e saídas</p>
                 </div>
                 
-                <div class="profits-chart">
-                    <div class="donut-chart">
-                        <div class="chart-center">
-                            <div class="chart-total">Total</div>
-                            <div class="chart-value">$94,475</div>
+                <!-- Resumo Financeiro -->
+                <div class="financial-summary">
+                    <div class="summary-card income">
+                        <div class="summary-icon">💰</div>
+                        <div class="summary-content">
+                            <h4>Receitas</h4>
+                            <div class="summary-value positive">$ 5,200</div>
                         </div>
                     </div>
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <span class="legend-color giveaway"></span>
-                            <span class="legend-label">Giveaway 60%</span>
+                    <div class="summary-card expense">
+                        <div class="summary-icon">💸</div>
+                        <div class="summary-content">
+                            <h4>Despesas</h4>
+                            <div class="summary-value negative">$ 3,800</div>
                         </div>
-                        <div class="legend-item">
-                            <span class="legend-color affiliate"></span>
-                            <span class="legend-label">Affiliate 21%</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color offline"></span>
-                            <span class="legend-label">Offline Sales 19%</span>
+                    </div>
+                    <div class="summary-card balance">
+                        <div class="summary-icon">⚖️</div>
+                        <div class="summary-content">
+                            <h4>Saldo</h4>
+                            <div class="summary-value positive">$ 1,400</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="recent-sales">
-                    <div class="section-header">
-                        <h3>Recent Sales</h3>
-                        <a href="#" class="link">See All</a>
-                    </div>
-                    <div class="sales-list">
-                        <div class="sale-item">
-                            <div class="sale-avatar">
-                                <img src="assets/avatars/user2.jpg" alt="Anatoly Belik">
-                            </div>
-                            <div class="sale-info">
-                                <div class="sale-name">Anatoly Belik</div>
-                                <div class="sale-time">01 Minute Ago</div>
-                            </div>
-                            <div class="sale-amount positive">+ $54.00</div>
+                <!-- Gráfico de Linha - Receita vs Despesas -->
+                <div class="expense-chart-section">
+                    <h3>Receita vs Despesas</h3>
+                    <div class="chart-container">
+                        <div class="line-chart">
+                            <!-- Gráfico será renderizado aqui -->
                         </div>
-                        <div class="sale-item">
-                            <div class="sale-avatar">
-                                <img src="assets/avatars/user3.jpg" alt="Bogdan Nikitin">
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-color income"></span>
+                                <span class="legend-label">Receita Total: 100%</span>
                             </div>
-                            <div class="sale-info">
-                                <div class="sale-name">Bogdan Nikitin</div>
-                                <div class="sale-time">02 Minutes Ago</div>
+                            <div class="legend-item">
+                                <span class="legend-color expense"></span>
+                                <span class="legend-label">Despesas: 73%</span>
                             </div>
-                            <div class="sale-amount positive">+ $52.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insights Inteligentes -->
+                <div class="insights-section">
+                    <h3>Insights Inteligentes</h3>
+                    <div class="insights-container">
+                        <div class="insight-card positive">
+                            <div class="insight-icon">🎯</div>
+                            <div class="insight-content">
+                                <h4>Excelente Controle!</h4>
+                                <p>Suas despesas representam apenas 73% da receita. Você está economizando 27%!</p>
+                            </div>
+                        </div>
+                        <div class="insight-card warning">
+                            <div class="insight-icon">⚠️</div>
+                            <div class="insight-content">
+                                <h4>Dica de Economia</h4>
+                                <p>Considere reduzir gastos com entretenimento para aumentar sua economia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros e Busca -->
+                <div class="filters-section">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="🔍 Buscar transações...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">Todas</button>
+                        <button class="filter-btn" data-filter="income">Entradas</button>
+                        <button class="filter-btn" data-filter="expense">Saídas</button>
+                        <button class="filter-btn" data-filter="recent">Recentes</button>
+                    </div>
+                </div>
+
+                <!-- Lista de Transações -->
+                <div class="transactions-list-section">
+                    <div class="section-header">
+                        <h3>Histórico de Transações</h3>
+                        <span class="transaction-count">15 transações</span>
+                    </div>
+                    <div class="transactions-list">
+                        <div class="transaction-item income">
+                            <div class="transaction-icon">💰</div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Salário</div>
+                                <div class="transaction-category">Trabalho</div>
+                                <div class="transaction-date">Hoje, 10:00</div>
+                            </div>
+                            <div class="transaction-amount positive">+ $3,000</div>
+                        </div>
+                        <div class="transaction-item expense">
+                            <div class="transaction-icon">🛒</div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Supermercado</div>
+                                <div class="transaction-category">Alimentação</div>
+                                <div class="transaction-date">Ontem, 15:30</div>
+                            </div>
+                            <div class="transaction-amount negative">- $150</div>
+                        </div>
+                        <div class="transaction-item income">
+                            <div class="transaction-icon">💼</div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Freelance</div>
+                                <div class="transaction-category">Trabalho</div>
+                                <div class="transaction-date">23 Out, 14:20</div>
+                            </div>
+                            <div class="transaction-amount positive">+ $500</div>
+                        </div>
+                        <div class="transaction-item expense">
+                            <div class="transaction-icon">⛽</div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Combustível</div>
+                                <div class="transaction-category">Transporte</div>
+                                <div class="transaction-date">22 Out, 09:15</div>
+                            </div>
+                            <div class="transaction-amount negative">- $80</div>
+                        </div>
+                        <div class="transaction-item expense">
+                            <div class="transaction-icon">🎬</div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Netflix</div>
+                                <div class="transaction-category">Entretenimento</div>
+                                <div class="transaction-date">21 Out, 20:00</div>
+                            </div>
+                            <div class="transaction-amount negative">- $25</div>
                         </div>
                     </div>
                 </div>
@@ -344,15 +424,20 @@
             </section>
         </main>
 
+        <!-- Floating Action Button -->
+        <button class="fab" id="add-transaction-fab" title="Adicionar Transação">
+            <span class="icon">+</span>
+        </button>
+
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-page="dashboard">
                 <span class="nav-icon">🏠</span>
                 <span class="nav-label">Dashboard</span>
             </button>
-            <button class="nav-item" data-page="profits">
+            <button class="nav-item" data-page="transactions">
                 <span class="nav-icon">📊</span>
-                <span class="nav-label">Lucros</span>
+                <span class="nav-label">Transações</span>
             </button>
             <button class="nav-item" data-page="balance">
                 <span class="nav-icon">💰</span>
@@ -373,5 +458,6 @@
     <script src="js/app.js"></script>
     <script src="js/navigation.js"></script>
     <script src="js/charts.js"></script>
+    <script src="js/transactions.js"></script>
 </body>
 </html>

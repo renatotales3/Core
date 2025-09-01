@@ -6,7 +6,7 @@
 class Navigation {
     constructor() {
         this.currentPage = 'dashboard';
-        this.pages = ['dashboard', 'profits', 'balance', 'categories', 'goals'];
+        this.pages = ['dashboard', 'transactions', 'balance', 'categories', 'goals'];
         this.init();
     }
 
