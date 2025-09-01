@@ -99,143 +99,107 @@
                 </div>
             </section>
 
-            <!-- Transações Page (Antiga página de Lucros) -->
+            <!-- Transações Page - Design Premium e Minimalista -->
             <section id="transactions" class="page">
-                <div class="page-header">
-                    <h2>Transações</h2>
-                    <p class="subtitle">Controle suas entradas e saídas</p>
+                <!-- Header Minimalista -->
+                <div class="transactions-header">
+                    <div class="header-content">
+                        <h1>Transações</h1>
+                        <p class="header-subtitle">Controle financeiro simplificado</p>
+                    </div>
                 </div>
-                
-                <!-- Resumo Financeiro -->
-                <div class="financial-summary">
-                    <div class="summary-card income">
-                        <div class="summary-icon">💰</div>
-                        <div class="summary-content">
-                            <h4>Receitas</h4>
-                            <div class="summary-value positive">$ 5,200</div>
-                        </div>
-                    </div>
-                    <div class="summary-card expense">
-                        <div class="summary-icon">💸</div>
-                        <div class="summary-content">
-                            <h4>Despesas</h4>
-                            <div class="summary-value negative">$ 3,800</div>
-                        </div>
-                    </div>
-                    <div class="summary-card balance">
-                        <div class="summary-icon">⚖️</div>
-                        <div class="summary-content">
-                            <h4>Saldo</h4>
-                            <div class="summary-value positive">$ 1,400</div>
+
+                <!-- Resumo Financeiro Elegante -->
+                <div class="financial-overview">
+                    <div class="overview-card primary">
+                        <div class="overview-content">
+                            <span class="overview-label">Saldo Atual</span>
+                            <div class="overview-amount">$ 1,400</div>
+                            <div class="overview-trend positive">+27% este mês</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Gráfico de Linha - Receita vs Despesas -->
-                <div class="expense-chart-section">
-                    <h3>Receita vs Despesas</h3>
-                    <div class="chart-container">
-                        <div class="line-chart">
-                            <!-- Gráfico será renderizado aqui -->
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <span class="legend-color income"></span>
-                                <span class="legend-label">Receita Total: 100%</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color expense"></span>
-                                <span class="legend-label">Despesas: 73%</span>
-                            </div>
-                        </div>
+                <!-- Métricas Principais -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value income">$ 5,200</div>
+                        <div class="metric-label">Receitas</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value expense">$ 3,800</div>
+                        <div class="metric-label">Despesas</div>
                     </div>
                 </div>
 
-                <!-- Insights Inteligentes -->
-                <div class="insights-section">
-                    <h3>Insights Inteligentes</h3>
-                    <div class="insights-container">
-                        <div class="insight-card positive">
-                            <div class="insight-icon">🎯</div>
-                            <div class="insight-content">
-                                <h4>Excelente Controle!</h4>
-                                <p>Suas despesas representam apenas 73% da receita. Você está economizando 27%!</p>
-                            </div>
-                        </div>
-                        <div class="insight-card warning">
-                            <div class="insight-icon">⚠️</div>
-                            <div class="insight-content">
-                                <h4>Dica de Economia</h4>
-                                <p>Considere reduzir gastos com entretenimento para aumentar sua economia.</p>
-                            </div>
-                        </div>
+                <!-- Controles de Filtro -->
+                <div class="filter-controls">
+                    <div class="search-wrapper">
+                        <input type="text" class="search-field" placeholder="Buscar transações...">
                     </div>
-                </div>
-
-                <!-- Filtros e Busca -->
-                <div class="filters-section">
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="🔍 Buscar transações...">
-                    </div>
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" data-filter="all">Todas</button>
-                        <button class="filter-btn" data-filter="income">Entradas</button>
-                        <button class="filter-btn" data-filter="expense">Saídas</button>
-                        <button class="filter-btn" data-filter="recent">Recentes</button>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">Todas</button>
+                        <button class="filter-tab" data-filter="income">Entradas</button>
+                        <button class="filter-tab" data-filter="expense">Saídas</button>
                     </div>
                 </div>
 
                 <!-- Lista de Transações -->
-                <div class="transactions-list-section">
-                    <div class="section-header">
-                        <h3>Histórico de Transações</h3>
-                        <span class="transaction-count">15 transações</span>
+                <div class="transactions-container">
+                    <div class="transactions-header-section">
+                        <h3>Histórico</h3>
+                        <span class="transaction-count">8 transações</span>
                     </div>
+                    
                     <div class="transactions-list">
-                        <div class="transaction-item income">
-                            <div class="transaction-icon">💰</div>
-                            <div class="transaction-info">
-                                <div class="transaction-name">Salário</div>
-                                <div class="transaction-category">Trabalho</div>
-                                <div class="transaction-date">Hoje, 10:00</div>
+                        <div class="transaction-card income">
+                            <div class="transaction-main">
+                                <div class="transaction-info">
+                                    <div class="transaction-title">Salário</div>
+                                    <div class="transaction-meta">Trabalho • Hoje</div>
+                                </div>
+                                <div class="transaction-amount">+$3,000</div>
                             </div>
-                            <div class="transaction-amount positive">+ $3,000</div>
                         </div>
-                        <div class="transaction-item expense">
-                            <div class="transaction-icon">🛒</div>
-                            <div class="transaction-info">
-                                <div class="transaction-name">Supermercado</div>
-                                <div class="transaction-category">Alimentação</div>
-                                <div class="transaction-date">Ontem, 15:30</div>
+
+                        <div class="transaction-card expense">
+                            <div class="transaction-main">
+                                <div class="transaction-info">
+                                    <div class="transaction-title">Supermercado</div>
+                                    <div class="transaction-meta">Alimentação • Ontem</div>
+                                </div>
+                                <div class="transaction-amount">-$150</div>
                             </div>
-                            <div class="transaction-amount negative">- $150</div>
                         </div>
-                        <div class="transaction-item income">
-                            <div class="transaction-icon">💼</div>
-                            <div class="transaction-info">
-                                <div class="transaction-name">Freelance</div>
-                                <div class="transaction-category">Trabalho</div>
-                                <div class="transaction-date">23 Out, 14:20</div>
+
+                        <div class="transaction-card income">
+                            <div class="transaction-main">
+                                <div class="transaction-info">
+                                    <div class="transaction-title">Freelance</div>
+                                    <div class="transaction-meta">Trabalho • 2 dias atrás</div>
+                                </div>
+                                <div class="transaction-amount">+$500</div>
                             </div>
-                            <div class="transaction-amount positive">+ $500</div>
                         </div>
-                        <div class="transaction-item expense">
-                            <div class="transaction-icon">⛽</div>
-                            <div class="transaction-info">
-                                <div class="transaction-name">Combustível</div>
-                                <div class="transaction-category">Transporte</div>
-                                <div class="transaction-date">22 Out, 09:15</div>
+
+                        <div class="transaction-card expense">
+                            <div class="transaction-main">
+                                <div class="transaction-info">
+                                    <div class="transaction-title">Combustível</div>
+                                    <div class="transaction-meta">Transporte • 3 dias atrás</div>
+                                </div>
+                                <div class="transaction-amount">-$80</div>
                             </div>
-                            <div class="transaction-amount negative">- $80</div>
                         </div>
-                        <div class="transaction-item expense">
-                            <div class="transaction-icon">🎬</div>
-                            <div class="transaction-info">
-                                <div class="transaction-name">Netflix</div>
-                                <div class="transaction-category">Entretenimento</div>
-                                <div class="transaction-date">21 Out, 20:00</div>
+
+                        <div class="transaction-card expense">
+                            <div class="transaction-main">
+                                <div class="transaction-info">
+                                    <div class="transaction-title">Netflix</div>
+                                    <div class="transaction-meta">Entretenimento • 4 dias atrás</div>
+                                </div>
+                                <div class="transaction-amount">-$25</div>
                             </div>
-                            <div class="transaction-amount negative">- $25</div>
                         </div>
                     </div>
                 </div>
@@ -428,6 +392,70 @@
         <button class="fab" id="add-transaction-fab" title="Adicionar Transação">
             <span class="icon">+</span>
         </button>
+
+        <!-- Modal para Adicionar Transação -->
+        <div class="modal-overlay" id="add-transaction-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Nova Transação</h3>
+                    <p class="modal-subtitle">Preencha os dados da transação</p>
+                </div>
+                
+                <form id="add-transaction-form">
+                    <div class="form-group">
+                        <label class="form-label" for="transaction-name">Nome da Transação</label>
+                        <input type="text" class="form-input" id="transaction-name" placeholder="Ex: Salário, Supermercado" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="transaction-amount">Valor</label>
+                            <input type="number" class="form-input" id="transaction-amount" placeholder="0.00" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="transaction-type">Tipo</label>
+                            <select class="form-select" id="transaction-type" required>
+                                <option value="">Selecione</option>
+                                <option value="income">Entrada</option>
+                                <option value="expense">Saída</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="transaction-category">Categoria</label>
+                            <select class="form-select" id="transaction-category" required>
+                                <option value="">Selecione</option>
+                                <optgroup label="Receitas">
+                                    <option value="Trabalho">Trabalho</option>
+                                    <option value="Investimentos">Investimentos</option>
+                                    <option value="Outros">Outros</option>
+                                </optgroup>
+                                <optgroup label="Despesas">
+                                    <option value="Alimentação">Alimentação</option>
+                                    <option value="Transporte">Transporte</option>
+                                    <option value="Entretenimento">Entretenimento</option>
+                                    <option value="Saúde">Saúde</option>
+                                    <option value="Educação">Educação</option>
+                                    <option value="Moradia">Moradia</option>
+                                    <option value="Outros">Outros</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="transaction-date">Data</label>
+                            <input type="date" class="form-input" id="transaction-date" required>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-transaction">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Adicionar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
