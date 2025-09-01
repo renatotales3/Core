@@ -1,0 +1,98 @@
+/* CSS Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* Remove list styles */
+ul, ol {
+    list-style: none;
+}
+
+/* Remove text decoration */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Remove button styles */
+button {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Remove input styles */
+input, textarea, select {
+    font: inherit;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+/* Remove table styles */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Remove image border */
+img {
+    max-width: 100%;
+    height: auto;
+    border: none;
+}
+
+/* Remove fieldset styles */
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove legend styles */
+legend {
+    padding: 0;
+}
+
+/* Remove details styles */
+details {
+    display: block;
+}
+
+/* Remove summary styles */
+summary {
+    display: list-item;
+}
+
+/* Remove template styles */
+template {
+    display: none;
+}
+
+/* Remove hidden styles */
+[hidden] {
+    display: none !important;
+}
