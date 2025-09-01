@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core - No centro das suas finanças</title>
+    <meta name="description" content="Gerencie suas finanças pessoais de forma simples e intuitiva">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1A1A1A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Core">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app" class="app">
+        <!-- Main Content Area -->
+        <main id="main-content" class="main-content">
+            <!-- Dashboard Page (Default) -->
+            <section id="dashboard" class="page active">
+                <!-- Sales Overview Card -->
+                <div class="card sales-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span class="icon">%</span>
+                            % Sales
+                        </h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="sales-value">$ 24,575</div>
+                        <div class="sales-trend positive">+ 23%</div>
+                        <div class="sales-chart">
+                            <!-- Chart placeholder -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Growth Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3>User in The Last Week</h3>
+                        <a href="#" class="link">See all</a>
+                    </div>
+                    <div class="growth-value positive">+ 2,1%</div>
+                    <div class="weekly-chart">
+                        <!-- Weekly chart placeholder -->
+                    </div>
+                </div>
+
+                <!-- Last Orders Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Last Orders</h3>
+                        <div class="dropdown">
+                            <span>Every 2 Hours</span>
+                            <span class="icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="orders-list">
+                        <div class="order-item">
+                            <div class="order-avatar">
+                                <img src="assets/avatars/user1.jpg" alt="Yulia Polishchuk">
+                            </div>
+                            <div class="order-info">
+                                <div class="order-name">Yulia Polishchuk</div>
+                                <div class="order-date">21 Oct 2024</div>
+                            </div>
+                            <div class="order-amount positive">+ $4,825</div>
+                        </div>
+                        <div class="order-item">
+                            <div class="order-avatar">
+                                <img src="assets/avatars/user2.jpg" alt="Anatoly Belik">
+                            </div>
+                            <div class="order-info">
+                                <div class="order-name">Anatoly Belik</div>
+                                <div class="order-date">19 Oct 2024</div>
+                            </div>
+                            <div class="order-amount positive">+ $24,954</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profits Page -->
+            <section id="profits" class="page">
+                <div class="page-header">
+                    <h2>Monthly Profits</h2>
+                    <p class="subtitle">Total Profit Growth of 26%</p>
+                    <button class="menu-btn">
+                        <span class="icon">⋮</span>
+                    </button>
+                </div>
+                
+                <div class="profits-chart">
+                    <div class="donut-chart">
+                        <div class="chart-center">
+                            <div class="chart-total">Total</div>
+                            <div class="chart-value">$94,475</div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-color giveaway"></span>
+                            <span class="legend-label">Giveaway 60%</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color affiliate"></span>
+                            <span class="legend-label">Affiliate 21%</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color offline"></span>
+                            <span class="legend-label">Offline Sales 19%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-sales">
+                    <div class="section-header">
+                        <h3>Recent Sales</h3>
+                        <a href="#" class="link">See All</a>
+                    </div>
+                    <div class="sales-list">
+                        <div class="sale-item">
+                            <div class="sale-avatar">
+                                <img src="assets/avatars/user2.jpg" alt="Anatoly Belik">
+                            </div>
+                            <div class="sale-info">
+                                <div class="sale-name">Anatoly Belik</div>
+                                <div class="sale-time">01 Minute Ago</div>
+                            </div>
+                            <div class="sale-amount positive">+ $54.00</div>
+                        </div>
+                        <div class="sale-item">
+                            <div class="sale-avatar">
+                                <img src="assets/avatars/user3.jpg" alt="Bogdan Nikitin">
+                            </div>
+                            <div class="sale-info">
+                                <div class="sale-name">Bogdan Nikitin</div>
+                                <div class="sale-time">02 Minutes Ago</div>
+                            </div>
+                            <div class="sale-amount positive">+ $52.00</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Balance Page -->
+            <section id="balance" class="page">
+                <div class="account-header">
+                    <div class="user-info">
+                        <h3 class="user-name">Jameson Cole</h3>
+                        <div class="card-info">**** 2431 • 09/18</div>
+                    </div>
+                    <div class="account-actions">
+                        <button class="add-btn">
+                            <span class="icon">+</span>
+                        </button>
+                        <div class="account-cards">
+                            <div class="card-indicator teal"></div>
+                            <div class="card-indicator yellow"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="balance-overview">
+                    <h4>Balance</h4>
+                    <div class="balance-value">$ 62,745</div>
+                    <div class="balance-trend positive">Total Week Profit +11,05%</div>
+                </div>
+
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h3>Transactions</h3>
+                        <button class="analytics-btn">Analytics</button>
+                    </div>
+                    <div class="transactions-list">
+                        <div class="transaction-item">
+                            <div class="transaction-avatar">
+                                <img src="assets/avatars/user1.jpg" alt="Yulia Polishchuk">
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Yulia Polishchuk</div>
+                                <div class="transaction-time">19 October 15:58</div>
+                            </div>
+                            <div class="transaction-amount positive">+$2351.00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-avatar youtube">
+                                <span class="icon">▶</span>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Youtube Music</div>
+                                <div class="transaction-time">21 October 19:20</div>
+                            </div>
+                            <div class="transaction-amount negative">- $5.50</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-avatar">
+                                <img src="assets/avatars/user3.jpg" alt="Bogdan Nikitin">
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Bogdan Nikitin</div>
+                                <div class="transaction-time">02 Minutes Ago</div>
+                            </div>
+                            <div class="transaction-amount positive">+ $61.00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-avatar itunes">
+                                <span class="icon">♪</span>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">iTunes</div>
+                                <div class="transaction-time">14 September 12:25</div>
+                            </div>
+                            <div class="transaction-amount negative">- $3.50</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-avatar easypay">
+                                <span class="icon">$</span>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">Easy Pay</div>
+                                <div class="transaction-time">12 October 17:10</div>
+                            </div>
+                            <div class="transaction-amount positive">+$15.00</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categories Page -->
+            <section id="categories" class="page">
+                <div class="page-header">
+                    <h2>Gastos por Categoria</h2>
+                    <p class="subtitle">Controle seus gastos organizadamente</p>
+                </div>
+                
+                <div class="categories-overview">
+                    <div class="category-card">
+                        <div class="category-icon food">🍕</div>
+                        <div class="category-info">
+                            <h4>Alimentação</h4>
+                            <div class="category-amount">$ 1,250</div>
+                            <div class="category-percentage">25%</div>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon transport">🚗</div>
+                        <div class="category-info">
+                            <h4>Transporte</h4>
+                            <div class="category-amount">$ 800</div>
+                            <div class="category-percentage">16%</div>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon entertainment">🎬</div>
+                        <div class="category-info">
+                            <h4>Entretenimento</h4>
+                            <div class="category-amount">$ 600</div>
+                            <div class="category-percentage">12%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-chart">
+                    <h3>Distribuição de Gastos</h3>
+                    <div class="chart-container">
+                        <!-- Chart will be rendered here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Goals Page -->
+            <section id="goals" class="page">
+                <div class="page-header">
+                    <h2>Metas e Orçamentos</h2>
+                    <p class="subtitle">Planeje seu futuro financeiro</p>
+                </div>
+                
+                <div class="goals-overview">
+                    <div class="goal-card">
+                        <div class="goal-icon">🏠</div>
+                        <div class="goal-info">
+                            <h4>Entrada da Casa</h4>
+                            <div class="goal-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <span class="progress-text">65%</span>
+                            </div>
+                            <div class="goal-amount">$ 13,000 / $ 20,000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="goal-card">
+                        <div class="goal-icon">✈️</div>
+                        <div class="goal-info">
+                            <h4>Viagem Europa</h4>
+                            <div class="goal-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%"></div>
+                                </div>
+                                <span class="progress-text">30%</span>
+                            </div>
+                            <div class="goal-amount">$ 3,000 / $ 10,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="budget-section">
+                    <h3>Orçamento Mensal</h3>
+                    <div class="budget-cards">
+                        <div class="budget-card">
+                            <h4>Receitas</h4>
+                            <div class="budget-amount positive">$ 5,200</div>
+                        </div>
+                        <div class="budget-card">
+                            <h4>Despesas</h4>
+                            <div class="budget-amount negative">$ 3,800</div>
+                        </div>
+                        <div class="budget-card">
+                            <h4>Saldo</h4>
+                            <div class="budget-amount positive">$ 1,400</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-page="dashboard">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-item" data-page="profits">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Lucros</span>
+            </button>
+            <button class="nav-item" data-page="balance">
+                <span class="nav-icon">💰</span>
+                <span class="nav-label">Saldo</span>
+            </button>
+            <button class="nav-item" data-page="categories">
+                <span class="nav-icon">📂</span>
+                <span class="nav-label">Categorias</span>
+            </button>
+            <button class="nav-item" data-page="goals">
+                <span class="nav-icon">🎯</span>
+                <span class="nav-label">Metas</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>
