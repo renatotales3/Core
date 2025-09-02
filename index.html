@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Core - No centro das suas finanças. App de gestão financeira pessoal mobile-first.">
+    <meta name="theme-color" content="#0F172A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Core">
+    
+    <title>Core - Finanças Pessoais</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/transactions.css">
+    <link rel="stylesheet" href="css/goals.css">
+    <link rel="stylesheet" href="css/charts.css">
+    <link rel="stylesheet" href="css/settings.css">
+</head>
+<body class="dark-theme">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <h1>Core</h1>
+                <p>No centro das suas finanças</p>
+            </div>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">Core</h1>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="dashboard-container">
+                    <!-- Profile Card -->
+                    <div class="profile-card glass-card">
+                        <div class="profile-header">
+                            <div class="profile-photo">
+                                <img id="profile-photo" src="assets/images/default-avatar.png" alt="Foto de perfil">
+                                <button class="photo-edit-btn" aria-label="Editar foto">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="profile-info">
+                                <h2 id="profile-name" class="profile-name">Seu Nome</h2>
+                                <div class="balance-container">
+                                    <div id="balance-display" class="balance-amount">
+                                        <span class="currency">R$</span>
+                                        <span id="balance-value">0,00</span>
+                                    </div>
+                                    <button id="focus-toggle" class="focus-toggle" aria-label="Ocultar saldo">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="balance-trend" class="balance-trend">
+                                    <span class="trend-arrow">↗</span>
+                                    <span class="trend-text">+R$ 0,00 este mês</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Goals Section -->
+                    <div class="goals-section glass-card">
+                        <div class="section-header">
+                            <h3>Metas do Mês</h3>
+                            <button id="add-goal-btn" class="add-btn" aria-label="Adicionar meta">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="goals-container" class="goals-container">
+                            <!-- Goals will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="recent-transactions glass-card">
+                        <div class="section-header">
+                            <h3>Transações Recentes</h3>
+                            <a href="#transactions" class="view-all-link">Ver todas</a>
+                        </div>
+                        <div id="recent-transactions-list" class="transactions-list">
+                            <!-- Recent transactions will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Insights Section -->
+                    <div class="insights-section glass-card">
+                        <div class="section-header">
+                            <h3>Insights</h3>
+                        </div>
+                        <div id="insights-container" class="insights-container">
+                            <!-- Insights will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="content-section">
+                <div class="transactions-container">
+                    <div class="section-header">
+                        <h2>Transações</h2>
+                        <button id="new-transaction-btn" class="fab-btn" aria-label="Nova transação">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="filters-section glass-card">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="period-filter">Período</label>
+                                <select id="period-filter" class="filter-select">
+                                    <option value="all">Todos</option>
+                                    <option value="today">Hoje</option>
+                                    <option value="week">Esta semana</option>
+                                    <option value="month">Este mês</option>
+                                    <option value="custom">Personalizado</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="category-filter">Categoria</label>
+                                <select id="category-filter" class="filter-select">
+                                    <option value="all">Todas</option>
+                                    <!-- Categories will be populated here -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions List -->
+                    <div id="transactions-list" class="transactions-list">
+                        <!-- Transactions will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section id="charts" class="content-section">
+                <div class="charts-container">
+                    <div class="section-header">
+                        <h2>Gráficos</h2>
+                    </div>
+                    
+                    <!-- Category Chart -->
+                    <div class="chart-card glass-card">
+                        <h3>Gastos por Categoria</h3>
+                        <div class="chart-container">
+                            <canvas id="category-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Chart -->
+                    <div class="chart-card glass-card">
+                        <h3>Evolução do Saldo</h3>
+                        <div class="chart-container">
+                            <canvas id="timeline-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Goals Section -->
+            <section id="goals" class="content-section">
+                <div class="goals-container">
+                    <div class="section-header">
+                        <h2>Metas</h2>
+                        <button id="add-goal-btn-main" class="add-btn" aria-label="Adicionar meta">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div id="goals-list" class="goals-list">
+                        <!-- Goals will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="settings-container">
+                    <div class="section-header">
+                        <h2>Configurações</h2>
+                    </div>
+                    
+                    <div class="settings-section glass-card">
+                        <h3>Perfil</h3>
+                        <div class="setting-item">
+                            <label for="profile-name-input">Nome</label>
+                            <input type="text" id="profile-name-input" class="setting-input" placeholder="Seu nome">
+                        </div>
+                        <div class="setting-item">
+                            <label for="profile-photo-input">Foto de Perfil</label>
+                            <input type="file" id="profile-photo-input" class="setting-input" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div class="settings-section glass-card">
+                        <h3>Preferências</h3>
+                        <div class="setting-item">
+                            <label for="currency-select">Moeda</label>
+                            <select id="currency-select" class="setting-select">
+                                <option value="BRL">Real (R$)</option>
+                                <option value="USD">Dólar ($)</option>
+                                <option value="EUR">Euro (€)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="date-format-select">Formato de Data</label>
+                            <select id="date-format-select" class="setting-select">
+                                <option value="DD/MM/YYYY">DD/MM/AAAA</option>
+                                <option value="MM/DD/YYYY">MM/DD/AAAA</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section glass-card">
+                        <h3>Dados</h3>
+                        <div class="setting-item">
+                            <button id="export-data-btn" class="setting-btn">Exportar Dados</button>
+                        </div>
+                        <div class="setting-item">
+                            <button id="clear-data-btn" class="setting-btn danger">Limpar Dados</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-section glass-card">
+                        <h3>Sobre</h3>
+                        <div class="about-info">
+                            <p><strong>Core</strong> - No centro das suas finanças</p>
+                            <p>Versão 1.0.0</p>
+                            <p>Desenvolvido com ❤️ para controle financeiro pessoal</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-navigation">
+            <button class="nav-item active" data-section="dashboard" aria-label="Dashboard">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-item" data-section="transactions" aria-label="Transações">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                </svg>
+                <span class="nav-label">Transações</span>
+            </button>
+            <button class="nav-item" data-section="charts" aria-label="Gráficos">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                </svg>
+                <span class="nav-label">Gráficos</span>
+            </button>
+            <button class="nav-item" data-section="goals" aria-label="Metas">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span class="nav-label">Metas</span>
+            </button>
+            <button class="nav-item" data-section="settings" aria-label="Configurações">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+                </svg>
+                <span class="nav-label">Config</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modal-title">Modal</h3>
+                <button class="modal-close" aria-label="Fechar">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="modal-content" class="modal-content">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/transactions.js"></script>
+    <script src="js/goals.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>
