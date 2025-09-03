@@ -70,26 +70,66 @@
             </div>
         </div>
 
-        <!-- Card de Saldo Total -->
-        <div class="balance-card">
-            <div class="balance-header">
-                <h2 class="balance-title">Saldo do Mês</h2>
-                <div class="balance-icon">
+        <!-- Card de Contas Bancárias -->
+        <div class="bank-accounts-card">
+            <div class="bank-accounts-header">
+                <h2 class="bank-accounts-title">Contas Bancárias</h2>
+                <div class="bank-accounts-icon">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 21h18M3 10h18M5 6l5.5-3L16 6M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
             </div>
-            <div class="balance-amount" id="balanceAmount">
-                <span class="currency">R$</span>
-                <span class="amount">1.400</span>
+            <div class="bank-accounts-total">
+                <span class="total-currency">R$</span>
+                <span class="total-amount">15.800</span>
             </div>
-            <div class="balance-insights">
-                <div class="insight-item">
-                    <span class="insight-text">Você economizou R$ 800 este mês!</span>
+            <div class="bank-accounts-list">
+                <div class="bank-account-item">
+                    <span class="bank-account-name">Banco Principal</span>
+                    <span class="bank-account-balance">R$ 8.500</span>
                 </div>
-                <div class="insight-item">
-                    <span class="insight-text">Gastos com lazer aumentaram 20%</span>
+                <div class="bank-account-item">
+                    <span class="bank-account-name">Conta Digital</span>
+                    <span class="bank-account-balance">R$ 4.200</span>
+                </div>
+                <div class="bank-account-item">
+                    <span class="bank-account-name">Poupança</span>
+                    <span class="bank-account-balance">R$ 3.100</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Cartões de Crédito -->
+        <div class="credit-cards-card">
+            <div class="credit-cards-header">
+                <h2 class="credit-cards-title">Cartões de Crédito</h2>
+                <div class="credit-cards-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="credit-cards-summary">
+                <div class="credit-limit">Limite Total</div>
+                <div class="credit-amount">R$ 12.000</div>
+                <div class="credit-usage">Utilizado: 35%</div>
+            </div>
+            <div class="credit-cards-details">
+                <div class="credit-card-item">
+                    <span class="credit-card-name">Cartão Principal</span>
+                    <div class="credit-card-info">
+                        <div class="credit-card-balance">R$ 2.800</div>
+                        <div class="credit-card-due">Vence 15/10</div>
+                    </div>
+                </div>
+                <div class="credit-card-item">
+                    <span class="credit-card-name">Cartão Secundário</span>
+                    <div class="credit-card-info">
+                        <div class="credit-card-balance">R$ 1.400</div>
+                        <div class="credit-card-due">Vence 22/10</div>
+                    </div>
                 </div>
             </div>
         </div>

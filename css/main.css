@@ -140,13 +140,12 @@ body {
 
 .period-carousel {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background: var(--background-primary);
     border-radius: var(--border-radius);
     padding: 6px;
     box-shadow: var(--shadow-sm);
-    gap: 8px;
 }
 
 .period-item {
@@ -157,7 +156,7 @@ body {
     font-weight: 500;
     color: var(--text-secondary);
     position: relative;
-    min-width: 110px;
+    width: 120px;
     text-align: center;
     overflow: hidden;
 }
@@ -363,6 +362,217 @@ body {
 
 .app-container.focus-mode .balance-insights {
     opacity: 0.3;
+}
+
+/* Card de Contas Bancárias */
+.bank-accounts-card {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    color: white;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.bank-accounts-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.bank-accounts-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.bank-accounts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.bank-accounts-title {
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.bank-accounts-icon {
+    opacity: 0.8;
+}
+
+.bank-accounts-total {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.total-currency {
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-right: 6px;
+}
+
+.total-amount {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.bank-accounts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bank-account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-sm);
+    backdrop-filter: blur(10px);
+}
+
+.bank-account-name {
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.bank-account-balance {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* Card de Cartões de Crédito */
+.credit-cards-card {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    color: white;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.credit-cards-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.credit-cards-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.credit-cards-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.credit-cards-title {
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.credit-cards-icon {
+    opacity: 0.8;
+}
+
+.credit-cards-summary {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.credit-limit {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.credit-amount {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.credit-usage {
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.credit-cards-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.credit-card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-sm);
+    backdrop-filter: blur(10px);
+}
+
+.credit-card-name {
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.credit-card-info {
+    text-align: right;
+}
+
+.credit-card-balance {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+.credit-card-due {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.7;
 }
 
 /* Responsividade */
