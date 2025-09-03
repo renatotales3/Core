@@ -218,7 +218,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .month-balance-title {
@@ -232,7 +232,7 @@ body {
 .month-balance-amount {
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     color: var(--text-primary);
 }
 
