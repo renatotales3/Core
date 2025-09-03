@@ -418,7 +418,8 @@ body {
 .app-container.focus-mode .bank-account-balance,
 .app-container.focus-mode .credit-card-balance,
 .app-container.focus-mode .credit-usage,
-.app-container.focus-mode .month-balance-amount {
+.app-container.focus-mode .month-balance-amount,
+.app-container.focus-mode .month-balance-insight {
     filter: blur(8px);
     user-select: none;
 }

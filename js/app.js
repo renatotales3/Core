@@ -17,6 +17,9 @@ class CoreApp {
         this.loadUserData();
         this.updatePeriodDisplay();
         this.updateFinancialData();
+        
+        // Aplica cor inicial ao card de balanço
+        this.applyInitialBalanceColor();
     }
 
     setupEventListeners() {
@@ -195,6 +198,18 @@ class CoreApp {
             return `Atenção: gastos R$ ${Math.abs(data.balance).toLocaleString('pt-BR')} acima da receita`;
         } else {
             return 'Receitas e despesas estão equilibradas este mês';
+        }
+    }
+
+    applyInitialBalanceColor() {
+        // Calcula o saldo inicial baseado nos valores padrão
+        const initialIncome = 5200;
+        const initialExpense = 3800;
+        const initialBalance = initialIncome - initialExpense;
+        
+        const monthBalanceElement = document.querySelector('#monthBalanceAmount');
+        if (monthBalanceElement) {
+            monthBalanceElement.className = `month-balance-amount ${initialBalance >= 0 ? 'positive' : 'negative'}`;
         }
     }
 
