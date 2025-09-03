@@ -7,12 +7,21 @@
 
 /* Remove outline azul de seleção */
 *:focus {
-    outline: none;
+    outline: none !important;
 }
 
 button:focus,
-.period-item:focus {
-    outline: none;
+.period-item:focus,
+.focus-button:focus {
+    outline: none !important;
+}
+
+/* Remove seleção de texto */
+* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 :root {
@@ -72,7 +81,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    padding: 8px 0;
+    padding: 0;
 }
 
 .greeting-text {
@@ -131,12 +140,13 @@ body {
 
 .period-carousel {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background: var(--background-primary);
     border-radius: var(--border-radius);
     padding: 6px;
     box-shadow: var(--shadow-sm);
+    gap: 8px;
 }
 
 .period-item {
@@ -147,10 +157,9 @@ body {
     font-weight: 500;
     color: var(--text-secondary);
     position: relative;
-    width: 120px;
+    min-width: 110px;
     text-align: center;
     overflow: hidden;
-    flex: 1;
 }
 
 .period-item::before {
@@ -384,8 +393,8 @@ body {
     }
     
     .period-item {
-        min-width: 120px;
-        padding: 8px 12px;
+        min-width: 90px;
+        padding: 8px 10px;
     }
     
     .period-text {
