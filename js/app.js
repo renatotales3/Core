@@ -155,17 +155,47 @@ class CoreApp {
             expenseAmount.textContent = `R$ ${mockData.expense.toLocaleString('pt-BR')}`;
         }
 
-        // Atualiza saldo
+                // Atualiza saldo
         const balanceAmount = document.querySelector('.amount');
         if (balanceAmount) {
             balanceAmount.textContent = mockData.balance.toLocaleString('pt-BR');
         }
 
+        // Atualiza card de balanço do mês
+        this.updateMonthBalanceData(mockData);
+
         // Atualiza dados das contas bancárias
         this.updateBankAccountsData(mockData);
 
-                // Atualiza dados dos cartões de crédito
+        // Atualiza dados dos cartões de crédito
         this.updateCreditCardsData(mockData);
+    }
+
+    updateMonthBalanceData(data) {
+        // Atualiza o valor do balanço
+        const monthBalanceElement = document.querySelector('#monthBalanceAmount');
+        if (monthBalanceElement) {
+            monthBalanceElement.textContent = `R$ ${data.balance.toLocaleString('pt-BR')}`;
+            
+            // Adiciona classe de cor baseada no saldo
+            monthBalanceElement.className = `month-balance-amount ${data.balance >= 0 ? 'positive' : 'negative'}`;
+        }
+
+        // Atualiza o insight
+        const monthBalanceInsightElement = document.querySelector('#monthBalanceInsight');
+        if (monthBalanceInsightElement) {
+            monthBalanceInsightElement.textContent = this.generateMonthBalanceInsight(data);
+        }
+    }
+
+    generateMonthBalanceInsight(data) {
+        if (data.balance > 0) {
+            return `Você economizou R$ ${data.balance.toLocaleString('pt-BR')} este mês!`;
+        } else if (data.balance < 0) {
+            return `Atenção: gastos R$ ${Math.abs(data.balance).toLocaleString('pt-BR')} acima da receita`;
+        } else {
+            return 'Receitas e despesas estão equilibradas este mês';
+        }
     }
 
     updateBankAccountsData(data) {

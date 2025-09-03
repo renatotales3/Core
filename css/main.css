@@ -203,6 +203,63 @@ body {
     margin-bottom: 16px;
 }
 
+/* Card de Balanço do Mês */
+.month-balance-card {
+    background: var(--background-primary);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--background-tertiary);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.month-balance-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.month-balance-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--primary-color);
+}
+
+.month-balance-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.month-balance-amount {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.month-balance-amount.positive {
+    color: var(--success-color);
+}
+
+.month-balance-amount.negative {
+    color: var(--danger-color);
+}
+
+.month-balance-insight {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    padding: 8px 12px;
+    background: var(--background-tertiary);
+    border-radius: var(--border-radius-sm);
+}
+
 .card {
     background: var(--background-primary);
     border-radius: var(--border-radius);
@@ -355,7 +412,13 @@ body {
 /* Modo Foco (Ocultar Valores) */
 .app-container.focus-mode .income-amount,
 .app-container.focus-mode .expense-amount,
-.app-container.focus-mode .amount {
+.app-container.focus-mode .amount,
+.app-container.focus-mode .total-amount,
+.app-container.focus-mode .credit-amount,
+.app-container.focus-mode .bank-account-balance,
+.app-container.focus-mode .credit-card-balance,
+.app-container.focus-mode .credit-usage,
+.app-container.focus-mode .month-balance-amount {
     filter: blur(8px);
     user-select: none;
 }
