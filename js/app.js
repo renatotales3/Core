@@ -44,11 +44,9 @@ class CoreApp {
         if (this.focusMode) {
             appContainer.classList.add('focus-mode');
             focusButton.classList.add('focused');
-            this.showNotification('Modo público ativado - valores ocultos');
         } else {
             appContainer.classList.remove('focus-mode');
             focusButton.classList.remove('focused');
-            this.showNotification('Modo privado ativado - valores visíveis');
         }
 
         // Salvar preferência
@@ -109,19 +107,18 @@ class CoreApp {
         // Atualiza o HTML do carrossel
         carousel.innerHTML = periods.map((period, index) => {
             const monthNames = [
-                'jan', 'fev', 'mar', 'abr', 'mai', 'jun',
-                'jul', 'ago', 'set', 'out', 'nov', 'dez'
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
             ];
             
             const monthName = monthNames[period.month];
-            const yearDisplay = period.year.toString().slice(-2);
             const isCurrent = index === 1; // Meio sempre é o selecionado
             
             return `
                 <div class="period-item ${isCurrent ? 'active' : ''}" 
                      data-month="${period.month}" 
                      data-year="${period.year}">
-                    <span class="period-text">${monthName}/${yearDisplay}</span>
+                    <span class="period-text">${monthName}</span>
                 </div>
             `;
         }).join('');
@@ -163,19 +160,7 @@ class CoreApp {
             balanceAmount.textContent = mockData.balance.toLocaleString('pt-BR');
         }
 
-        // Atualiza comparações
-        const incomeComparison = document.querySelector('.income-card .card-comparison');
-        const expenseComparison = document.querySelector('.expense-card .card-comparison');
-        
-        if (incomeComparison) {
-            incomeComparison.textContent = `${mockData.incomeChange > 0 ? '+' : ''}${mockData.incomeChange}% vs ${this.getMonthName(month - 1)}`;
-            incomeComparison.className = `card-comparison ${mockData.incomeChange >= 0 ? 'positive' : 'negative'}`;
-        }
-        
-        if (expenseComparison) {
-            expenseComparison.textContent = `${mockData.expenseChange > 0 ? '+' : ''}${mockData.expenseChange}% vs ${this.getMonthName(month - 1)}`;
-            expenseComparison.className = `card-comparison ${mockData.expenseChange <= 0 ? 'positive' : 'negative'}`;
-        }
+
 
         // Atualiza insights
         this.updateInsights(mockData);
@@ -198,7 +183,7 @@ class CoreApp {
     }
 
     getMonthName(month) {
-        const monthNames = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+        const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         return monthNames[month < 0 ? month + 12 : month];
     }
 
@@ -210,7 +195,6 @@ class CoreApp {
         
         insightsContainer.innerHTML = insights.map(insight => `
             <div class="insight-item">
-                <span class="insight-icon ${insight.type}">${insight.icon}</span>
                 <span class="insight-text">${insight.text}</span>
             </div>
         `).join('');
@@ -222,30 +206,22 @@ class CoreApp {
         // Insight baseado no saldo
         if (data.balance > 0) {
             insights.push({
-                icon: '💰',
-                text: `Você economizou R$ ${data.balance.toLocaleString('pt-BR')} este mês!`,
-                type: 'positive'
+                text: `Você economizou R$ ${data.balance.toLocaleString('pt-BR')} este mês!`
             });
         } else {
             insights.push({
-                icon: '⚠️',
-                text: `Atenção: gastos R$ ${Math.abs(data.balance).toLocaleString('pt-BR')} acima da receita`,
-                type: 'warning'
+                text: `Atenção: gastos R$ ${Math.abs(data.balance).toLocaleString('pt-BR')} acima da receita`
             });
         }
 
         // Insight baseado na comparação
         if (data.expenseChange > 15) {
             insights.push({
-                icon: '📊',
-                text: `Gastos aumentaram ${data.expenseChange}% vs mês anterior`,
-                type: 'neutral'
+                text: `Gastos aumentaram ${data.expenseChange}% vs mês anterior`
             });
         } else if (data.expenseChange < -10) {
             insights.push({
-                icon: '🎉',
-                text: `Parabéns! Gastos reduziram ${Math.abs(data.expenseChange)}%`,
-                type: 'positive'
+                text: `Parabéns! Gastos reduziram ${Math.abs(data.expenseChange)}%`
             });
         }
 
@@ -316,42 +292,7 @@ class CoreApp {
         }
     }
 
-    showNotification(message) {
-        // Cria notificação temporária
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            font-size: 14px;
-            font-weight: 500;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        `;
 
-        document.body.appendChild(notification);
-
-        // Anima entrada
-        setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
-
-        // Remove após 3 segundos
-        setTimeout(() => {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
-    }
 }
 
 // Inicializa o app quando o DOM estiver pronto

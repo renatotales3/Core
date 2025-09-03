@@ -61,8 +61,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
-    padding: 16px 0;
+    margin-bottom: 20px;
+    padding: 12px 0;
 }
 
 .greeting-text {
@@ -73,31 +73,28 @@ body {
 }
 
 .user-name {
-    color: var(--primary-color);
+    color: var(--text-primary);
 }
 
 .focus-button {
-    background: var(--background-primary);
-    border: 2px solid var(--background-tertiary);
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    background: transparent;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: var(--shadow-sm);
+    padding: 8px;
+    border-radius: 8px;
 }
 
 .focus-button:hover {
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    background: var(--background-tertiary);
+    transform: scale(1.1);
 }
 
 .focus-button:active {
-    transform: translateY(0);
+    transform: scale(0.95);
 }
 
 .eye-icon {
@@ -119,64 +116,88 @@ body {
 
 /* Filtro de Período */
 .period-filter {
-    margin-bottom: 32px;
+    margin-bottom: 20px;
 }
 
 .period-carousel {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: var(--background-primary);
     border-radius: var(--border-radius);
-    padding: 8px;
+    padding: 6px;
     box-shadow: var(--shadow-sm);
 }
 
 .period-item {
-    padding: 12px 20px;
+    padding: 10px 16px;
     border-radius: var(--border-radius-sm);
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
     color: var(--text-secondary);
     position: relative;
-    min-width: 100px;
+    min-width: 120px;
     text-align: center;
+    overflow: hidden;
+}
+
+.period-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.period-item:hover::before {
+    left: 100%;
 }
 
 .period-item:hover {
     background: var(--background-tertiary);
     color: var(--text-primary);
+    transform: translateY(-2px);
 }
 
 .period-item.active {
     background: var(--primary-color);
     color: white;
     box-shadow: var(--shadow-md);
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(-2px);
 }
 
 .period-text {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 /* Cards Financeiros */
 .financial-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .card {
     background: var(--background-primary);
     border-radius: var(--border-radius);
-    padding: 20px;
+    padding: 16px;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
     border: 1px solid var(--background-tertiary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 120px;
 }
 
 .card:hover {
@@ -185,13 +206,13 @@ body {
 }
 
 .card-icon {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     background: var(--background-tertiary);
 }
 
@@ -206,7 +227,7 @@ body {
 }
 
 .card-title {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--text-secondary);
     margin-bottom: 8px;
@@ -215,38 +236,16 @@ body {
 }
 
 .card-amount {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
-    margin-bottom: 8px;
     line-height: 1.2;
-}
-
-.income-amount {
-    color: var(--success-color);
-}
-
-.expense-amount {
-    color: var(--danger-color);
-}
-
-.card-comparison {
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.card-comparison.positive {
-    color: var(--success-color);
-}
-
-.card-comparison.negative {
-    color: var(--danger-color);
 }
 
 /* Card de Saldo */
 .balance-card {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
     border-radius: var(--border-radius-lg);
-    padding: 24px;
+    padding: 20px;
     color: white;
     box-shadow: var(--shadow-lg);
     position: relative;
@@ -256,24 +255,34 @@ body {
 .balance-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.1);
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
     border-radius: 50%;
-    transform: translate(30px, -30px);
+}
+
+.balance-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
 }
 
 .balance-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .balance-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     opacity: 0.9;
 }
@@ -283,19 +292,19 @@ body {
 }
 
 .balance-amount {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
 .currency {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     opacity: 0.8;
-    margin-right: 8px;
+    margin-right: 6px;
 }
 
 .amount {
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 700;
     line-height: 1;
 }
@@ -303,35 +312,32 @@ body {
 .balance-insights {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .insight-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    justify-content: center;
+    padding: 10px 14px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: var(--border-radius-sm);
     backdrop-filter: blur(10px);
-}
-
-.insight-icon {
-    font-size: 18px;
+    text-align: center;
 }
 
 .insight-text {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     opacity: 0.9;
     line-height: 1.4;
+    text-align: center;
 }
 
 /* Modo Foco (Ocultar Valores) */
 .app-container.focus-mode .income-amount,
 .app-container.focus-mode .expense-amount,
-.app-container.focus-mode .amount,
-.app-container.focus-mode .card-comparison {
+.app-container.focus-mode .amount {
     filter: blur(8px);
     user-select: none;
 }
@@ -351,15 +357,16 @@ body {
     }
     
     .financial-cards {
-        gap: 12px;
+        gap: 10px;
     }
     
     .card {
-        padding: 16px;
+        padding: 14px;
+        min-height: 100px;
     }
     
     .card-amount {
-        font-size: 20px;
+        font-size: 18px;
     }
     
     .amount {
@@ -367,12 +374,12 @@ body {
     }
     
     .period-item {
-        min-width: 80px;
-        padding: 10px 16px;
+        min-width: 100px;
+        padding: 8px 12px;
     }
     
     .period-text {
-        font-size: 12px;
+        font-size: 11px;
     }
 }
 
