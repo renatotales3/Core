@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core - No centro das suas finanças</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header com Saudação e Botão de Foco -->
+        <header class="app-header">
+            <div class="greeting">
+                <h1 class="greeting-text">Olá, <span class="user-name">Renato</span>!</h1>
+            </div>
+            <button class="focus-button" id="focusButton" title="Modo público">
+                <svg class="eye-icon open" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg class="eye-icon closed" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Filtro de Período - Carrossel -->
+        <div class="period-filter">
+            <div class="period-carousel" id="periodCarousel">
+                <div class="period-item" data-month="7" data-year="2025">
+                    <span class="period-text">ago/25</span>
+                </div>
+                <div class="period-item active" data-month="8" data-year="2025">
+                    <span class="period-text">set/2025</span>
+                </div>
+                <div class="period-item" data-month="9" data-year="2025">
+                    <span class="period-text">out/2025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards de Receitas e Despesas -->
+        <div class="financial-cards">
+            <div class="card income-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Receitas</h3>
+                    <p class="card-amount income-amount">R$ 5.200</p>
+                    <p class="card-comparison positive">+15% vs ago</p>
+                </div>
+            </div>
+
+            <div class="card expense-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Despesas</h3>
+                    <p class="card-amount expense-amount">R$ 3.800</p>
+                    <p class="card-comparison negative">+8% vs ago</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Saldo Total -->
+        <div class="balance-card">
+            <div class="balance-header">
+                <h2 class="balance-title">Saldo do Mês</h2>
+                <div class="balance-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="balance-amount" id="balanceAmount">
+                <span class="currency">R$</span>
+                <span class="amount">1.400</span>
+            </div>
+            <div class="balance-insights">
+                <div class="insight-item">
+                    <span class="insight-icon positive">💰</span>
+                    <span class="insight-text">Você economizou R$ 800 este mês!</span>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-icon neutral">📊</span>
+                    <span class="insight-text">Gastos com lazer aumentaram 20%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
