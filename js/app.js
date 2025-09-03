@@ -112,13 +112,14 @@ class CoreApp {
             ];
             
             const monthName = monthNames[period.month];
+            const yearDisplay = period.year.toString().slice(-2);
             const isCurrent = index === 1; // Meio sempre é o selecionado
             
             return `
                 <div class="period-item ${isCurrent ? 'active' : ''}" 
                      data-month="${period.month}" 
                      data-year="${period.year}">
-                    <span class="period-text">${monthName}</span>
+                    <span class="period-text">${monthName}/${yearDisplay}</span>
                 </div>
             `;
         }).join('');
@@ -134,7 +135,7 @@ class CoreApp {
         });
     }
 
-    updateFinancialData() {
+        updateFinancialData() {
         // Simula dados baseados no período selecionado
         const month = this.selectedPeriod.month;
         const year = this.selectedPeriod.year;
@@ -159,8 +160,6 @@ class CoreApp {
         if (balanceAmount) {
             balanceAmount.textContent = mockData.balance.toLocaleString('pt-BR');
         }
-
-
 
         // Atualiza insights
         this.updateInsights(mockData);
@@ -223,6 +222,23 @@ class CoreApp {
             insights.push({
                 text: `Parabéns! Gastos reduziram ${Math.abs(data.expenseChange)}%`
             });
+        }
+
+        // Se não temos insights suficientes, adiciona insights padrão
+        if (insights.length < 2) {
+            if (data.income > 5000) {
+                insights.push({
+                    text: `Receita acima da média mensal!`
+                });
+            } else if (data.expense < 3000) {
+                insights.push({
+                    text: `Excelente controle de gastos!`
+                });
+            } else {
+                insights.push({
+                    text: `Continue monitorando suas finanças!`
+                });
+            }
         }
 
         return insights.slice(0, 2); // Máximo 2 insights

@@ -5,6 +5,16 @@
     box-sizing: border-box;
 }
 
+/* Remove outline azul de seleção */
+*:focus {
+    outline: none;
+}
+
+button:focus,
+.period-item:focus {
+    outline: none;
+}
+
 :root {
     /* Cores principais */
     --primary-color: #6366f1;
@@ -52,7 +62,7 @@ body {
 .app-container {
     max-width: 480px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 16px;
     min-height: 100vh;
 }
 
@@ -61,8 +71,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding: 12px 0;
+    margin-bottom: 16px;
+    padding: 8px 0;
 }
 
 .greeting-text {
@@ -116,7 +126,7 @@ body {
 
 /* Filtro de Período */
 .period-filter {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .period-carousel {
@@ -374,12 +384,12 @@ body {
     }
     
     .period-item {
-        min-width: 100px;
+        min-width: 120px;
         padding: 8px 12px;
     }
     
     .period-text {
-        font-size: 11px;
+        font-size: 10px;
     }
 }
 
