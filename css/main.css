@@ -219,7 +219,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .month-balance-icon {
@@ -239,7 +239,7 @@ body {
 .month-balance-amount {
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 }
 
 .month-balance-amount.positive {
