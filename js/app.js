@@ -17,9 +17,6 @@ class CoreApp {
         this.loadUserData();
         this.updatePeriodDisplay();
         this.updateFinancialData();
-        
-        // Aplica cor inicial ao card de balanço
-        this.applyInitialBalanceColor();
     }
 
     setupEventListeners() {
@@ -164,8 +161,7 @@ class CoreApp {
             balanceAmount.textContent = mockData.balance.toLocaleString('pt-BR');
         }
 
-        // Atualiza card de balanço do mês
-        this.updateMonthBalanceData(mockData);
+
 
         // Atualiza dados das contas bancárias
         this.updateBankAccountsData(mockData);
@@ -174,56 +170,7 @@ class CoreApp {
         this.updateCreditCardsData(mockData);
     }
 
-    updateMonthBalanceData(data) {
-        // Atualiza o valor do balanço
-        const monthBalanceElement = document.querySelector('#monthBalanceAmount');
-        if (monthBalanceElement) {
-            monthBalanceElement.textContent = `R$ ${data.balance.toLocaleString('pt-BR')}`;
-            
-            // Adiciona classe de cor baseada no saldo
-            monthBalanceElement.className = `month-balance-amount ${data.balance >= 0 ? 'positive' : 'negative'}`;
-        }
 
-        // Atualiza o insight
-        const monthBalanceInsightElement = document.querySelector('#monthBalanceInsight');
-        if (monthBalanceInsightElement) {
-            monthBalanceInsightElement.textContent = this.generateMonthBalanceInsight(data);
-        }
-    }
-
-    generateMonthBalanceInsight(data) {
-        if (data.balance > 0) {
-            return `Você economizou R$ ${data.balance.toLocaleString('pt-BR')} este mês!`;
-        } else if (data.balance < 0) {
-            return `Atenção: gastos R$ ${Math.abs(data.balance).toLocaleString('pt-BR')} acima da receita`;
-        } else {
-            return 'Receitas e despesas estão equilibradas este mês';
-        }
-    }
-
-    applyInitialBalanceColor() {
-        // Calcula o saldo inicial baseado nos valores padrão
-        const initialIncome = 5200;
-        const initialExpense = 3800;
-        const initialBalance = initialIncome - initialExpense;
-        
-        const monthBalanceElement = document.querySelector('#monthBalanceAmount');
-        if (monthBalanceElement) {
-            // Remove classes anteriores e aplica a nova
-            monthBalanceElement.className = 'month-balance-amount';
-            monthBalanceElement.classList.add(initialBalance >= 0 ? 'positive' : 'negative');
-        }
-        
-        // Também atualiza o insight inicial
-        const monthBalanceInsightElement = document.querySelector('#monthBalanceInsight');
-        if (monthBalanceInsightElement) {
-            monthBalanceInsightElement.textContent = this.generateMonthBalanceInsight({
-                balance: initialBalance,
-                income: initialIncome,
-                expense: initialExpense
-            });
-        }
-    }
 
     updateBankAccountsData(data) {
         // Simula dados das contas bancárias
