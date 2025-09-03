@@ -209,7 +209,19 @@ class CoreApp {
         
         const monthBalanceElement = document.querySelector('#monthBalanceAmount');
         if (monthBalanceElement) {
-            monthBalanceElement.className = `month-balance-amount ${initialBalance >= 0 ? 'positive' : 'negative'}`;
+            // Remove classes anteriores e aplica a nova
+            monthBalanceElement.className = 'month-balance-amount';
+            monthBalanceElement.classList.add(initialBalance >= 0 ? 'positive' : 'negative');
+        }
+        
+        // Também atualiza o insight inicial
+        const monthBalanceInsightElement = document.querySelector('#monthBalanceInsight');
+        if (monthBalanceInsightElement) {
+            monthBalanceInsightElement.textContent = this.generateMonthBalanceInsight({
+                balance: initialBalance,
+                income: initialIncome,
+                expense: initialExpense
+            });
         }
     }
 
