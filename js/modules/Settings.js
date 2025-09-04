@@ -204,6 +204,7 @@ class SettingsModule {
         if (modal) {
             modal.style.display = 'flex';
             modal.classList.add('active');
+            document.body.classList.add('modal-open');
         }
     }
 
@@ -213,6 +214,11 @@ class SettingsModule {
             modal.classList.remove('active');
             setTimeout(() => {
                 modal.style.display = 'none';
+                // Remove a classe global quando todos os modais estiverem fechados
+                const anyOpen = document.querySelector('.modal-overlay.active');
+                if (!anyOpen) {
+                    document.body.classList.remove('modal-open');
+                }
             }, 200);
         }
     }

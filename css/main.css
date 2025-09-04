@@ -1107,6 +1107,11 @@ html {
     animation: fadeIn 0.2s ease-out;
 }
 
+/* Esconde a navbar quando qualquer modal estiver aberto */
+.modal-open .navbar {
+    display: none !important;
+}
+
 .modal-content {
     background: var(--background-primary);
     border-radius: var(--border-radius-lg);
