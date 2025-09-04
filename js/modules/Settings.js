@@ -130,13 +130,22 @@ class SettingsModule {
             </div>
         `;
 
-        // Substitui apenas o conteúdo principal, mantendo a navbar
+        // Substitui apenas a área acima da navbar mantendo o nó da navbar intacto
         const navbar = mainContent.querySelector('.navbar');
         if (navbar) {
-            mainContent.innerHTML = settingsHTML + navbar.outerHTML;
-            
-            // Reanexa os event listeners da navbar
-            this.reattachNavbarEvents();
+            const settingsWrapper = document.createElement('div');
+            settingsWrapper.innerHTML = settingsHTML;
+
+            // Insere o conteúdo de ajustes antes da navbar sem recriá-la
+            mainContent.insertBefore(settingsWrapper, navbar);
+
+            // Remove quaisquer seções antigas (anteriores à navbar) mantendo a navbar intacta
+            const siblings = Array.from(mainContent.children);
+            for (const child of siblings) {
+                if (child !== navbar && child !== settingsWrapper) {
+                    mainContent.removeChild(child);
+                }
+            }
         } else {
             mainContent.innerHTML = settingsHTML;
         }
@@ -219,24 +228,7 @@ class SettingsModule {
     }
 
     reattachNavbarEvents() {
-        // Reanexa apenas os event listeners da navbar
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            const newItem = item.cloneNode(true);
-            item.parentNode.replaceChild(newItem, item);
-        });
-        
-        // Reanexa os event listeners
-        const newNavItems = document.querySelectorAll('.nav-item');
-        newNavItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (item.dataset.tab === 'home') {
-                    this.app.goBackToHome();
-                } else {
-                    this.app.navigateToTab(item);
-                }
-            });
-        });
+        // A navbar já existe e mantém event listeners. Nada a fazer aqui.
     }
 
     updateUserName(name) {

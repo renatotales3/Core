@@ -18,6 +18,7 @@ class CoreApp {
         this.initializeModules();
         this.setupEventListeners();
         this.loadUserData();
+        this.loadCurrentTab();
         this.updatePeriodCarousel();
         this.updateFinancialData();
     }
@@ -317,6 +318,10 @@ class CoreApp {
 
         // Navega para a aba correspondente
         this.modules.router.showTab(tabType);
+
+        // Persiste aba atual
+        this.currentTab = tabType;
+        this.modules.storage.setItem('coreCurrentTab', tabType);
     }
 
     navigateToTabByType(tabType) {
@@ -338,6 +343,20 @@ class CoreApp {
             
             // Ativa a aba inicial na navbar
             this.navigateToTabByType('home');
+
+            // Persiste aba
+            this.currentTab = 'home';
+            this.modules.storage.setItem('coreCurrentTab', 'home');
+        }
+    }
+
+    loadCurrentTab() {
+        const savedTab = this.modules.storage.getItem('coreCurrentTab');
+        if (savedTab && savedTab !== 'home') {
+            // Aguarda o DOM finalizar listeners e módulos
+            setTimeout(() => {
+                this.navigateToTabByType(savedTab);
+            }, 50);
         }
     }
 }

@@ -78,7 +78,7 @@ html {
     max-width: 480px;
     margin: 0 auto;
     padding: 16px;
-    min-height: 100vh;
+    min-height: 100dvh;
     padding-bottom: 80px; /* Espaço para a navbar fixa */
 }
 
@@ -165,6 +165,13 @@ html {
 
 .user-name {
     color: var(--text-primary);
+}
+
+/* Alinhamento do avatar com a saudação */
+.greeting {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 /* Foto do usuário no header */
@@ -838,11 +845,9 @@ html {
     animation-fill-mode: forwards;
 }
 
-/* Navbar estável sem movimento */
+/* Navbar sem animação para evitar flicker em refresh e trocas de aba */
 .navbar {
-    animation: fadeIn 0.5s ease-out 0.9s both;
-    opacity: 0;
-    animation-fill-mode: forwards;
+    opacity: 1;
 }
 
 /* Cards individuais com animação suave - CORRIGIDOS para evitar scroll */
