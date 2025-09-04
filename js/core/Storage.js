@@ -1,24 +1,5 @@
-// Storage Module - Gerencia localStorage e dados persistentes
-class StorageModule {
-    constructor() {
-        this.prefix = 'core_';
-    }
-
-    setItem(key, value) {
-        try {
-            const fullKey = this.prefix + key;
-            localStorage.setItem(fullKey, JSON.stringify(value));
-            return true;
-        } catch (error) {
-            console.error('Erro ao salvar no localStorage:', error);
-            return false;
-        }
-    }
-
-    getItem(key) {
-        try {
-            const fullKey = this.prefix + key;
-            const item = localStorage.getItem(fullKey);
+// Storage.js removido. Use SecureStorage.js
+throw new Error('Storage.js foi descontinuado. Use SecureStorage.js');
             return item ? JSON.parse(item) : null;
         } catch (error) {
             console.error('Erro ao ler do localStorage:', error);

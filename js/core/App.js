@@ -9,27 +9,30 @@ class CoreApp {
             month: this.currentMonth,
             year: this.currentYear
         };
-        
         this.modules = {};
         this.init();
     }
 
-    init() {
-        this.initializeModules();
+    async init() {
+        await this.initializeModules();
         this.setupEventListeners();
-        this.loadUserData();
-        this.loadCurrentTab();
+        await this.loadUserData();
+        await this.loadCurrentTab();
         this.updatePeriodCarousel();
         this.updateFinancialData();
     }
 
-    initializeModules() {
+    async initializeModules() {
         // Inicializa todos os módulos
         this.modules.dashboard = new DashboardModule(this);
         this.modules.router = new RouterModule(this);
-        this.modules.storage = new StorageModule();
+        this.modules.storage = window.SecureStorage;
         this.modules.utils = new UtilsModule();
         this.modules.settings = new SettingsModule(this);
+        // Migração automática dos dados legacy
+        if (typeof this.modules.storage.migrateLegacy === 'function') {
+            await this.modules.storage.migrateLegacy();
+        }
     }
 
     setupEventListeners() {
@@ -55,7 +58,7 @@ class CoreApp {
         document.addEventListener('keydown', (e) => this.handleKeyboardNavigation(e));
     }
 
-    toggleFocusMode() {
+    async toggleFocusMode() {
         this.focusMode = !this.focusMode;
         const appContainer = document.querySelector('.app-container');
         const focusButton = document.getElementById('focusButton');
@@ -76,7 +79,7 @@ class CoreApp {
         }
 
         // Salvar preferência
-        this.modules.storage.setItem('coreFocusMode', this.focusMode);
+        await this.modules.storage.set('coreFocusMode', this.focusMode);
     }
 
     selectPeriod(element) {
@@ -194,16 +197,16 @@ class CoreApp {
         this.modules.dashboard.updateCreditCardsData(mockData);
     }
 
-    loadUserData() {
+    async loadUserData() {
         // Carrega nome do usuário
-        const userName = this.modules.storage.getItem('coreUserName') || 'Usuário';
+        const userName = await this.modules.storage.get('coreUserName') || 'Usuário';
         const userNameElement = document.querySelector('.user-name');
         if (userNameElement) {
             userNameElement.textContent = userName;
         }
 
         // Carrega foto do usuário
-        const userPhoto = this.modules.storage.getItem('coreUserPhoto');
+        const userPhoto = await this.modules.storage.get('coreUserPhoto');
         if (userPhoto) {
             const userPhotoElement = document.querySelector('.user-photo');
             if (userPhotoElement) {
@@ -212,11 +215,11 @@ class CoreApp {
         }
 
         // Carrega tema
-        const savedTheme = this.modules.storage.getItem('coreTheme') || 'light';
+        const savedTheme = await this.modules.storage.get('coreTheme') || 'light';
         this.applyTheme(savedTheme);
 
         // Carrega modo de foco
-        const savedFocusMode = this.modules.storage.getItem('coreFocusMode') === true;
+        const savedFocusMode = await this.modules.storage.get('coreFocusMode') === true;
         if (savedFocusMode) {
             this.focusMode = true;
             const appContainer = document.querySelector('.app-container');
@@ -313,7 +316,7 @@ class CoreApp {
         }
     }
 
-    navigateToTab(navItem) {
+    async navigateToTab(navItem) {
         // Remove seleção anterior
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
@@ -330,7 +333,7 @@ class CoreApp {
 
         // Persiste aba atual
         this.currentTab = tabType;
-        this.modules.storage.setItem('coreCurrentTab', tabType);
+        await this.modules.storage.set('coreCurrentTab', tabType);
     }
 
     navigateToTabByType(tabType) {
@@ -341,7 +344,7 @@ class CoreApp {
         }
     }
 
-    goBackToHome() {
+    async goBackToHome() {
         // Restaura o conteúdo original da aba inicial
         const mainContent = document.querySelector('.app-container');
         if (mainContent && this.modules.settings && this.modules.settings.originalContent) {
@@ -355,12 +358,12 @@ class CoreApp {
 
             // Persiste aba
             this.currentTab = 'home';
-            this.modules.storage.setItem('coreCurrentTab', 'home');
+            await this.modules.storage.set('coreCurrentTab', 'home');
         }
     }
 
-    loadCurrentTab() {
-        const savedTab = this.modules.storage.getItem('coreCurrentTab');
+    async loadCurrentTab() {
+        const savedTab = await this.modules.storage.get('coreCurrentTab');
         if (savedTab && savedTab !== 'home') {
             // Aguarda o DOM finalizar listeners e módulos
             setTimeout(() => {

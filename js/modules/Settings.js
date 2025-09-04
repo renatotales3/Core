@@ -7,16 +7,17 @@ class SettingsModule {
         this.init();
     }
 
-    init() {
-        this.loadSettings();
+    async init() {
+        await this.loadSettings();
     }
 
-    loadSettings() {
+    async loadSettings() {
         // Carrega configurações salvas ou usa padrões
         this.currentSettings = {
-            userName: this.app.modules.storage.getItem('coreUserName') || 'Usuário',
-            userPhoto: this.app.modules.storage.getItem('coreUserPhoto') || null,
-            theme: this.app.modules.storage.getItem('coreTheme') || 'light'
+            userName: await this.app.modules.storage.get('coreUserName') || 'Usuário',
+            userPhoto: await this.app.modules.storage.get('coreUserPhoto') || null,
+            theme: await this.app.modules.storage.get('coreTheme') || 'light',
+            security: this.app.modules.storage.isCryptoAvailable ? this.app.modules.storage.isCryptoAvailable() : false
         };
     }
 
@@ -28,7 +29,7 @@ class SettingsModule {
         return themes[theme] || 'Claro';
     }
 
-    renderSettingsTab() {
+    async renderSettingsTab() {
         // Cria a interface da aba de ajustes (lista de cards por categoria)
         const mainContent = document.querySelector('.app-container');
         if (!mainContent) return;
@@ -37,6 +38,9 @@ class SettingsModule {
         if (!this.originalContent) {
             this.originalContent = mainContent.innerHTML;
         }
+
+        const securityStatus = this.currentSettings.security ? 'Protegido com AES-256' : 'Sem criptografia';
+        const securityIcon = this.currentSettings.security ? '🔒' : '⚠️';
 
         const settingsHTML = `
             <div class="settings-container">
@@ -59,6 +63,14 @@ class SettingsModule {
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
+                    </div>
+                </div>
+
+                <div class="settings-card security-card" id="cardSecurity">
+                    <div class="settings-card-icon" aria-hidden="true">${securityIcon}</div>
+                    <div class="settings-card-main">
+                        <div class="settings-card-title">Segurança</div>
+                        <div class="settings-card-description">${securityStatus}</div>
                     </div>
                 </div>
             </div>
@@ -91,7 +103,8 @@ class SettingsModule {
         if (cardAppearance) {
             cardAppearance.addEventListener('click', () => this.renderAppearanceSheet());
         }
-        
+        // Card de segurança não tem ação
+
         // Reanexa os event listeners da navbar
         this.reattachNavbarEvents();
         
@@ -315,10 +328,9 @@ class SettingsModule {
         });
     }
 
-    updateUserName(name) {
+    async updateUserName(name) {
         this.currentSettings.userName = name;
-        this.app.modules.storage.setItem('coreUserName', name);
-        
+        await this.app.modules.storage.set('coreUserName', name);
         // Atualiza o nome na saudação
         const userNameElement = document.querySelector('.user-name');
         if (userNameElement) {
@@ -326,26 +338,24 @@ class SettingsModule {
         }
     }
 
-    changePhoto() {
+    async changePhoto() {
         // Cria input de arquivo para selecionar foto
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
-        input.onchange = (e) => {
+        input.onchange = async (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
+                reader.onload = async (e) => {
                     const photoData = e.target.result;
                     this.currentSettings.userPhoto = photoData;
-                    this.app.modules.storage.setItem('coreUserPhoto', photoData);
-                    
+                    await this.app.modules.storage.set('coreUserPhoto', photoData);
                     // Atualiza a foto na interface
                     const profilePhoto = document.getElementById('profilePhoto');
                     if (profilePhoto) {
                         profilePhoto.innerHTML = `<img src="${photoData}" alt="Foto do perfil" />`;
                     }
-                    
                     // Atualiza a foto na saudação
                     const headerPhoto = document.querySelector('.user-photo');
                     if (headerPhoto) {
@@ -358,10 +368,9 @@ class SettingsModule {
         input.click();
     }
 
-    updateTheme(theme) {
+    async updateTheme(theme) {
         this.currentSettings.theme = theme;
-        this.app.modules.storage.setItem('coreTheme', theme);
-        
+        await this.app.modules.storage.set('coreTheme', theme);
         // Aplica o tema automaticamente
         this.applyTheme(theme);
     }
