@@ -91,6 +91,10 @@ body {
     padding: 12px 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 
 .nav-item {
@@ -738,8 +742,28 @@ body {
     }
 }
 
-/* Animações */
+/* Animações Corrigidas */
 @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -750,18 +774,117 @@ body {
     }
 }
 
-.app-container > * {
-    animation: fadeInUp 0.6s ease-out forwards;
+/* Animações dos elementos principais */
+.app-header {
+    animation: fadeInUp 0.4s ease-out forwards;
+    opacity: 0;
+    animation-fill-mode: forwards;
 }
 
-.app-container > *:nth-child(2) {
-    animation-delay: 0.1s;
+.period-filter {
+    animation: fadeInUp 0.4s ease-out 0.15s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
 }
 
-.app-container > *:nth-child(3) {
+.financial-cards {
+    animation: fadeInUp 0.4s ease-out 0.3s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.month-balance-card {
+    animation: fadeInUp 0.4s ease-out 0.45s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.bank-accounts-card {
+    animation: fadeInUp 0.4s ease-out 0.6s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.credit-cards-card {
+    animation: fadeInUp 0.4s ease-out 0.75s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* Navbar com animação suave e posição estável */
+.navbar {
+    animation: slideInUp 0.5s ease-out 0.9s both;
+    transform: translateY(0);
+    will-change: transform;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* Cards individuais com animação suave */
+.card {
+    animation: fadeInUp 0.4s ease-out both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.card:nth-child(1) {
     animation-delay: 0.2s;
 }
 
-.app-container > *:nth-child(4) {
+.card:nth-child(2) {
+    animation-delay: 0.25s;
+}
+
+/* Garante que os cards não apareçam antes da animação */
+.financial-cards .card {
+    opacity: 0;
+    animation: fadeInUp 0.4s ease-out both;
+}
+
+.financial-cards .card:nth-child(1) {
     animation-delay: 0.3s;
+}
+
+.financial-cards .card:nth-child(2) {
+    animation-delay: 0.35s;
+}
+
+/* Animações de hover suaves */
+.card:hover,
+.month-balance-card:hover,
+.bank-accounts-card:hover,
+.credit-cards-card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-out;
+}
+
+/* Transições suaves para elementos específicos */
+.card,
+.month-balance-card,
+.bank-accounts-card,
+.credit-cards-card,
+.nav-item,
+.focus-button,
+.period-item {
+    transition: all 0.2s ease-out;
+}
+
+/* Remove transições conflitantes */
+.app-header,
+.period-filter,
+.financial-cards {
+    transition: none;
+}
+
+/* Previne animações durante o carregamento inicial */
+.app-container.loading * {
+    animation: none !important;
+}
+
+/* Animações responsivas */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
 }
