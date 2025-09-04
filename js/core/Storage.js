@@ -58,7 +58,7 @@ class StorageModule {
     }
 
     getUserName() {
-        return this.getItem('userName') || 'Renato';
+        return this.getItem('userName') || 'Usuário';
     }
 
     setFocusMode(enabled) {

@@ -196,7 +196,7 @@ class CoreApp {
 
     loadUserData() {
         // Carrega nome do usuário
-        const userName = this.modules.storage.getItem('coreUserName') || 'Renato';
+        const userName = this.modules.storage.getItem('coreUserName') || 'Usuário';
         const userNameElement = document.querySelector('.user-name');
         if (userNameElement) {
             userNameElement.textContent = userName;

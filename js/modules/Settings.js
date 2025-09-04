@@ -14,7 +14,7 @@ class SettingsModule {
     loadSettings() {
         // Carrega configurações salvas ou usa padrões
         this.currentSettings = {
-            userName: this.app.modules.storage.getItem('coreUserName') || 'Renato',
+            userName: this.app.modules.storage.getItem('coreUserName') || 'Usuário',
             userPhoto: this.app.modules.storage.getItem('coreUserPhoto') || null,
             theme: this.app.modules.storage.getItem('coreTheme') || 'light'
         };
