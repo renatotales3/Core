@@ -47,13 +47,13 @@ class SettingsModule {
                 <div class="settings-card" id="cardAppearance">
                     <div class="settings-card-icon" aria-hidden="true">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.41M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 3.5a1 1 0 0 1 1 1V7a1 1 0 1 1-2 0V4.5a1 1 0 0 1 1-1zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M3 12h2M19 12h2M6 20l1-1M17 4l1-1" stroke="currentColor" stroke-width="2"/>
                         </svg>
                     </div>
                     <div class="settings-card-main">
                         <div class="settings-card-title">Aparência</div>
-                        <div class="settings-card-description">Foto, nome e tema</div>
+                        <div class="settings-card-description">Personalize sua foto, nome e tema do app</div>
                     </div>
                     <div class="settings-card-action">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -221,7 +221,7 @@ class SettingsModule {
                                 </div>
                                 <div class="option-text">
                                     <div class="option-title">Claro</div>
-                                    <div class="option-description">Tema claro padrão</div>
+                                    <div class="option-description">Visual limpo com alto contraste e fundos claros</div>
                                 </div>
                             </div>
                         </div>
@@ -234,7 +234,7 @@ class SettingsModule {
                                 </div>
                                 <div class="option-text">
                                     <div class="option-title">Escuro</div>
-                                    <div class="option-description">Tema escuro</div>
+                                    <div class="option-description">Conforto visual à noite com fundos escuros suaves</div>
                                 </div>
                             </div>
                         </div>

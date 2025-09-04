@@ -1010,6 +1010,8 @@ html {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    align-items: flex-start; /* alinhado à esquerda */
+    margin-left: 12px; /* 12px após o ícone */
 }
 
 .settings-card-action {
