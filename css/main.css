@@ -1009,20 +1009,19 @@ html {
     inset: 0;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center; /* centro vertical para modal menor */
     background: rgba(0,0,0,0.5);
     z-index: 1100;
     animation: fadeIn 0.2s ease-out;
 }
 
 .sheet-content {
-    width: 100%;
-    max-width: 480px;
+    width: 92%;
+    max-width: 420px; /* menor e mais compacto */
     background: var(--background-primary);
-    border-top-left-radius: var(--border-radius-lg);
-    border-top-right-radius: var(--border-radius-lg);
+    border-radius: var(--border-radius-lg); /* raio em todos os cantos */
     box-shadow: var(--shadow-lg);
-    max-height: 92vh;
+    max-height: 85vh;
     overflow-y: auto;
     animation: fadeIn 0.25s ease-out;
 }
@@ -1048,7 +1047,7 @@ html {
 
 .sheet-close {
     position: absolute;
-    left: 12px;
+    right: 12px; /* botão à direita */
     top: 10px;
     width: 36px;
     height: 36px;
@@ -1216,7 +1215,7 @@ html {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1300; /* acima do sheet */
     backdrop-filter: blur(4px);
 }
 
