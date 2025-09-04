@@ -216,7 +216,7 @@ class CoreApp {
         this.applyTheme(savedTheme);
 
         // Carrega modo de foco
-        const savedFocusMode = this.modules.storage.getItem('coreFocusMode') === 'true';
+        const savedFocusMode = this.modules.storage.getItem('coreFocusMode') === true;
         if (savedFocusMode) {
             this.focusMode = true;
             const appContainer = document.querySelector('.app-container');
