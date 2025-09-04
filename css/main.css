@@ -171,7 +171,7 @@ html {
 .greeting {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 /* Foto do usuário no header */
@@ -186,7 +186,6 @@ html {
     justify-content: center;
     overflow: hidden;
     color: var(--text-secondary);
-    margin-right: 12px;
 }
 
 .user-photo img {

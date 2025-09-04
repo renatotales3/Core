@@ -153,6 +153,9 @@ class SettingsModule {
         // Anexa os event listeners
         this.attachEventListeners();
         
+        // Reanexa os event listeners da navbar
+        this.reattachNavbarEvents();
+        
         // Scroll para o topo
         window.scrollTo(0, 0);
     }
@@ -234,7 +237,17 @@ class SettingsModule {
     }
 
     reattachNavbarEvents() {
-        // A navbar já existe e mantém event listeners. Nada a fazer aqui.
+        // Reanexa os event listeners da navbar
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.dataset.tab === 'home') {
+                    this.app.goBackToHome();
+                } else {
+                    this.app.navigateToTab(item);
+                }
+            });
+        });
     }
 
     updateUserName(name) {
