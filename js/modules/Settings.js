@@ -29,7 +29,7 @@ class SettingsModule {
     }
 
     renderSettingsTab() {
-        // Cria a interface da aba de ajustes
+        // Cria a interface da aba de ajustes (lista de cards por categoria)
         const mainContent = document.querySelector('.app-container');
         if (!mainContent) return;
 
@@ -40,91 +40,19 @@ class SettingsModule {
 
         const settingsHTML = `
             <div class="settings-container">
-                <!-- Header da aba de ajustes -->
                 <div class="settings-header">
                     <h1 class="settings-title">Ajustes</h1>
                 </div>
 
-                <!-- Seção de Perfil -->
-                <div class="settings-section">
-                    <h2 class="section-title">Perfil</h2>
-                    
-                    <div class="profile-section">
-                        <div class="profile-photo-container">
-                            <div class="profile-photo" id="profilePhoto">
-                                ${this.currentSettings.userPhoto ? 
-                                    `<img src="${this.currentSettings.userPhoto}" alt="Foto do perfil" />` : 
-                                    `<svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
-                                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-                                    </svg>`
-                                }
-                            </div>
-                            <button class="change-photo-btn" id="changePhotoBtn">
-                                Alterar Foto
-                            </button>
-                        </div>
-                        
-                        <div class="profile-info">
-                            <div class="input-group">
-                                <label for="userName">Nome</label>
-                                <input type="text" id="userName" value="${this.currentSettings.userName}" />
-                            </div>
-                        </div>
+                <div class="settings-card" id="cardAppearance">
+                    <div class="settings-card-main">
+                        <div class="settings-card-title">Aparência</div>
+                        <div class="settings-card-description">Foto, nome e tema</div>
                     </div>
-                </div>
-
-                <!-- Seção de Aparência -->
-                <div class="settings-section">
-                    <h2 class="section-title">Aparência</h2>
-                    
-                    <div class="input-group">
-                        <label for="theme">Tema</label>
-                        <button class="select-button" id="themeButton">
-                            <span class="select-value">${this.getThemeDisplayName(this.currentSettings.theme)}</span>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal de Seleção de Tema -->
-            <div class="modal-overlay" id="themeModal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Selecionar Tema</h3>
-                        <button class="modal-close" id="closeThemeModal">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal-option" data-value="light">
-                            <div class="option-content">
-                                <div class="option-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
-                                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
-                                    </svg>
-                                </div>
-                                <div class="option-text">
-                                    <div class="option-title">Claro</div>
-                                    <div class="option-description">Tema claro padrão</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-option" data-value="dark">
-                            <div class="option-content">
-                                <div class="option-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2"/>
-                                    </svg>
-                                </div>
-                                <div class="option-text">
-                                    <div class="option-title">Escuro</div>
-                                    <div class="option-description">Tema escuro</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="settings-card-action">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -152,6 +80,11 @@ class SettingsModule {
 
         // Anexa os event listeners
         this.attachEventListeners();
+        // Card handlers
+        const cardAppearance = document.getElementById('cardAppearance');
+        if (cardAppearance) {
+            cardAppearance.addEventListener('click', () => this.renderAppearanceSheet());
+        }
         
         // Reanexa os event listeners da navbar
         this.reattachNavbarEvents();
@@ -161,32 +94,7 @@ class SettingsModule {
     }
 
     attachEventListeners() {
-        // Botão alterar foto
-        const changePhotoBtn = document.getElementById('changePhotoBtn');
-        if (changePhotoBtn) {
-            changePhotoBtn.addEventListener('click', () => this.changePhoto());
-        }
-
-        // Input nome
-        const userNameInput = document.getElementById('userName');
-        if (userNameInput) {
-            userNameInput.addEventListener('change', (e) => this.updateUserName(e.target.value));
-        }
-
-        // Botão de seleção de tema
-        const themeButton = document.getElementById('themeButton');
-        if (themeButton) {
-            themeButton.addEventListener('click', () => this.showModal('themeModal'));
-        }
-
-        // Botão de fechar modal
-        const closeThemeModal = document.getElementById('closeThemeModal');
-        if (closeThemeModal) {
-            closeThemeModal.addEventListener('click', () => this.hideModal('themeModal'));
-        }
-
-        // Opções do modal
-        this.attachModalOptions();
+        // Em lista de cards, não há listeners específicos aqui
     }
 
     attachModalOptions() {
@@ -234,6 +142,157 @@ class SettingsModule {
                 valueSpan.textContent = this.getThemeDisplayName(theme);
             }
         }
+    }
+
+    // Renderiza o sheet full-screen de Aparência
+    renderAppearanceSheet() {
+        const mainContent = document.querySelector('.app-container');
+        if (!mainContent) return;
+
+        const sheetHTML = `
+            <div class="sheet-overlay" id="appearanceSheet">
+                <div class="sheet-content">
+                    <div class="sheet-header">
+                        <button class="sheet-close" id="closeAppearanceSheet">×</button>
+                        <h2 class="sheet-title">Aparência</h2>
+                    </div>
+                    <div class="sheet-body">
+                        <div class="settings-section">
+                            <h3 class="section-title">Perfil</h3>
+                            <div class="profile-section">
+                                <div class="profile-photo-container">
+                                    <div class="profile-photo" id="profilePhoto">
+                                        ${this.currentSettings.userPhoto ? 
+                                            `<img src="${this.currentSettings.userPhoto}" alt="Foto do perfil" />` : 
+                                            `<svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                                            </svg>`
+                                        }
+                                    </div>
+                                    <button class="change-photo-btn" id="changePhotoBtn">Alterar Foto</button>
+                                </div>
+                                <div class="profile-info">
+                                    <div class="input-group">
+                                        <label for="userName">Nome</label>
+                                        <input type="text" id="userName" value="${this.currentSettings.userName}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="section-title">Tema</h3>
+                            <div class="input-group">
+                                <label for="theme">Tema</label>
+                                <button class="select-button" id="themeButton">
+                                    <span class="select-value">${this.getThemeDisplayName(this.currentSettings.theme)}</span>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Seleção de Tema -->
+            <div class="modal-overlay" id="themeModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Selecionar Tema</h3>
+                        <button class="modal-close" id="closeThemeModal">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-option" data-value="light">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <div class="option-text">
+                                    <div class="option-title">Claro</div>
+                                    <div class="option-description">Tema claro padrão</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-option" data-value="dark">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <div class="option-text">
+                                    <div class="option-title">Escuro</div>
+                                    <div class="option-description">Tema escuro</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Insere o sheet antes da navbar
+        const navbar = mainContent.querySelector('.navbar');
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = sheetHTML;
+        if (navbar) {
+            mainContent.insertBefore(wrapper, navbar);
+        } else {
+            mainContent.appendChild(wrapper);
+        }
+
+        // Oculta navbar enquanto sheet aberto
+        document.body.classList.add('modal-open');
+
+        // Listeners do sheet
+        const closeBtn = document.getElementById('closeAppearanceSheet');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.closeAppearanceSheet(wrapper));
+        }
+
+        // Botão alterar foto
+        const changePhotoBtn = document.getElementById('changePhotoBtn');
+        if (changePhotoBtn) {
+            changePhotoBtn.addEventListener('click', () => this.changePhoto());
+        }
+        // Input nome (debounce simples)
+        const userNameInput = document.getElementById('userName');
+        if (userNameInput) {
+            userNameInput.addEventListener('input', (e) => this.updateUserName(e.target.value));
+        }
+        // Tema: abre modal
+        const themeButton = document.getElementById('themeButton');
+        if (themeButton) {
+            themeButton.addEventListener('click', () => this.showModal('themeModal'));
+        }
+        // Fecha modal tema
+        const closeThemeModal = document.getElementById('closeThemeModal');
+        if (closeThemeModal) {
+            closeThemeModal.addEventListener('click', () => this.hideModal('themeModal'));
+        }
+        // Opções modal tema
+        this.attachModalOptions();
+
+        // Focus ao abrir
+        const title = document.querySelector('#appearanceSheet .sheet-title');
+        if (title) {
+            title.setAttribute('tabindex', '-1');
+            title.focus();
+        }
+    }
+
+    closeAppearanceSheet(wrapper) {
+        if (wrapper && wrapper.parentNode) {
+            wrapper.parentNode.removeChild(wrapper);
+        }
+        // Mostra navbar novamente
+        document.body.classList.remove('modal-open');
     }
 
     reattachNavbarEvents() {
