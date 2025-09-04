@@ -171,7 +171,7 @@ html {
 .greeting {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
 
 /* Foto do usuário no header */
@@ -926,6 +926,8 @@ html {
     margin: 0 auto;
     padding: 16px;
     padding-bottom: 100px; /* Espaço para navbar */
+    animation: fadeIn 0.4s ease-out forwards;
+    opacity: 0;
 }
 
 /* Header dos ajustes */
@@ -935,6 +937,8 @@ html {
     gap: 16px;
     margin-bottom: 24px;
     padding: 0;
+    animation: fadeIn 0.4s ease-out 0.1s both;
+    opacity: 0;
 }
 
 .settings-title {
@@ -954,6 +958,16 @@ html {
     border: 1px solid var(--background-tertiary);
     box-shadow: var(--shadow-md);
     transition: var(--transition);
+    animation: fadeIn 0.4s ease-out both;
+    opacity: 0;
+}
+
+.settings-section:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.settings-section:nth-child(3) {
+    animation-delay: 0.3s;
 }
 
 .settings-section:hover {
