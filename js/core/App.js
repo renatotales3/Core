@@ -254,12 +254,12 @@ class CoreApp {
         const root = document.documentElement;
         
         if (theme === 'dark') {
-            // Tema escuro
-            root.style.setProperty('--text-primary', '#f9fafb');
-            root.style.setProperty('--text-secondary', '#d1d5db');
-            root.style.setProperty('--background-primary', '#1f2937');
-            root.style.setProperty('--background-secondary', '#111827');
-            root.style.setProperty('--background-tertiary', '#374151');
+            // Tema escuro premium
+            root.style.setProperty('--text-primary', '#e6e7eb');
+            root.style.setProperty('--text-secondary', '#a8b0bb');
+            root.style.setProperty('--background-primary', '#0f1420');
+            root.style.setProperty('--background-secondary', '#0b101a');
+            root.style.setProperty('--background-tertiary', '#1a2232');
         } else {
             // Tema claro
             root.style.setProperty('--text-primary', '#1f2937');

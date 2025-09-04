@@ -45,6 +45,12 @@ class SettingsModule {
                 </div>
 
                 <div class="settings-card" id="cardAppearance">
+                    <div class="settings-card-icon" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.41M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
                     <div class="settings-card-main">
                         <div class="settings-card-title">Aparência</div>
                         <div class="settings-card-description">Foto, nome e tema</div>

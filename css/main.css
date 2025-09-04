@@ -982,6 +982,19 @@ html {
     transform: translateY(-2px);
 }
 
+.settings-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--background-secondary);
+    border: 1px solid var(--background-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    margin-right: 12px;
+}
+
 .settings-card-title {
     font-size: 16px;
     font-weight: 600;
