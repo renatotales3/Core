@@ -50,8 +50,12 @@ class RouterModule {
     }
 
     showSettingsTab() {
-        // Placeholder para a implementação da aba de ajustes
-        console.log('Aba de ajustes será implementada aqui');
+        // Mostra a aba de ajustes
+        if (this.app.modules.settings) {
+            this.app.modules.settings.renderSettingsTab();
+        } else {
+            console.log('Módulo de ajustes não encontrado');
+        }
     }
 }
 

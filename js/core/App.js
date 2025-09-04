@@ -28,6 +28,7 @@ class CoreApp {
         this.modules.router = new RouterModule(this);
         this.modules.storage = new StorageModule();
         this.modules.utils = new UtilsModule();
+        this.modules.settings = new SettingsModule(this);
     }
 
     setupEventListeners() {
@@ -193,6 +194,19 @@ class CoreApp {
             userNameElement.textContent = userName;
         }
 
+        // Carrega foto do usuário
+        const userPhoto = this.modules.storage.getItem('coreUserPhoto');
+        if (userPhoto) {
+            const userPhotoElement = document.querySelector('.user-photo');
+            if (userPhotoElement) {
+                userPhotoElement.innerHTML = `<img src="${userPhoto}" alt="Foto do perfil" />`;
+            }
+        }
+
+        // Carrega tema
+        const savedTheme = this.modules.storage.getItem('coreTheme') || 'light';
+        this.applyTheme(savedTheme);
+
         // Carrega modo de foco
         const savedFocusMode = this.modules.storage.getItem('coreFocusMode') === 'true';
         if (savedFocusMode) {
@@ -203,6 +217,46 @@ class CoreApp {
                 appContainer.classList.add('focus-mode');
                 focusButton.classList.add('focused');
             }
+        }
+    }
+
+    applyTheme(theme) {
+        const body = document.body;
+        const appContainer = document.querySelector('.app-container');
+        
+        // Remove classes de tema anteriores
+        body.className = body.className.replace(/theme-\w+/g, '');
+        if (appContainer) {
+            appContainer.className = appContainer.className.replace(/theme-\w+/g, '');
+        }
+        
+        // Aplica o novo tema
+        body.classList.add(`theme-${theme}`);
+        if (appContainer) {
+            appContainer.classList.add(`theme-${theme}`);
+        }
+        
+        // Aplica o tema ao CSS
+        this.updateCSSVariables(theme);
+    }
+
+    updateCSSVariables(theme) {
+        const root = document.documentElement;
+        
+        if (theme === 'dark') {
+            // Tema escuro
+            root.style.setProperty('--text-primary', '#f9fafb');
+            root.style.setProperty('--text-secondary', '#d1d5db');
+            root.style.setProperty('--background-primary', '#1f2937');
+            root.style.setProperty('--background-secondary', '#111827');
+            root.style.setProperty('--background-tertiary', '#374151');
+        } else {
+            // Tema claro
+            root.style.setProperty('--text-primary', '#1f2937');
+            root.style.setProperty('--text-secondary', '#6b7280');
+            root.style.setProperty('--background-primary', '#ffffff');
+            root.style.setProperty('--background-secondary', '#f9fafb');
+            root.style.setProperty('--background-tertiary', '#f3f4f6');
         }
     }
 
@@ -263,6 +317,28 @@ class CoreApp {
 
         // Navega para a aba correspondente
         this.modules.router.showTab(tabType);
+    }
+
+    navigateToTabByType(tabType) {
+        // Encontra o item da navbar correspondente
+        const navItem = document.querySelector(`[data-tab="${tabType}"]`);
+        if (navItem) {
+            this.navigateToTab(navItem);
+        }
+    }
+
+    goBackToHome() {
+        // Restaura o conteúdo original da aba inicial
+        const mainContent = document.querySelector('.app-container');
+        if (mainContent && this.modules.settings && this.modules.settings.originalContent) {
+            mainContent.innerHTML = this.modules.settings.originalContent;
+            
+            // Reanexa os event listeners
+            this.setupEventListeners();
+            
+            // Ativa a aba inicial na navbar
+            this.navigateToTabByType('home');
+        }
     }
 }
 
