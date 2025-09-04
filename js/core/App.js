@@ -60,12 +60,19 @@ class CoreApp {
         const appContainer = document.querySelector('.app-container');
         const focusButton = document.getElementById('focusButton');
         
-        if (this.focusMode) {
-            appContainer.classList.add('focus-mode');
-            focusButton.classList.add('focused');
-        } else {
-            appContainer.classList.remove('focus-mode');
-            focusButton.classList.remove('focused');
+        if (appContainer) {
+            if (this.focusMode) {
+                appContainer.classList.add('focus-mode');
+            } else {
+                appContainer.classList.remove('focus-mode');
+            }
+        }
+        if (focusButton) {
+            if (this.focusMode) {
+                focusButton.classList.add('focused');
+            } else {
+                focusButton.classList.remove('focused');
+            }
         }
 
         // Salvar preferência
@@ -214,8 +221,10 @@ class CoreApp {
             this.focusMode = true;
             const appContainer = document.querySelector('.app-container');
             const focusButton = document.getElementById('focusButton');
-            if (appContainer && focusButton) {
+            if (appContainer) {
                 appContainer.classList.add('focus-mode');
+            }
+            if (focusButton) {
                 focusButton.classList.add('focused');
             }
         }
