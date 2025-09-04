@@ -66,6 +66,12 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    scroll-behavior: auto;
+}
+
+html {
+    scroll-behavior: auto;
 }
 
 .app-container {
@@ -774,55 +780,53 @@ body {
     }
 }
 
-/* Animações dos elementos principais */
+/* Animações dos elementos principais - CORRIGIDAS para evitar scroll */
 .app-header {
-    animation: fadeInUp 0.4s ease-out forwards;
+    animation: fadeIn 0.4s ease-out forwards;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .period-filter {
-    animation: fadeInUp 0.4s ease-out 0.15s both;
+    animation: fadeIn 0.4s ease-out 0.15s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .financial-cards {
-    animation: fadeInUp 0.4s ease-out 0.3s both;
+    animation: fadeIn 0.4s ease-out 0.3s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .month-balance-card {
-    animation: fadeInUp 0.4s ease-out 0.45s both;
+    animation: fadeIn 0.4s ease-out 0.45s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .bank-accounts-card {
-    animation: fadeInUp 0.4s ease-out 0.6s both;
+    animation: fadeIn 0.4s ease-out 0.6s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .credit-cards-card {
-    animation: fadeInUp 0.4s ease-out 0.75s both;
+    animation: fadeIn 0.4s ease-out 0.75s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
-/* Navbar com animação suave e posição estável */
+/* Navbar estável sem movimento */
 .navbar {
-    animation: slideInUp 0.5s ease-out 0.9s both;
-    transform: translateY(0);
-    will-change: transform;
+    animation: fadeIn 0.5s ease-out 0.9s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
-/* Cards individuais com animação suave */
+/* Cards individuais com animação suave - CORRIGIDOS para evitar scroll */
 .card {
-    animation: fadeInUp 0.4s ease-out both;
+    animation: fadeIn 0.4s ease-out both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
@@ -838,7 +842,7 @@ body {
 /* Garante que os cards não apareçam antes da animação */
 .financial-cards .card {
     opacity: 0;
-    animation: fadeInUp 0.4s ease-out both;
+    animation: fadeIn 0.4s ease-out both;
 }
 
 .financial-cards .card:nth-child(1) {
