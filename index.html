@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Core - No centro das suas finanças</title>
+    
+    <!-- Script para evitar flash branco - deve ser executado antes de qualquer CSS -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('coreTheme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('theme-dark');
+                document.body.classList.add('theme-dark');
+            }
+        })();
+    </script>
+    
     <link rel="stylesheet" href="css/main.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">

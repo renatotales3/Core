@@ -37,7 +37,7 @@ button:focus,
     --danger-light: #f87171;
     --warning-color: #f59e0b;
     
-    /* Cores neutras */
+    /* Cores neutras - tema claro por padrão */
     --text-primary: #1f2937;
     --text-secondary: #6b7280;
     --text-muted: #9ca3af;
@@ -57,6 +57,17 @@ button:focus,
     
     /* Transições */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tema escuro aplicado automaticamente */
+.theme-dark,
+body.theme-dark {
+    --text-primary: #e6e7eb;
+    --text-secondary: #a8b0bb;
+    --text-muted: #8b949e;
+    --background-primary: #0f1420;
+    --background-secondary: #0b101a;
+    --background-tertiary: #1a2232;
 }
 
 body {
