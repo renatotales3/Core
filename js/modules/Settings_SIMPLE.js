@@ -82,7 +82,7 @@ class SettingsModule {
                     </div>
                     <div class="settings-card-action">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
                         </svg>
                     </div>
                 </div>
@@ -136,7 +136,7 @@ class SettingsModule {
                                         ${userData.photo ? 
                                             `<img src="${userData.photo}" alt="Foto do perfil" />` : 
                                             `<svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                             </svg>`
                                     </div>
                                     <button class="change-photo-btn" id="changePhotoBtn">Alterar Foto</button>
@@ -157,7 +157,7 @@ class SettingsModule {
                                 <button class="select-button" id="themeButton">
                                     <span class="select-value">${this.getThemeDisplayName(userData.theme)}</span>
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
                                     </svg>
                                 </button>
                             </div>
@@ -178,8 +178,8 @@ class SettingsModule {
                             <div class="option-content">
                                 <div class="option-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <circle cx="12" cy="12" r="5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
                                     </svg>
                                 </div>
                                 <div class="option-text">
@@ -192,7 +192,7 @@ class SettingsModule {
                             <div class="option-content">
                                 <div class="option-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                                     </svg>
                                 </div>
                                 <div class="option-text">
