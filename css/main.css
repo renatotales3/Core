@@ -520,6 +520,7 @@ html {
 .navbar[data-active="categories"]::before { transform: translateX(200%); }
 .navbar[data-active="reports"]::before { transform: translateX(300%); }
 .navbar[data-active="settings"]::before { transform: translateX(400%); }
+.navbar[data-active="none"]::before { transform: translateX(400%); }
 
 .nav-item {
     display: flex;

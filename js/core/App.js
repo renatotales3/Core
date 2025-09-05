@@ -405,7 +405,14 @@ class CoreApp {
             
             const navbar = document.querySelector('.navbar');
             if (navbar) {
-                navbar.setAttribute('data-active', 'home');
+                // Força a animação resetando o data-active para uma posição intermediária
+                navbar.setAttribute('data-active', 'settings'); // Começa da posição de settings
+                // Força reflow para garantir que a mudança seja aplicada
+                navbar.offsetHeight;
+                // Agora anima para home
+                requestAnimationFrame(() => {
+                    navbar.setAttribute('data-active', 'home');
+                });
             }
             
             // Aplica animações dos cards

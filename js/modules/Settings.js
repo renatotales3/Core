@@ -361,10 +361,18 @@ class SettingsModule {
     }
 
     reattachNavbarEvents() {
-        // Reanexa os event listeners da navbar
+        // Remove event listeners anteriores para evitar conflitos
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
-            item.addEventListener('click', () => {
+            const newItem = item.cloneNode(true);
+            item.parentNode.replaceChild(newItem, item);
+        });
+
+        // Reanexa os event listeners da navbar
+        const newNavItems = document.querySelectorAll('.nav-item');
+        newNavItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
                 if (item.dataset.tab === 'home') {
                     this.app.goBackToHome();
                 } else {
