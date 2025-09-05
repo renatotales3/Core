@@ -443,6 +443,7 @@ html {
     align-items: center;
     margin-bottom: 16px;
     padding: 0;
+    overflow: visible;
 }
 
 .greeting-text {
@@ -493,6 +494,9 @@ html {
     transition: var(--transition);
     padding: 8px;
     border-radius: 8px;
+    min-width: 40px;
+    min-height: 40px;
+    overflow: visible;
 }
 
 .focus-button:hover {
@@ -507,6 +511,9 @@ html {
 .eye-icon {
     color: var(--text-secondary);
     transition: var(--transition);
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
 }
 
 .eye-icon.closed {
@@ -1022,6 +1029,12 @@ html {
     
     .greeting-text {
         font-size: 24px;
+    }
+    
+    .focus-button {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 10px;
     }
     
     .financial-cards {
