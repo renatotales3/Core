@@ -147,6 +147,36 @@ class TransactionsModule {
                 </div>
             </div>
 
+            <!-- Barra de Pesquisa e Ações -->
+            <div class="transactions-toolbar">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Buscar transações..." id="transactionSearch">
+                    <div class="search-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m21 21-4.35-4.35M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="action-button sort-button" id="sortButton">
+                        <div class="button-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16V4m0 0L3 8m4-4 4 4m6 0v12m0 0 4-4m-4 4-4-4"/>
+                            </svg>
+                        </div>
+                        <span class="button-text">Ordenar</span>
+                    </button>
+                    <button class="action-button filter-button" id="filterButton">
+                        <div class="button-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"/>
+                            </svg>
+                        </div>
+                        <span class="button-text">Filtrar</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Mensagem simples -->
             <div class="transactions-message">
                 <p>A funcionalidade de transações será implementada em breve.</p>
@@ -309,6 +339,23 @@ class TransactionsModule {
         periodItems.forEach(item => {
             item.addEventListener('click', () => this.selectPeriod(item));
         });
+
+        // Barra de pesquisa
+        const searchInput = document.getElementById('transactionSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+        }
+
+        // Botões de ação
+        const sortButton = document.getElementById('sortButton');
+        if (sortButton) {
+            sortButton.addEventListener('click', () => this.showSortModal());
+        }
+
+        const filterButton = document.getElementById('filterButton');
+        if (filterButton) {
+            filterButton.addEventListener('click', () => this.showFilterModal());
+        }
     }
 
     showSortModal() {
@@ -847,7 +894,7 @@ class TransactionsModule {
 
     applyTransactionsAnimations() {
         // Aplica animações simples aos elementos
-        const elements = document.querySelectorAll('.app-header, .period-filter, .transactions-message');
+        const elements = document.querySelectorAll('.app-header, .period-filter, .transactions-toolbar, .transactions-message');
 
         elements.forEach((element, index) => {
             element.style.opacity = '0';
