@@ -360,10 +360,8 @@ class CoreApp {
     async loadCurrentTab() {
         const savedTab = localStorage.getItem('coreCurrentTab');
         if (savedTab && savedTab !== 'home') {
-            // Aguarda o DOM finalizar listeners e módulos
-            setTimeout(() => {
-                this.navigateToTabByType(savedTab);
-            }, 50);
+            // Navega imediatamente sem setTimeout para evitar flash
+            this.navigateToTabByType(savedTab);
         }
     }
 }
