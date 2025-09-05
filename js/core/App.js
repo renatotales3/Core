@@ -45,6 +45,7 @@ class CoreApp {
         this.modules.router = new RouterModule(this);
         this.modules.utils = new UtilsModule();
         this.modules.settings = new SettingsModule(this);
+        this.modules.transactions = new TransactionsModule(this);
     }
 
     setupEventListeners() {
@@ -384,6 +385,7 @@ class CoreApp {
     async goBackToHome() {
         // Restaura o conteúdo original da aba inicial
         const mainContent = document.querySelector('.app-container');
+        
         if (mainContent && this.modules.settings && this.modules.settings.originalContent) {
             mainContent.innerHTML = this.modules.settings.originalContent;
             
@@ -439,9 +441,11 @@ class CoreApp {
                 }
             }
             
-            // Se for settings, carrega o conteúdo
+            // Se for settings ou transactions, carrega o conteúdo
             if (savedTab === 'settings') {
                 this.modules.router.showTab('settings');
+            } else if (savedTab === 'transactions') {
+                this.modules.router.showTab('transactions');
             }
         } else {
             // Garante que home está ativo

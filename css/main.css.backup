@@ -132,41 +132,6 @@ body,
     
     /* Transições */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Espaçamentos padronizados */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 20px;
-    --spacing-xl: 24px;
-    --spacing-2xl: 32px;
-    
-    /* Fontes */
-    --font-size-xs: 10px;
-    --font-size-sm: 12px;
-    --font-size-md: 14px;
-    --font-size-lg: 16px;
-    --font-size-xl: 18px;
-    --font-size-2xl: 20px;
-    --font-size-3xl: 24px;
-    --font-size-4xl: 28px;
-    --font-size-5xl: 32px;
-    
-    /* Font weights */
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    
-    /* Gradientes comuns */
-    --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-    --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    
-    /* Efeitos de glassmorphism */
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 /* Tema escuro aplicado automaticamente */
@@ -179,131 +144,6 @@ body.theme-dark {
     --background-secondary: #0b101a;
     --background-tertiary: #1a2232;
 }
-
-/* ===== CLASSES UTILITÁRIAS ===== */
-
-/* Layout e Espaçamento */
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-1 { gap: var(--spacing-xs); }
-.gap-2 { gap: var(--spacing-sm); }
-.gap-3 { gap: var(--spacing-md); }
-.gap-4 { gap: var(--spacing-lg); }
-
-/* Animações Utilitárias */
-.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-.animate-slide-up { animation: slideInUp 0.5s ease-out forwards; }
-.animate-bounce-in { animation: bounceIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-
-/* Sombras Utilitárias */
-.shadow-card { box-shadow: var(--shadow-md); }
-.shadow-hover { box-shadow: var(--shadow-lg); }
-
-/* Efeitos de Hover Utilitários */
-.hover-lift { transform: translateY(-2px); }
-.hover-lift-lg { transform: translateY(-4px) scale(1.02); }
-
-/* Breakpoints Utilitários */
-@media (max-width: 480px) {
-    .mobile-hidden { display: none !important; }
-    .mobile-full { width: 100% !important; }
-    .mobile-center { text-align: center !important; }
-}
-
-/* Bordas e Cantos */
-.rounded { border-radius: var(--border-radius); }
-.rounded-sm { border-radius: var(--border-radius-sm); }
-.rounded-lg { border-radius: var(--border-radius-lg); }
-
-/* Cores de Fundo */
-.bg-primary { background: var(--background-primary); }
-.bg-secondary { background: var(--background-secondary); }
-.bg-tertiary { background: var(--background-tertiary); }
-
-/* Tipografia */
-.text-primary { color: var(--text-primary); }
-.text-secondary { color: var(--text-secondary); }
-.text-muted { color: var(--text-muted); }
-.text-center { text-align: center; }
-.font-medium { font-weight: var(--font-weight-medium); }
-.font-semibold { font-weight: var(--font-weight-semibold); }
-.font-bold { font-weight: var(--font-weight-bold); }
-
-/* ===== CLASSES BASE PARA COMPONENTES ===== */
-
-/* Card com gradiente base */
-.card-gradient-base {
-    border-radius: var(--border-radius-lg);
-    padding: 20px;
-    color: white;
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    overflow: hidden;
-}
-
-.card-gradient-base::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-.card-gradient-base::after {
-    content: '';
-    position: absolute;
-    bottom: -30px;
-    left: -30px;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-/* Header padrão para cards com gradiente */
-.card-gradient-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.card-gradient-title {
-    font-size: 16px;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.card-gradient-icon {
-    opacity: 0.8;
-}
-
-/* Amount padrão para cards com gradiente */
-.card-gradient-amount {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.card-gradient-currency {
-    font-size: 18px;
-    font-weight: 600;
-    opacity: 0.8;
-    margin-right: 6px;
-}
-
-.card-gradient-amount-value {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 1;
-}
-
-/* ===== FIM DAS CLASSES BASE ===== */
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -520,7 +360,6 @@ html {
 .navbar[data-active="categories"]::before { transform: translateX(200%); }
 .navbar[data-active="reports"]::before { transform: translateX(300%); }
 .navbar[data-active="settings"]::before { transform: translateX(400%); }
-.navbar[data-active="none"]::before { transform: translateX(400%); }
 
 .nav-item {
     display: flex;
@@ -602,13 +441,13 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 16px;
     padding: 0;
     overflow: visible;
 }
 
 .greeting-text {
-    font-size: var(--font-size-4xl);
+    font-size: 28px;
     font-weight: 700;
     color: var(--text-primary);
     line-height: 1.2;
@@ -622,7 +461,7 @@ html {
 .greeting {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: 12px;
 }
 
 /* Foto do usuário no header */
@@ -653,8 +492,8 @@ html {
     justify-content: center;
     cursor: pointer;
     transition: var(--transition);
-    padding: var(--spacing-sm);
-    border-radius: var(--border-radius-sm);
+    padding: 8px;
+    border-radius: 8px;
     min-width: 40px;
     min-height: 40px;
     overflow: visible;
@@ -691,7 +530,7 @@ html {
 
 /* Filtro de Período */
 .period-filter {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 16px;
 }
 
 .period-carousel {
@@ -860,7 +699,7 @@ html {
 
 /* Card de Saldo */
 .balance-card {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
     border-radius: var(--border-radius-lg);
     padding: 20px;
     color: white;
@@ -972,7 +811,7 @@ html {
 
 /* Card de Contas Bancárias */
 .bank-accounts-card {
-    background: var(--gradient-blue);
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     border-radius: var(--border-radius-lg);
     padding: 20px;
     color: white;
@@ -1069,7 +908,7 @@ html {
 
 /* Card de Cartões de Crédito */
 .credit-cards-card {
-    background: var(--gradient-purple);
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
     border-radius: var(--border-radius-lg);
     padding: 20px;
     color: white;
@@ -1508,7 +1347,7 @@ html {
 }
 
 .settings-title {
-    font-size: var(--font-size-3xl);
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
@@ -1542,7 +1381,7 @@ html {
 }
 
 .settings-card:hover {
-    box-shadow: var(--shadow-hover);
+    box-shadow: var(--shadow-lg);
     transform: translateY(-2px);
 }
 
@@ -1646,7 +1485,7 @@ html {
 }
 
 .settings-section:hover {
-    box-shadow: var(--shadow-hover);
+    box-shadow: var(--shadow-lg);
     transform: translateY(-2px);
 }
 
@@ -1921,19 +1760,4 @@ html {
         width: 60px;
         height: 60px;
     }
-}
-
-/* Estilos para a aba de Transações */
-.transactions-message {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-secondary);
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-.transactions-message p {
-    margin: 0;
-    max-width: 300px;
-    margin: 0 auto;
 }

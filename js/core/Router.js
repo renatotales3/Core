@@ -14,7 +14,7 @@ class RouterModule {
         // Exemplo de implementação futura:
         switch(tabType) {
             case 'home':
-                // Mostra conteúdo da aba inicial (já está visível)
+                this.app.goBackToHome();
                 break;
             case 'transactions':
                 // Aqui será implementada a aba de transações
@@ -55,9 +55,12 @@ class RouterModule {
     }
 
     showTransactionsTab() {
-        // Placeholder para a implementação da aba de transações
-        console.log('Aba de transações será implementada aqui');
-        // Aqui será criada a interface para adicionar/gerenciar transações
+        // Mostra a aba de transações
+        if (this.app.modules.transactions) {
+            this.app.modules.transactions.renderTransactionsTab();
+        } else {
+            console.log('Módulo de transações não encontrado');
+        }
     }
 
     showCategoriesTab() {
