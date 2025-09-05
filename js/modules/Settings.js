@@ -106,6 +106,11 @@ class SettingsModule {
         // Reanexa os event listeners da navbar
         this.reattachNavbarEvents();
         
+        // Aplica animações aos elementos de settings com pequeno delay para garantir renderização
+        setTimeout(() => {
+            this.applySettingsAnimations();
+        }, 50);
+        
         // Scroll para o topo
         window.scrollTo(0, 0);
     }
@@ -539,6 +544,24 @@ class SettingsModule {
         if (metaThemeColor) {
             metaThemeColor.setAttribute('content', color);
         }
+    }
+
+    applySettingsAnimations() {
+        // Aplica animações staggered aos elementos de settings seguindo o mesmo padrão da aba home
+        const elements = document.querySelectorAll('.settings-container, .settings-header, .settings-section, .settings-card');
+        
+        elements.forEach((element, index) => {
+            // Mesmo padrão da aba home: opacidade 0 e translateY
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            
+            // Mesmo delay e transição da aba home
+            setTimeout(() => {
+                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
     }
 }
 
