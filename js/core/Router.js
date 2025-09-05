@@ -5,8 +5,10 @@ class RouterModule {
     }
 
     showTab(tabType) {
-        // Por enquanto, apenas mostra a aba inicial
-        // Em implementações futuras, aqui será carregado o conteúdo da aba
+        // Atualiza o indicador ativo do navbar
+        this.updateActiveTab(tabType);
+        
+        // Gerencia a navegação entre abas
         console.log(`Navegando para a aba: ${tabType}`);
         
         // Exemplo de implementação futura:
@@ -30,6 +32,25 @@ class RouterModule {
                 // Aqui será implementada a aba de ajustes
                 this.showSettingsTab();
                 break;
+        }
+    }
+
+    updateActiveTab(activeTab) {
+        const navItems = document.querySelectorAll('.nav-item');
+        const navbar = document.querySelector('.navbar');
+        
+        // Remove classe ativa de todos os itens
+        navItems.forEach(item => item.classList.remove('active'));
+        
+        // Adiciona classe ativa ao item correto
+        const activeItem = document.querySelector(`[data-tab="${activeTab}"]`);
+        if (activeItem) {
+            activeItem.classList.add('active');
+            
+            // Atualiza o indicador animado
+            if (navbar) {
+                navbar.setAttribute('data-active', activeTab);
+            }
         }
     }
 

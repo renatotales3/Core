@@ -20,6 +20,23 @@ class CoreApp {
         await this.loadCurrentTab();
         this.updatePeriodCarousel();
         this.updateFinancialData();
+        this.applyInitialAnimations();
+    }
+
+    applyInitialAnimations() {
+        // Aplica animações staggered aos elementos da página
+        const elements = document.querySelectorAll('.financial-cards .card, .period-filter, .app-header, .month-balance-card, .bank-accounts-card, .credit-cards-card');
+        
+        elements.forEach((element, index) => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
     }
 
     async initializeModules() {
@@ -209,6 +226,12 @@ class CoreApp {
             }
         }
 
+        // Carrega cor de acento
+        const savedAccent = localStorage.getItem('coreAccentColor') || 'indigo';
+        if (this.modules.settings) {
+            this.modules.settings.applyAccentColor(savedAccent);
+        }
+
         // Carrega tema
         const savedTheme = localStorage.getItem('coreTheme') || 'light';
         this.applyTheme(savedTheme);
@@ -348,20 +371,59 @@ class CoreApp {
             // Reanexa os event listeners
             this.setupEventListeners();
             
-            // Ativa a aba inicial na navbar
-            this.navigateToTabByType('home');
-
-            // Persiste aba
+            // Atualiza estado silenciosamente sem animação na navbar
             this.currentTab = 'home';
             localStorage.setItem('coreCurrentTab', 'home');
+            
+            // Atualiza navbar visual
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            const homeItem = document.querySelector('[data-tab="home"]');
+            if (homeItem) {
+                homeItem.classList.add('active');
+            }
+            
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                navbar.setAttribute('data-active', 'home');
+            }
+            
+            // Aplica animações dos cards
+            this.applyInitialAnimations();
         }
     }
 
     async loadCurrentTab() {
         const savedTab = localStorage.getItem('coreCurrentTab');
         if (savedTab && savedTab !== 'home') {
-            // Navega imediatamente sem setTimeout para evitar flash
-            this.navigateToTabByType(savedTab);
+            // Apenas atualiza o estado visual da navbar sem navegação
+            this.currentTab = savedTab;
+            
+            // Atualiza navbar silenciosamente
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            const activeItem = document.querySelector(`[data-tab="${savedTab}"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+                const navbar = document.querySelector('.navbar');
+                if (navbar) {
+                    navbar.setAttribute('data-active', savedTab);
+                }
+            }
+            
+            // Se for settings, carrega o conteúdo
+            if (savedTab === 'settings') {
+                this.modules.router.showTab('settings');
+            }
+        } else {
+            // Garante que home está ativo
+            this.currentTab = 'home';
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                navbar.setAttribute('data-active', 'home');
+            }
         }
     }
 }

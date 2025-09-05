@@ -17,6 +17,7 @@ class SettingsModule {
             userName: localStorage.getItem('coreUserName') || 'Usuário',
             userPhoto: localStorage.getItem('coreUserPhoto') || null,
             theme: localStorage.getItem('coreTheme') || 'light',
+            accentColor: localStorage.getItem('coreAccentColor') || 'indigo',
             security: false // Removido toda a complexidade de criptografia
         };
     }
@@ -27,6 +28,18 @@ class SettingsModule {
             'dark': 'Escuro'
         };
         return themes[theme] || 'Claro';
+    }
+
+    getAccentDisplayName(accent) {
+        const accents = {
+            'indigo': 'Índigo',
+            'blue': 'Azul',
+            'emerald': 'Esmeralda',
+            'purple': 'Roxo',
+            'pink': 'Rosa',
+            'orange': 'Laranja'
+        };
+        return accents[accent] || 'Índigo';
     }
 
     async renderSettingsTab() {
@@ -51,7 +64,7 @@ class SettingsModule {
                 <div class="settings-card" id="cardAppearance">
                     <div class="settings-card-main">
                         <div class="settings-card-title">Aparência</div>
-                        <div class="settings-card-description">Personalize sua foto, nome e visual</div>
+                        <div class="settings-card-description">Personalize seu tema e cor de destaque</div>
                     </div>
                     <div class="settings-card-action">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -110,6 +123,20 @@ class SettingsModule {
                 this.updateTheme(value);
                 this.hideModal('themeModal');
                 this.updateThemeButton(value);
+            });
+        });
+
+        // Opções de cor de destaque
+        const accentOptions = document.querySelectorAll('.accent-color-grid .accent-option');
+        accentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove seleção anterior
+                accentOptions.forEach(opt => opt.classList.remove('selected'));
+                // Adiciona seleção ao clicado
+                option.classList.add('selected');
+                
+                const accent = option.dataset.accent;
+                this.updateAccentColor(accent);
             });
         });
     }
@@ -195,6 +222,36 @@ class SettingsModule {
                                         <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </button>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="section-title">Cor de Destaque</h3>
+                            <div class="accent-color-grid">
+                                <div class="accent-option ${this.getStoredAccent() === 'indigo' ? 'selected' : ''}" data-accent="indigo">
+                                    <div class="accent-color" style="background: #6366f1;"></div>
+                                    <span class="accent-name">Índigo</span>
+                                </div>
+                                <div class="accent-option ${this.getStoredAccent() === 'blue' ? 'selected' : ''}" data-accent="blue">
+                                    <div class="accent-color" style="background: #3b82f6;"></div>
+                                    <span class="accent-name">Azul</span>
+                                </div>
+                                <div class="accent-option ${this.getStoredAccent() === 'emerald' ? 'selected' : ''}" data-accent="emerald">
+                                    <div class="accent-color" style="background: #10b981;"></div>
+                                    <span class="accent-name">Esmeralda</span>
+                                </div>
+                                <div class="accent-option ${this.getStoredAccent() === 'purple' ? 'selected' : ''}" data-accent="purple">
+                                    <div class="accent-color" style="background: #8b5cf6;"></div>
+                                    <span class="accent-name">Roxo</span>
+                                </div>
+                                <div class="accent-option ${this.getStoredAccent() === 'pink' ? 'selected' : ''}" data-accent="pink">
+                                    <div class="accent-color" style="background: #ec4899;"></div>
+                                    <span class="accent-name">Rosa</span>
+                                </div>
+                                <div class="accent-option ${this.getStoredAccent() === 'orange' ? 'selected' : ''}" data-accent="orange">
+                                    <div class="accent-color" style="background: #f97316;"></div>
+                                    <span class="accent-name">Laranja</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -358,6 +415,77 @@ class SettingsModule {
         localStorage.setItem('coreTheme', theme);
         // Aplica o tema automaticamente
         this.applyTheme(theme);
+    }
+
+    async updateAccentColor(accent) {
+        this.currentSettings.accentColor = accent;
+        localStorage.setItem('coreAccentColor', accent);
+        this.applyAccentColor(accent);
+    }
+
+    applyAccentColor(accent) {
+        const root = document.documentElement;
+        const accentColors = {
+            'indigo': { 
+                main: '#6366f1', 
+                light: '#818cf8', 
+                dark: '#4f46e5',
+                rgb: '99, 102, 241'
+            },
+            'blue': { 
+                main: '#3b82f6', 
+                light: '#60a5fa', 
+                dark: '#2563eb',
+                rgb: '59, 130, 246'
+            },
+            'emerald': { 
+                main: '#10b981', 
+                light: '#34d399', 
+                dark: '#059669',
+                rgb: '16, 185, 129'
+            },
+            'purple': { 
+                main: '#8b5cf6', 
+                light: '#a78bfa', 
+                dark: '#7c3aed',
+                rgb: '139, 92, 246'
+            },
+            'pink': { 
+                main: '#ec4899', 
+                light: '#f472b6', 
+                dark: '#db2777',
+                rgb: '236, 72, 153'
+            },
+            'orange': { 
+                main: '#f97316', 
+                light: '#fb923c', 
+                dark: '#ea580c',
+                rgb: '249, 115, 22'
+            }
+        };
+
+        const colors = accentColors[accent] || accentColors.indigo;
+        
+        // Atualiza todas as variáveis de cor de acento
+        root.style.setProperty('--accent-color', colors.main);
+        root.style.setProperty('--accent-secondary', colors.light);
+        root.style.setProperty('--accent-rgb', colors.rgb);
+        root.style.setProperty('--primary-color', colors.main);
+        root.style.setProperty('--primary-light', colors.light);
+        root.style.setProperty('--primary-dark', colors.dark);
+        
+        // Salva no localStorage
+        localStorage.setItem('coreAccentColor', accent);
+    }
+
+    // Recupera a cor de acento salva
+    getStoredAccent() {
+        return localStorage.getItem('coreAccentColor') || 'indigo';
+    }
+
+    // Atualiza a cor de acento
+    updateAccentColor(accentColor) {
+        this.applyAccentColor(accentColor);
     }
 
     applyTheme(theme) {

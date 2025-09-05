@@ -92,8 +92,16 @@ body,
 }
 
 :root {
-    /* Cores principais */
-    --primary-color: #6366f1;
+    /* Cores de acento - podem ser alteradas dinamicamente */
+    --accent-indigo: #6366f1;
+    --accent-blue: #3b82f6;
+    --accent-emerald: #10b981;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --accent-orange: #f97316;
+    
+    /* Cores principais - baseadas no acento selecionado */
+    --primary-color: var(--accent-indigo);
     --primary-light: #818cf8;
     --primary-dark: #4f46e5;
     
@@ -161,25 +169,197 @@ html {
 }
 
 /* Navbar */
+/* Accent Color Sheet */
+.sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.sheet-content {
+    background: var(--background-primary);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sheet-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.sheet-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.sheet-close:hover {
+    background: var(--background-tertiary);
+    color: var(--text-primary);
+}
+
+.sheet-body {
+    padding: 20px;
+}
+
+.accent-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 16px;
+}
+
+.accent-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.accent-option:hover {
+    transform: translateY(-2px);
+    background: var(--background-tertiary);
+}
+
+.accent-option.selected {
+    border-color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.1);
+}
+
+.accent-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.accent-name {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Accent Color Grid for Appearance Modal */
+.accent-color-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.accent-color-grid .accent-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    background: var(--background-tertiary);
+}
+
+.accent-color-grid .accent-option:hover {
+    transform: translateY(-2px);
+    background: var(--background-secondary);
+}
+
+.accent-color-grid .accent-option.selected {
+    border-color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.1);
+}
+
+.accent-color-grid .accent-color {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.accent-color-grid .accent-name {
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Sheet Animations */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Bottom Navigation */
 .navbar {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    width: 100%;
-    background: var(--background-primary);
-    border-top: 1px solid var(--background-tertiary);
+    background: var(--background-secondary);
+    border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 12px 0;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
 }
+
+/* Indicador animado da aba ativa */
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 0 0 3px 3px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(0);
+}
+
+.navbar[data-active="home"]::before { transform: translateX(0); }
+.navbar[data-active="transactions"]::before { transform: translateX(100%); }
+.navbar[data-active="categories"]::before { transform: translateX(200%); }
+.navbar[data-active="reports"]::before { transform: translateX(300%); }
+.navbar[data-active="settings"]::before { transform: translateX(400%); }
 
 .nav-item {
     display: flex;
@@ -187,41 +367,72 @@ html {
     align-items: center;
     gap: 4px;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 8px 12px;
     border-radius: var(--border-radius-sm);
     min-width: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--accent-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.nav-item:hover::before {
+    width: 60px;
+    height: 60px;
+}
+
+.nav-item.active::before {
+    width: 80px;
+    height: 80px;
+    opacity: 0.15;
 }
 
 .nav-item:hover {
+    transform: translateY(-2px);
     background: var(--background-tertiary);
 }
 
 .nav-item.active {
-    color: var(--primary-color);
+    color: var(--accent-color);
+    transform: translateY(-3px);
 }
 
 .nav-item.active .nav-icon {
-    color: var(--primary-color);
+    color: var(--accent-color);
+    transform: scale(1.1);
 }
 
 .nav-icon {
     width: 20px;
     height: 20px;
     color: var(--text-secondary);
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-text {
     font-size: 10px;
     font-weight: 500;
     color: var(--text-secondary);
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
 }
 
 .nav-item.active .nav-text {
-    color: var(--primary-color);
+    color: var(--accent-color);
     font-weight: 600;
 }
 
@@ -853,7 +1064,8 @@ html {
     }
 }
 
-/* Animações Corrigidas */
+/* Animações Avançadas */
+/* Keyframes para Animações */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -885,33 +1097,103 @@ html {
     }
 }
 
-/* Animações dos elementos principais - CORRIGIDAS para evitar scroll */
+/* Novas animações com física */
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(20px);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05) translateY(-5px);
+    }
+    70% {
+        transform: scale(0.98) translateY(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Animações dos elementos principais - MELHORADAS com física */
 .app-header {
-    animation: fadeIn 0.4s ease-out forwards;
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .period-filter {
-    animation: fadeIn 0.4s ease-out 0.15s both;
+    animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .financial-cards {
-    animation: fadeIn 0.4s ease-out 0.3s both;
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .month-balance-card {
-    animation: fadeIn 0.4s ease-out 0.45s both;
+    animation: bounceIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
 
 .bank-accounts-card {
-    animation: fadeIn 0.4s ease-out 0.6s both;
+    animation: bounceIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
     opacity: 0;
     animation-fill-mode: forwards;
 }
@@ -942,27 +1224,63 @@ html {
     animation-delay: 0.25s;
 }
 
-/* Garante que os cards não apareçam antes da animação */
-.financial-cards .card {
-    opacity: 0;
-    animation: fadeIn 0.4s ease-out both;
+/* Animações de hover avançadas com física */
+.card,
+.month-balance-card,
+.bank-accounts-card,
+.credit-cards-card,
+.settings-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.financial-cards .card:nth-child(1) {
-    animation-delay: 0.3s;
+.card::before,
+.month-balance-card::before,
+.bank-accounts-card::before,
+.credit-cards-card::before,
+.settings-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: left 0.5s;
+    pointer-events: none;
 }
 
-.financial-cards .card:nth-child(2) {
-    animation-delay: 0.35s;
-}
-
-/* Animações de hover suaves */
 .card:hover,
 .month-balance-card:hover,
 .bank-accounts-card:hover,
-.credit-cards-card:hover {
-    transform: translateY(-2px);
-    transition: transform 0.2s ease-out;
+.credit-cards-card:hover,
+.settings-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover::before,
+.month-balance-card:hover::before,
+.bank-accounts-card:hover::before,
+.credit-cards-card:hover::before,
+.settings-card:hover::before {
+    left: 100%;
+}
+
+.card:active,
+.month-balance-card:active,
+.bank-accounts-card:active,
+.credit-cards-card:active,
+.settings-card:active {
+    transform: translateY(-2px) scale(0.98);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Transições suaves para elementos específicos */
