@@ -14,10 +14,10 @@ class SettingsModule {
     async loadSettings() {
         // Carrega configurações salvas ou usa padrões
         this.currentSettings = {
-            userName: await this.app.modules.storage.get('coreUserName') || 'Usuário',
-            userPhoto: await this.app.modules.storage.get('coreUserPhoto') || null,
-            theme: await this.app.modules.storage.get('coreTheme') || 'light',
-            security: this.app.modules.storage.isCryptoAvailable ? this.app.modules.storage.isCryptoAvailable() : false
+            userName: localStorage.getItem('coreUserName') || 'Usuário',
+            userPhoto: localStorage.getItem('coreUserPhoto') || null,
+            theme: localStorage.getItem('coreTheme') || 'light',
+            security: false // Removido toda a complexidade de criptografia
         };
     }
 
@@ -330,7 +330,7 @@ class SettingsModule {
 
     async updateUserName(name) {
         this.currentSettings.userName = name;
-        await this.app.modules.storage.set('coreUserName', name);
+        localStorage.setItem('coreUserName', name);
         // Atualiza o nome na saudação
         const userNameElement = document.querySelector('.user-name');
         if (userNameElement) {
@@ -350,7 +350,7 @@ class SettingsModule {
                 reader.onload = async (e) => {
                     const photoData = e.target.result;
                     this.currentSettings.userPhoto = photoData;
-                    await this.app.modules.storage.set('coreUserPhoto', photoData);
+                    localStorage.setItem('coreUserPhoto', photoData);
                     // Atualiza a foto na interface
                     const profilePhoto = document.getElementById('profilePhoto');
                     if (profilePhoto) {
@@ -370,7 +370,7 @@ class SettingsModule {
 
     async updateTheme(theme) {
         this.currentSettings.theme = theme;
-        await this.app.modules.storage.set('coreTheme', theme);
+        localStorage.setItem('coreTheme', theme);
         // Aplica o tema automaticamente
         this.applyTheme(theme);
     }

@@ -26,13 +26,8 @@ class CoreApp {
         // Inicializa todos os módulos
         this.modules.dashboard = new DashboardModule(this);
         this.modules.router = new RouterModule(this);
-        this.modules.storage = window.SecureStorage;
         this.modules.utils = new UtilsModule();
         this.modules.settings = new SettingsModule(this);
-        // Migração automática dos dados legacy
-        if (typeof this.modules.storage.migrateLegacy === 'function') {
-            await this.modules.storage.migrateLegacy();
-        }
     }
 
     setupEventListeners() {
@@ -79,7 +74,7 @@ class CoreApp {
         }
 
         // Salvar preferência
-        await this.modules.storage.set('coreFocusMode', this.focusMode);
+        localStorage.setItem('coreFocusMode', JSON.stringify(this.focusMode));
     }
 
     selectPeriod(element) {
@@ -199,14 +194,14 @@ class CoreApp {
 
     async loadUserData() {
         // Carrega nome do usuário
-        const userName = await this.modules.storage.get('coreUserName') || 'Usuário';
+        const userName = localStorage.getItem('coreUserName') || 'Usuário';
         const userNameElement = document.querySelector('.user-name');
         if (userNameElement) {
             userNameElement.textContent = userName;
         }
 
         // Carrega foto do usuário
-        const userPhoto = await this.modules.storage.get('coreUserPhoto');
+        const userPhoto = localStorage.getItem('coreUserPhoto');
         if (userPhoto) {
             const userPhotoElement = document.querySelector('.user-photo');
             if (userPhotoElement) {
@@ -215,11 +210,11 @@ class CoreApp {
         }
 
         // Carrega tema
-        const savedTheme = await this.modules.storage.get('coreTheme') || 'light';
+        const savedTheme = localStorage.getItem('coreTheme') || 'light';
         this.applyTheme(savedTheme);
 
         // Carrega modo de foco
-        const savedFocusMode = await this.modules.storage.get('coreFocusMode') === true;
+        const savedFocusMode = JSON.parse(localStorage.getItem('coreFocusMode') || 'false');
         if (savedFocusMode) {
             this.focusMode = true;
             const appContainer = document.querySelector('.app-container');
@@ -333,7 +328,7 @@ class CoreApp {
 
         // Persiste aba atual
         this.currentTab = tabType;
-        await this.modules.storage.set('coreCurrentTab', tabType);
+        localStorage.setItem('coreCurrentTab', tabType);
     }
 
     navigateToTabByType(tabType) {
@@ -358,12 +353,12 @@ class CoreApp {
 
             // Persiste aba
             this.currentTab = 'home';
-            await this.modules.storage.set('coreCurrentTab', 'home');
+            localStorage.setItem('coreCurrentTab', 'home');
         }
     }
 
     async loadCurrentTab() {
-        const savedTab = await this.modules.storage.get('coreCurrentTab');
+        const savedTab = localStorage.getItem('coreCurrentTab');
         if (savedTab && savedTab !== 'home') {
             // Aguarda o DOM finalizar listeners e módulos
             setTimeout(() => {
