@@ -202,6 +202,17 @@ body.theme-dark {
 .shadow-card { box-shadow: var(--shadow-md); }
 .shadow-hover { box-shadow: var(--shadow-lg); }
 
+/* Efeitos de Hover Utilitários */
+.hover-lift { transform: translateY(-2px); }
+.hover-lift-lg { transform: translateY(-4px) scale(1.02); }
+
+/* Breakpoints Utilitários */
+@media (max-width: 480px) {
+    .mobile-hidden { display: none !important; }
+    .mobile-full { width: 100% !important; }
+    .mobile-center { text-align: center !important; }
+}
+
 /* Bordas e Cantos */
 .rounded { border-radius: var(--border-radius); }
 .rounded-sm { border-radius: var(--border-radius-sm); }
