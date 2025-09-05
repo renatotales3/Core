@@ -49,28 +49,14 @@ class SettingsModule {
                 </div>
 
                 <div class="settings-card" id="cardAppearance">
-                    <div class="settings-card-icon" aria-hidden="true">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 3.5a1 1 0 0 1 1 1V7a1 1 0 1 1-2 0V4.5a1 1 0 0 1 1-1zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" stroke="currentColor" stroke-width="2" fill="none"/>
-                            <path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M3 12h2M19 12h2M6 20l1-1M17 4l1-1" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
                     <div class="settings-card-main">
                         <div class="settings-card-title">Aparência</div>
-                        <div class="settings-card-description">Personalize sua foto, nome e tema do app</div>
+                        <div class="settings-card-description">Personalize sua foto, nome e visual</div>
                     </div>
                     <div class="settings-card-action">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                    </div>
-                </div>
-
-                <div class="settings-card security-card" id="cardSecurity">
-                    <div class="settings-card-icon" aria-hidden="true">${securityIcon}</div>
-                    <div class="settings-card-main">
-                        <div class="settings-card-title">Segurança</div>
-                        <div class="settings-card-description">${securityStatus}</div>
                     </div>
                 </div>
             </div>
@@ -103,7 +89,6 @@ class SettingsModule {
         if (cardAppearance) {
             cardAppearance.addEventListener('click', () => this.renderAppearanceSheet());
         }
-        // Card de segurança não tem ação
 
         // Reanexa os event listeners da navbar
         this.reattachNavbarEvents();
@@ -201,9 +186,9 @@ class SettingsModule {
                         </div>
 
                         <div class="settings-section">
-                            <h3 class="section-title">Tema</h3>
+                            <h3 class="section-title">Visual</h3>
                             <div class="input-group">
-                                <label for="theme">Tema</label>
+                                <label for="theme">Modo</label>
                                 <button class="select-button" id="themeButton">
                                     <span class="select-value">${this.getThemeDisplayName(this.currentSettings.theme)}</span>
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -216,11 +201,11 @@ class SettingsModule {
                 </div>
             </div>
 
-            <!-- Modal de Seleção de Tema -->
+            <!-- Modal de Seleção de Modo -->
             <div class="modal-overlay" id="themeModal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3>Selecionar Tema</h3>
+                        <h3>Selecionar Modo</h3>
                         <button class="modal-close" id="closeThemeModal">×</button>
                     </div>
                     <div class="modal-body">
