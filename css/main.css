@@ -601,13 +601,13 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: var(--spacing-md);
     padding: 0;
     overflow: visible;
 }
 
 .greeting-text {
-    font-size: 28px;
+    font-size: var(--font-size-4xl);
     font-weight: 700;
     color: var(--text-primary);
     line-height: 1.2;
@@ -621,7 +621,7 @@ html {
 .greeting {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--spacing-sm);
 }
 
 /* Foto do usuário no header */
@@ -652,8 +652,8 @@ html {
     justify-content: center;
     cursor: pointer;
     transition: var(--transition);
-    padding: 8px;
-    border-radius: 8px;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
     min-width: 40px;
     min-height: 40px;
     overflow: visible;
@@ -690,7 +690,7 @@ html {
 
 /* Filtro de Período */
 .period-filter {
-    margin-bottom: 16px;
+    margin-bottom: var(--spacing-md);
 }
 
 .period-carousel {
@@ -1507,7 +1507,7 @@ html {
 }
 
 .settings-title {
-    font-size: 24px;
+    font-size: var(--font-size-3xl);
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
@@ -1541,7 +1541,7 @@ html {
 }
 
 .settings-card:hover {
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
 }
 
@@ -1645,7 +1645,7 @@ html {
 }
 
 .settings-section:hover {
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
 }
 
