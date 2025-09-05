@@ -5,15 +5,82 @@
     box-sizing: border-box;
 }
 
-/* Remove outline azul de seleção */
-*:focus {
+/* Remove outline azul de seleção em TODOS os elementos */
+*,
+*:focus,
+*:active,
+*:hover,
+button,
+button:focus,
+button:active,
+button:hover,
+input,
+input:focus,
+input:active,
+textarea,
+textarea:focus,
+textarea:active,
+select,
+select:focus,
+select:active,
+a,
+a:focus,
+a:active,
+div:focus,
+div:active,
+.nav-item:focus,
+.nav-item:active,
+.period-item:focus,
+.period-item:active,
+.focus-button:focus,
+.focus-button:active,
+.settings-card:focus,
+.settings-card:active,
+.select-button:focus,
+.select-button:active,
+.modal-close:focus,
+.modal-close:active {
     outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-focus-ring-color: transparent !important;
+    -moz-outline: none !important;
 }
 
-button:focus,
-.period-item:focus,
-.focus-button:focus {
-    outline: none !important;
+/* Remove barras de rolagem em todos os navegadores */
+* {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+    display: none; /* WebKit browsers (Chrome, Safari, Edge) */
+    width: 0px;
+    height: 0px;
+    background: transparent;
+}
+
+*::-webkit-scrollbar-track {
+    display: none;
+}
+
+*::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+*::-webkit-scrollbar-corner {
+    display: none;
+}
+
+/* Garante que o conteúdo ainda seja rolável */
+html,
+body,
+.app-container,
+.settings-content,
+.modal-content,
+.sheet-content {
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 /* Remove seleção de texto */
