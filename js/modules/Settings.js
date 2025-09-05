@@ -518,6 +518,9 @@ class SettingsModule {
             root.style.setProperty('--background-primary', '#0f1420');
             root.style.setProperty('--background-secondary', '#0b101a');
             root.style.setProperty('--background-tertiary', '#1a2232');
+            
+            // Atualiza cor da barra de status para tema escuro
+            this.updateThemeColor('#0f1420');
         } else {
             // Tema claro
             root.style.setProperty('--text-primary', '#1f2937');
@@ -525,6 +528,17 @@ class SettingsModule {
             root.style.setProperty('--background-primary', '#ffffff');
             root.style.setProperty('--background-secondary', '#f9fafb');
             root.style.setProperty('--background-tertiary', '#f3f4f6');
+            
+            // Atualiza cor da barra de status para tema claro
+            this.updateThemeColor('#ffffff');
+        }
+    }
+
+    updateThemeColor(color) {
+        // Atualiza meta theme-color
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+            metaThemeColor.setAttribute('content', color);
         }
     }
 }

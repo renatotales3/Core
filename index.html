@@ -12,6 +12,18 @@
             if (savedTheme === 'dark') {
                 document.documentElement.classList.add('theme-dark');
                 document.body.classList.add('theme-dark');
+                
+                // Define cor da barra de status para tema escuro
+                const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+                if (metaThemeColor) {
+                    metaThemeColor.setAttribute('content', '#0f1420');
+                }
+            } else {
+                // Define cor da barra de status para tema claro
+                const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+                if (metaThemeColor) {
+                    metaThemeColor.setAttribute('content', '#ffffff');
+                }
             }
         })();
     </script>
