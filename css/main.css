@@ -951,22 +951,22 @@ html {
     text-align: center;
 }
 
-/* Modo Foco (Ocultar Valores) */
-.app-container.focus-mode .income-amount,
-.app-container.focus-mode .expense-amount,
-.app-container.focus-mode .amount,
-.app-container.focus-mode .total-amount,
-.app-container.focus-mode .credit-amount,
-.app-container.focus-mode .bank-account-balance,
-.app-container.focus-mode .credit-card-balance,
-.app-container.focus-mode .credit-usage,
-.app-container.focus-mode .month-balance-amount,
-.app-container.focus-mode .month-balance-insight {
+/* Modo Foco (Ocultar Valores) - Apenas na tela inicial */
+.app-container.home-view.focus-mode .income-amount,
+.app-container.home-view.focus-mode .expense-amount,
+.app-container.home-view.focus-mode .amount,
+.app-container.home-view.focus-mode .total-amount,
+.app-container.home-view.focus-mode .credit-amount,
+.app-container.home-view.focus-mode .bank-account-balance,
+.app-container.home-view.focus-mode .credit-card-balance,
+.app-container.home-view.focus-mode .credit-usage,
+.app-container.home-view.focus-mode .month-balance-amount,
+.app-container.home-view.focus-mode .month-balance-insight {
     filter: blur(8px);
     user-select: none;
 }
 
-.app-container.focus-mode .balance-insights {
+.app-container.home-view.focus-mode .balance-insights {
     opacity: 0.3;
 }
 
@@ -1923,19 +1923,188 @@ html {
     }
 }
 
-/* Estilos para a aba de Transações */
-.transactions-message {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-secondary);
-    font-size: 16px;
-    line-height: 1.5;
+/* Card de Resumo Financeiro das Transações */
+.transactions-summary-card {
+    display: flex;
+    background: var(--background-primary);
+    border-radius: var(--border-radius-lg);
+    padding: 16px;
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--background-tertiary);
+    gap: 16px;
+    max-width: 100%;
 }
 
-.transactions-message p {
+.summary-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    background: var(--background-secondary);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    min-height: 70px;
+}
+
+.summary-section:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.summary-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: left 0.5s;
+    pointer-events: none;
+}
+
+.summary-section:hover::before {
+    left: 100%;
+}
+
+.summary-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    background: var(--background-tertiary);
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.income-section .summary-icon {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.expense-section .summary-icon {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+.balance-section .summary-icon {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+}
+
+.summary-content {
+    width: 100%;
+}
+
+.summary-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
     margin: 0;
-    max-width: 300px;
-    margin: 0 auto;
+}
+
+.balance-amount.positive {
+    color: var(--success-color);
+}
+
+.balance-amount.negative {
+    color: var(--danger-color);
+}
+
+.income-amount {
+    color: var(--success-color);
+}
+
+.expense-amount {
+    color: var(--danger-color);
+}
+
+.balance-amount {
+    color: var(--text-primary);
+}
+
+.balance-amount.positive {
+    color: var(--success-color);
+}
+
+.balance-amount.negative {
+    color: var(--danger-color);
+}
+
+@media (max-width: 768px) {
+    .transactions-summary-card {
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .summary-section {
+        padding: 8px;
+        min-height: 60px;
+    }
+    
+    .summary-icon {
+        width: 32px;
+        height: 32px;
+        margin-bottom: 6px;
+    }
+    
+    .summary-title {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+    
+    .summary-amount {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .transactions-summary-card {
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .summary-section {
+        padding: 6px;
+        min-height: 50px;
+    }
+    
+    .summary-icon {
+        width: 28px;
+        height: 28px;
+        margin-bottom: 4px;
+    }
+    
+    .summary-title {
+        font-size: 11px;
+        margin-bottom: 2px;
+    }
+    
+    .summary-amount {
+        font-size: 14px;
+    }
 }
 
 /* Barra de ferramentas das transações */

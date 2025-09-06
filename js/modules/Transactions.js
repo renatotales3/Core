@@ -116,13 +116,20 @@ class TransactionsModule {
     }
 
     renderTransactionsTab() {
+        console.log('Iniciando renderTransactionsTab');
         const mainContent = document.querySelector('.app-container');
-        if (!mainContent) return;
+        if (!mainContent) {
+            console.log('app-container não encontrado');
+            return;
+        }
 
-        // Salva conteúdo original se ainda não foi salvo
+        // Salva o conteúdo original se ainda não foi salvo
         if (!this.app.modules.settings.originalContent) {
             this.app.modules.settings.originalContent = mainContent.innerHTML;
+            console.log('Conteúdo original salvo');
         }
+
+        const summary = this.calculateFinancialSummary();
 
         const transactionsHTML = `
             <!-- Header simples para Transações -->
@@ -177,35 +184,130 @@ class TransactionsModule {
                 </div>
             </div>
 
+            <!-- Card de Resumo Financeiro -->
+            <div class="transactions-summary-card">
+                <div class="summary-section income-section">
+                    <div class="summary-content">
+                        <h4 class="summary-title">Receitas</h4>
+                        <p class="summary-amount income-amount">${this.formatCurrency(summary.income)}</p>
+                    </div>
+                </div>
+                
+                <div class="summary-section expense-section">
+                    <div class="summary-content">
+                        <h4 class="summary-title">Despesas</h4>
+                        <p class="summary-amount expense-amount">${this.formatCurrency(summary.expenses)}</p>
+                    </div>
+                </div>
+                
+                <div class="summary-section balance-section">
+                    <div class="summary-content">
+                        <h4 class="summary-title">Resultado</h4>
+                        <p class="summary-amount balance-amount ${summary.balance >= 0 ? 'positive' : 'negative'}">${this.formatCurrency(summary.balance)}</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Mensagem simples -->
             <div class="transactions-message">
                 <p>A funcionalidade de transações será implementada em breve.</p>
             </div>
         `;
 
-        // Substitui conteúdo
+        // Substitui apenas a área acima da navbar mantendo o nó da navbar intacto
         const navbar = mainContent.querySelector('.navbar');
         if (navbar) {
             const transactionsWrapper = document.createElement('div');
             transactionsWrapper.innerHTML = transactionsHTML;
 
-            // Remove conteúdo anterior
+            // Insere o conteúdo de transações antes da navbar sem recriá-la
+            mainContent.insertBefore(transactionsWrapper, navbar);
+
+            // Remove quaisquer seções antigas (anteriores à navbar) mantendo a navbar intacta
             const siblings = Array.from(mainContent.children);
             for (const child of siblings) {
-                if (child !== navbar) {
+                if (child !== navbar && child !== transactionsWrapper) {
                     mainContent.removeChild(child);
                 }
             }
-
-            // Insere novo conteúdo
-            mainContent.insertBefore(transactionsWrapper, navbar);
+        } else {
+            mainContent.innerHTML = transactionsHTML;
         }
 
         // Anexa event listeners
         this.attachEventListeners();
 
+        // Reanexa os event listeners da navbar
+        this.reattachNavbarEvents();
+
         // Aplica animações
         this.applyTransactionsAnimations();
+    }
+
+    calculateFinancialSummary() {
+        let income = 0;
+        let expenses = 0;
+
+        this.transactions.forEach(transaction => {
+            if (transaction.amount > 0) {
+                income += transaction.amount;
+            } else {
+                expenses += Math.abs(transaction.amount);
+            }
+        });
+
+        const balance = income - expenses;
+
+        return {
+            income: income,
+            expenses: expenses,
+            balance: balance
+        };
+    }
+
+    formatCurrency(amount) {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(amount);
+    }
+
+    applyTransactionsAnimations() {
+        // Aplica animações aos elementos da aba de transações
+        const elements = document.querySelectorAll('.transactions-toolbar, .transactions-summary-card, .transactions-message');
+        
+        elements.forEach((element, index) => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }
+
+    reattachNavbarEvents() {
+        // Remove event listeners anteriores para evitar conflitos
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            const newItem = item.cloneNode(true);
+            item.parentNode.replaceChild(newItem, item);
+        });
+
+        // Reanexa os event listeners da navbar
+        const newNavItems = document.querySelectorAll('.nav-item');
+        newNavItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (item.dataset.tab === 'home') {
+                    this.app.goBackToHome();
+                } else {
+                    this.app.navigateToTab(item);
+                }
+            });
+        });
     }
 
     renderTransactionsList() {
@@ -323,17 +425,6 @@ class TransactionsModule {
     }
 
     attachEventListeners() {
-        // Reanexa event listeners da navbar (crítico para navegação)
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            // Remove listeners antigos para evitar duplicatas
-            const newItem = item.cloneNode(true);
-            item.parentNode.replaceChild(newItem, item);
-            
-            // Adiciona novo listener
-            newItem.addEventListener('click', () => this.app.navigateToTab(newItem));
-        });
-
         // Filtro de período
         const periodItems = document.querySelectorAll('#transactionsPeriodCarousel .period-item');
         periodItems.forEach(item => {
@@ -892,20 +983,10 @@ class TransactionsModule {
         });
     }
 
-    applyTransactionsAnimations() {
-        // Aplica animações simples aos elementos
-        const elements = document.querySelectorAll('.app-header, .period-filter, .transactions-toolbar, .transactions-message');
-
-        elements.forEach((element, index) => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-
-            setTimeout(() => {
-                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
+    updateTransactionsList() {
+        // Método placeholder para atualização da lista de transações
+        // Será implementado quando a lista de transações for adicionada
+        console.log('Lista de transações será atualizada');
     }
 }
 

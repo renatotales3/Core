@@ -16,6 +16,16 @@ class CoreApp {
     async init() {
         await this.initializeModules();
         this.setupEventListeners();
+        
+        // Salva o conteúdo original da home antes de qualquer navegação
+        if (!this.modules.settings.originalContent) {
+            const mainContent = document.querySelector('.app-container');
+            if (mainContent) {
+                this.modules.settings.originalContent = mainContent.innerHTML;
+                console.log('Conteúdo original salvo na inicialização');
+            }
+        }
+        
         await this.loadUserData();
         await this.loadCurrentTab();
         this.updatePeriodCarousel();
@@ -93,6 +103,17 @@ class CoreApp {
 
         // Salvar preferência
         localStorage.setItem('coreFocusMode', JSON.stringify(this.focusMode));
+    }
+
+    updateFocusButtonState() {
+        const focusButton = document.getElementById('focusButton');
+        if (focusButton) {
+            if (this.focusMode) {
+                focusButton.classList.add('focused');
+            } else {
+                focusButton.classList.remove('focused');
+            }
+        }
     }
 
     selectPeriod(element) {
@@ -366,8 +387,28 @@ class CoreApp {
         // Obtém o tipo de aba
         const tabType = navItem.dataset.tab;
 
+        // Atualiza classe do container baseada na aba
+        const appContainer = document.querySelector('.app-container');
+        if (appContainer) {
+            appContainer.classList.remove('home-view', 'transactions-view', 'settings-view', 'categories-view', 'reports-view');
+            if (tabType === 'home') {
+                appContainer.classList.add('home-view');
+            } else if (tabType === 'transactions') {
+                appContainer.classList.add('transactions-view');
+            } else if (tabType === 'settings') {
+                appContainer.classList.add('settings-view');
+            } else if (tabType === 'categories') {
+                appContainer.classList.add('categories-view');
+            } else if (tabType === 'reports') {
+                appContainer.classList.add('reports-view');
+            }
+        }
+
         // Navega para a aba correspondente
         this.modules.router.showTab(tabType);
+
+        // Atualiza o estado do botão de foco
+        this.updateFocusButtonState();
 
         // Persiste aba atual
         this.currentTab = tabType;
@@ -385,26 +426,33 @@ class CoreApp {
     async goBackToHome() {
         // Restaura o conteúdo original da aba inicial
         const mainContent = document.querySelector('.app-container');
-        
+
         if (mainContent && this.modules.settings && this.modules.settings.originalContent) {
             mainContent.innerHTML = this.modules.settings.originalContent;
-            
+
+            // Adiciona classe home-view
+            mainContent.classList.add('home-view');
+            mainContent.classList.remove('transactions-view', 'settings-view', 'categories-view', 'reports-view');
+
             // Reanexa os event listeners
             this.setupEventListeners();
-            
+
+            // Atualiza o estado do botão de foco
+            this.updateFocusButtonState();
+
             // Atualiza estado silenciosamente sem animação na navbar
             this.currentTab = 'home';
             localStorage.setItem('coreCurrentTab', 'home');
-            
+
             // Atualiza navbar visual
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => item.classList.remove('active'));
-            
+
             const homeItem = document.querySelector('[data-tab="home"]');
             if (homeItem) {
                 homeItem.classList.add('active');
             }
-            
+
             const navbar = document.querySelector('.navbar');
             if (navbar) {
                 // Força a animação resetando o data-active para uma posição intermediária
@@ -416,22 +464,51 @@ class CoreApp {
                     navbar.setAttribute('data-active', 'home');
                 });
             }
-            
+
             // Aplica animações dos cards
             this.applyInitialAnimations();
+        } else {
+            console.log('Não foi possível restaurar o conteúdo original');
         }
     }
 
     async loadCurrentTab() {
         const savedTab = localStorage.getItem('coreCurrentTab');
         if (savedTab && savedTab !== 'home') {
+            // Garante que o conteúdo original seja salvo antes de navegar
+            if (!this.modules.settings.originalContent) {
+                const mainContent = document.querySelector('.app-container');
+                if (mainContent) {
+                    this.modules.settings.originalContent = mainContent.innerHTML;
+                    console.log('Conteúdo original salvo em loadCurrentTab');
+                }
+            }
+
             // Apenas atualiza o estado visual da navbar sem navegação
             this.currentTab = savedTab;
-            
-            // Atualiza navbar silenciosamente
+
+            // Atualiza classe do container
+            const appContainer = document.querySelector('.app-container');
+            if (appContainer) {
+                appContainer.classList.remove('home-view', 'transactions-view', 'settings-view', 'categories-view', 'reports-view');
+                if (savedTab === 'transactions') {
+                    appContainer.classList.add('transactions-view');
+                } else if (savedTab === 'settings') {
+                    appContainer.classList.add('settings-view');
+                } else if (savedTab === 'categories') {
+                    appContainer.classList.add('categories-view');
+                } else if (savedTab === 'reports') {
+                    appContainer.classList.add('reports-view');
+                }
+            }
+
+            // Atualiza o estado do botão de foco
+            this.updateFocusButtonState();
+
+            // Atualiza navbar visual
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => item.classList.remove('active'));
-            
+
             const activeItem = document.querySelector(`[data-tab="${savedTab}"]`);
             if (activeItem) {
                 activeItem.classList.add('active');
@@ -440,20 +517,30 @@ class CoreApp {
                     navbar.setAttribute('data-active', savedTab);
                 }
             }
-            
-            // Se for settings ou transactions, carrega o conteúdo
+
+            // Carrega o conteúdo da aba salva
             if (savedTab === 'settings') {
                 this.modules.router.showTab('settings');
             } else if (savedTab === 'transactions') {
                 this.modules.router.showTab('transactions');
+            } else if (savedTab === 'categories') {
+                this.modules.router.showTab('categories');
+            } else if (savedTab === 'reports') {
+                this.modules.router.showTab('reports');
             }
         } else {
             // Garante que home está ativo
             this.currentTab = 'home';
+            const appContainer = document.querySelector('.app-container');
+            if (appContainer) {
+                appContainer.classList.add('home-view');
+            }
             const navbar = document.querySelector('.navbar');
             if (navbar) {
                 navbar.setAttribute('data-active', 'home');
             }
+            // Atualiza o estado do botão de foco
+            this.updateFocusButtonState();
         }
     }
 }
