@@ -65,6 +65,12 @@ class CoreApp {
             focusButton.addEventListener('click', () => this.toggleFocusMode());
         }
 
+        // Botão FAB para adicionar transação
+        const fabButton = document.getElementById('fabButton');
+        if (fabButton) {
+            fabButton.addEventListener('click', () => this.showAddTransactionModal());
+        }
+
         // Filtro de período
         const periodItems = document.querySelectorAll('.period-item');
         periodItems.forEach(item => {
@@ -114,6 +120,192 @@ class CoreApp {
                 focusButton.classList.remove('focused');
             }
         }
+    }
+
+    showAddTransactionModal() {
+        // Cria o modal de adicionar transação
+        const modalHTML = `
+            <div class="add-transaction-modal" id="addTransactionModal">
+                <div class="add-transaction-sheet">
+                    <div class="add-transaction-header">
+                        <h2 class="add-transaction-title">Adicionar Transação</h2>
+                        <button class="add-transaction-close" id="closeTransactionModal">×</button>
+                    </div>
+                    <div class="add-transaction-body">
+                        <form class="transaction-form" id="transactionForm">
+                            <div class="form-group">
+                                <label class="form-label" for="transactionDescription">Descrição</label>
+                                <input type="text" id="transactionDescription" class="form-input" placeholder="Ex: Café da manhã" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="transactionAmount">Valor</label>
+                                <input type="number" id="transactionAmount" class="form-input amount-input" placeholder="0,00" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Tipo</label>
+                                <div class="transaction-type-selector">
+                                    <div class="type-option active" data-type="expense">Despesa</div>
+                                    <div class="type-option" data-type="income">Receita</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Categoria</label>
+                                <div class="category-selector">
+                                    <button type="button" class="category-button" id="categoryButton">
+                                        <span id="selectedCategory">Selecione uma categoria</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    <div class="category-dropdown" id="categoryDropdown">
+                                        ${this.renderCategoryOptions()}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="transactionDate">Data</label>
+                                <input type="date" id="transactionDate" class="form-input" value="${new Date().toISOString().split('T')[0]}" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="add-transaction-footer">
+                        <button type="button" class="btn-secondary" id="cancelTransaction">Cancelar</button>
+                        <button type="submit" form="transactionForm" class="btn-primary" id="saveTransaction">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        document.body.classList.add('modal-open');
+
+        // Configura os event listeners do modal
+        this.setupTransactionModalEvents();
+    }
+
+    renderCategoryOptions() {
+        const categories = this.modules.transactions ? this.modules.transactions.categories : [
+            { id: 1, name: 'Alimentação', icon: '🍽️' },
+            { id: 2, name: 'Transporte', icon: '🚗' },
+            { id: 3, name: 'Lazer', icon: '🎬' },
+            { id: 4, name: 'Saúde', icon: '🏥' },
+            { id: 5, name: 'Educação', icon: '📚' }
+        ];
+
+        return categories.map(category => `
+            <div class="category-item" data-id="${category.id}">
+                <span class="category-icon">${category.icon}</span>
+                ${category.name}
+            </div>
+        `).join('');
+    }
+
+    setupTransactionModalEvents() {
+        const modal = document.getElementById('addTransactionModal');
+        const closeBtn = document.getElementById('closeTransactionModal');
+        const cancelBtn = document.getElementById('cancelTransaction');
+        const form = document.getElementById('transactionForm');
+        const categoryButton = document.getElementById('categoryButton');
+        const categoryDropdown = document.getElementById('categoryDropdown');
+        const typeOptions = document.querySelectorAll('.type-option');
+        const categoryItems = document.querySelectorAll('.category-item');
+
+        // Fechar modal
+        const closeModal = () => {
+            if (modal) {
+                modal.remove();
+                document.body.classList.remove('modal-open');
+            }
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Fechar ao clicar fora
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Seleção de tipo
+        typeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                typeOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+
+        // Dropdown de categoria
+        categoryButton.addEventListener('click', () => {
+            categoryDropdown.classList.toggle('show');
+        });
+
+        // Seleção de categoria
+        categoryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const categoryName = item.textContent.trim();
+                document.getElementById('selectedCategory').textContent = categoryName;
+                categoryDropdown.classList.remove('show');
+                
+                // Remove seleção anterior
+                categoryItems.forEach(cat => cat.classList.remove('selected'));
+                item.classList.add('selected');
+            });
+        });
+
+        // Submissão do formulário
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.saveTransaction();
+            closeModal();
+        });
+    }
+
+    saveTransaction() {
+        const description = document.getElementById('transactionDescription').value;
+        const amount = parseFloat(document.getElementById('transactionAmount').value);
+        const type = document.querySelector('.type-option.active').dataset.type;
+        const date = document.getElementById('transactionDate').value;
+        const selectedCategory = document.querySelector('.category-item.selected');
+        
+        if (!description || !amount || !selectedCategory) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+
+        const categoryId = parseInt(selectedCategory.dataset.id);
+        
+        // Cria a transação
+        const transaction = {
+            id: Date.now(),
+            description,
+            amount: type === 'expense' ? -amount : amount,
+            type,
+            category: categoryId,
+            date: new Date(date).toISOString(),
+            status: 'paid'
+        };
+
+        // Salva no módulo de transações
+        if (this.modules.transactions) {
+            this.modules.transactions.transactions.push(transaction);
+            this.modules.transactions.saveTransactions();
+            
+            // Atualiza a aba de transações se estiver aberta
+            if (this.currentTab === 'transactions') {
+                this.modules.transactions.renderTransactionsTab();
+            }
+            
+            // Atualiza os dados financeiros na tela inicial
+            this.updateFinancialData();
+        }
+
+        console.log('Transação salva:', transaction);
     }
 
     selectPeriod(element) {
@@ -390,15 +582,13 @@ class CoreApp {
         // Atualiza classe do container baseada na aba
         const appContainer = document.querySelector('.app-container');
         if (appContainer) {
-            appContainer.classList.remove('home-view', 'transactions-view', 'settings-view', 'categories-view', 'reports-view');
+            appContainer.classList.remove('home-view', 'transactions-view', 'settings-view', 'reports-view');
             if (tabType === 'home') {
                 appContainer.classList.add('home-view');
             } else if (tabType === 'transactions') {
                 appContainer.classList.add('transactions-view');
             } else if (tabType === 'settings') {
                 appContainer.classList.add('settings-view');
-            } else if (tabType === 'categories') {
-                appContainer.classList.add('categories-view');
             } else if (tabType === 'reports') {
                 appContainer.classList.add('reports-view');
             }
@@ -432,7 +622,7 @@ class CoreApp {
 
             // Adiciona classe home-view
             mainContent.classList.add('home-view');
-            mainContent.classList.remove('transactions-view', 'settings-view', 'categories-view', 'reports-view');
+            mainContent.classList.remove('transactions-view', 'settings-view', 'reports-view');
 
             // Reanexa os event listeners
             this.setupEventListeners();
@@ -490,13 +680,11 @@ class CoreApp {
             // Atualiza classe do container
             const appContainer = document.querySelector('.app-container');
             if (appContainer) {
-                appContainer.classList.remove('home-view', 'transactions-view', 'settings-view', 'categories-view', 'reports-view');
+                appContainer.classList.remove('home-view', 'transactions-view', 'settings-view', 'reports-view');
                 if (savedTab === 'transactions') {
                     appContainer.classList.add('transactions-view');
                 } else if (savedTab === 'settings') {
                     appContainer.classList.add('settings-view');
-                } else if (savedTab === 'categories') {
-                    appContainer.classList.add('categories-view');
                 } else if (savedTab === 'reports') {
                     appContainer.classList.add('reports-view');
                 }
@@ -523,8 +711,6 @@ class CoreApp {
                 this.modules.router.showTab('settings');
             } else if (savedTab === 'transactions') {
                 this.modules.router.showTab('transactions');
-            } else if (savedTab === 'categories') {
-                this.modules.router.showTab('categories');
             } else if (savedTab === 'reports') {
                 this.modules.router.showTab('reports');
             }

@@ -20,10 +20,6 @@ class RouterModule {
                 // Aqui será implementada a aba de transações
                 this.showTransactionsTab();
                 break;
-            case 'categories':
-                // Aqui será implementada a aba de categorias
-                this.showCategoriesTab();
-                break;
             case 'reports':
                 // Aqui será implementada a aba de relatórios
                 this.showReportsTab();
@@ -61,11 +57,6 @@ class RouterModule {
         } else {
             console.log('Módulo de transações não encontrado');
         }
-    }
-
-    showCategoriesTab() {
-        // Placeholder para a implementação da aba de categorias
-        console.log('Aba de categorias será implementada aqui');
     }
 
     showReportsTab() {
