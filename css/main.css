@@ -956,6 +956,7 @@ html {
 .app-container.home-view.focus-mode .expense-amount,
 .app-container.home-view.focus-mode .amount,
 .app-container.home-view.focus-mode .total-amount,
+.app-container.home-view.focus-mode .total-currency,
 .app-container.home-view.focus-mode .credit-amount,
 .app-container.home-view.focus-mode .bank-account-balance,
 .app-container.home-view.focus-mode .credit-card-balance,
