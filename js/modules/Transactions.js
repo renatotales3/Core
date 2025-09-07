@@ -216,22 +216,26 @@ class TransactionsModule {
 
         // Substitui apenas a área acima da navbar mantendo o nó da navbar intacto
         const navbar = mainContent.querySelector('.navbar');
-        if (navbar) {
+        const fabButton = mainContent.querySelector('.fab-button');
+        
+        if (navbar && fabButton) {
             const transactionsWrapper = document.createElement('div');
             transactionsWrapper.innerHTML = transactionsHTML;
 
             // Insere o conteúdo de transações antes da navbar sem recriá-la
             mainContent.insertBefore(transactionsWrapper, navbar);
 
-            // Remove quaisquer seções antigas (anteriores à navbar) mantendo a navbar intacta
+            // Remove quaisquer seções antigas (anteriores à navbar) mantendo a navbar e FAB intactos
             const siblings = Array.from(mainContent.children);
             for (const child of siblings) {
-                if (child !== navbar && child !== transactionsWrapper) {
+                if (child !== navbar && child !== transactionsWrapper && child !== fabButton) {
                     mainContent.removeChild(child);
                 }
             }
         } else {
-            mainContent.innerHTML = transactionsHTML;
+            // Fallback: Preserva o FAB ao substituir o conteúdo
+            const fabHTML = fabButton ? fabButton.outerHTML : '';
+            mainContent.innerHTML = transactionsHTML + fabHTML;
         }
 
         // Anexa event listeners
