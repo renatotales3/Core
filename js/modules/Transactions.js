@@ -312,6 +312,11 @@ class TransactionsModule {
                 }
             });
         });
+
+        // Reinicializa comportamento do FAB após reanexar eventos
+        if (this.app && this.app.reinitializeFabBehavior) {
+            this.app.reinitializeFabBehavior();
+        }
     }
 
     renderTransactionsList() {

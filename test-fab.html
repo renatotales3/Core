@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste FAB</title>
+    <style>
+        .fab-button {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #6366f1;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+        }
+        
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+            min-height: 100vh;
+        }
+        
+        .app-container.home-view {
+            background: #f0f8ff;
+        }
+        
+        .app-container.transactions-view {
+            background: #f0fff0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container home-view" id="appContainer">
+        <h1>Teste do FAB</h1>
+        <p>Container atual: <span id="currentView">home-view</span></p>
+        <button onclick="toggleView()">Alternar View</button>
+        <br><br>
+        <button onclick="createFAB()">Criar FAB</button>
+        <button onclick="removeFAB()">Remover FAB</button>
+        <br><br>
+        <p>Status do FAB: <span id="fabStatus">Não existe</span></p>
+    </div>
+
+    <script>
+        function createFAB() {
+            // Remove FAB existente
+            const existing = document.getElementById('fabButton');
+            if (existing) existing.remove();
+            
+            // Cria novo FAB
+            const fabHTML = `
+                <button class="fab-button" id="fabButton" title="Adicionar Transação">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+            `;
+            document.body.insertAdjacentHTML('beforeend', fabHTML);
+            
+            // Anexa listener
+            document.getElementById('fabButton').onclick = () => alert('FAB clicado!');
+            
+            updateFabVisibility();
+            updateStatus();
+        }
+        
+        function removeFAB() {
+            const fab = document.getElementById('fabButton');
+            if (fab) fab.remove();
+            updateStatus();
+        }
+        
+        function toggleView() {
+            const container = document.getElementById('appContainer');
+            const currentViewSpan = document.getElementById('currentView');
+            
+            if (container.classList.contains('home-view')) {
+                container.classList.remove('home-view');
+                container.classList.add('transactions-view');
+                currentViewSpan.textContent = 'transactions-view';
+            } else {
+                container.classList.remove('transactions-view');
+                container.classList.add('home-view');
+                currentViewSpan.textContent = 'home-view';
+            }
+            
+            updateFabVisibility();
+        }
+        
+        function updateFabVisibility() {
+            const fab = document.getElementById('fabButton');
+            const container = document.getElementById('appContainer');
+            
+            if (!fab) return;
+            
+            if (container.classList.contains('home-view') || container.classList.contains('transactions-view')) {
+                fab.style.display = 'flex';
+                fab.style.opacity = '0.7';
+            } else {
+                fab.style.display = 'none';
+            }
+        }
+        
+        function updateStatus() {
+            const fab = document.getElementById('fabButton');
+            const status = document.getElementById('fabStatus');
+            
+            if (fab) {
+                const styles = window.getComputedStyle(fab);
+                status.textContent = `Existe - Display: ${styles.display}, Opacity: ${styles.opacity}, Visible: ${styles.visibility}`;
+            } else {
+                status.textContent = 'Não existe';
+            }
+        }
+        
+        // Criar FAB automaticamente ao carregar
+        window.onload = () => {
+            createFAB();
+            setInterval(updateStatus, 1000); // Atualiza status a cada segundo
+        };
+    </script>
+</body>
+</html>

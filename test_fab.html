@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste FAB</title>
+    <style>
+        .fab-button { 
+            background: red; 
+            width: 50px; 
+            height: 50px; 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            border-radius: 50%;
+            display: none;
+        }
+        .app-container.home-view .fab-button { display: flex; }
+        .app-container.transactions-view .fab-button { display: flex; }
+        .test-button { margin: 10px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="app-container home-view">
+        <h1>Teste de Navegação FAB</h1>
+        <button class="test-button" onclick="changeView('home')">Home View</button>
+        <button class="test-button" onclick="changeView('transactions')">Transactions View</button>
+        <button class="test-button" onclick="testInnerHTML()">Test innerHTML</button>
+        
+        <div id="content">
+            <p>Conteúdo inicial</p>
+        </div>
+        
+        <button class="fab-button" id="fabButton">+</button>
+    </div>
+
+    <script>
+        function changeView(view) {
+            const container = document.querySelector('.app-container');
+            container.className = 'app-container ' + view + '-view';
+            console.log('Mudou para view:', view);
+            console.log('FAB visível:', getComputedStyle(document.getElementById('fabButton')).display);
+        }
+
+        function testInnerHTML() {
+            const content = document.getElementById('content');
+            const fab = document.querySelector('.fab-button');
+            console.log('FAB antes do innerHTML:', fab ? 'existe' : 'não existe');
+            
+            content.innerHTML = '<p>Conteúdo alterado via innerHTML</p>';
+            
+            const fabAfter = document.querySelector('.fab-button');
+            console.log('FAB depois do innerHTML:', fabAfter ? 'existe' : 'não existe');
+        }
+        
+        // Log inicial
+        console.log('Estado inicial - FAB:', document.querySelector('.fab-button') ? 'existe' : 'não existe');
+    </script>
+</body>
+</html>

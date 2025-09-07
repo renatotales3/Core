@@ -17,6 +17,9 @@ class CoreApp {
         await this.initializeModules();
         this.setupEventListeners();
         
+        // Cria o FAB imediatamente na inicialização
+        this.createFAB();
+        
         // Salva o conteúdo original da home antes de qualquer navegação
         if (!this.modules.settings.originalContent) {
             const mainContent = document.querySelector('.app-container');
@@ -28,17 +31,12 @@ class CoreApp {
         
         await this.loadUserData();
         await this.loadCurrentTab();
+        // Inicializa comportamentos do FAB (auto-hide e evitar overlap) DEPOIS de loadCurrentTab
+        this.initFabBehaviors();
         this.updatePeriodCarousel();
         this.updateFinancialData();
         this.applyInitialAnimations();
-        
-        // Inicializa comportamento de scroll do FAB após tudo estar carregado
-        setTimeout(() => {
-            this.initFabScrollBehavior();
-        }, 500);
-    }
-
-    applyInitialAnimations() {
+    }    applyInitialAnimations() {
         // Aplica animações staggered aos elementos da página
         const elements = document.querySelectorAll('.financial-cards .card, .period-filter, .app-header, .month-balance-card, .bank-accounts-card, .credit-cards-card');
         
@@ -70,11 +68,48 @@ class CoreApp {
             focusButton.addEventListener('click', () => this.toggleFocusMode());
         }
 
-        // Botão FAB para adicionar transação
-        const fabButton = document.getElementById('fabButton');
-        if (fabButton) {
-            fabButton.addEventListener('click', () => this.showAddTransactionModal());
+        // Filtro de período
+        const periodItems = document.querySelectorAll('.period-item');
+        periodItems.forEach(item => {
+            item.addEventListener('click', () => this.selectPeriod(item));
+        });
+
+        // Navbar
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => this.navigateToTab(item));
+        });
+
+        // Navegação por teclado
+        document.addEventListener('keydown', (e) => this.handleKeyboardNavigation(e));
+    }
+
+    createFAB() {
+        // Remove FAB existente se houver
+        const existingFAB = document.getElementById('fabButton');
+        if (existingFAB) {
+            existingFAB.remove();
         }
+
+        // Cria o FAB
+        const fabHTML = `
+            <button class="fab-button" id="fabButton" title="Adicionar Transação">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                </svg>
+            </button>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', fabHTML);
+        
+        // Anexa o event listener
+        const fab = document.getElementById('fabButton');
+        if (fab) {
+            fab.addEventListener('click', () => this.showAddTransactionModal());
+        }
+        
+        console.log('FAB criado e anexado ao body');
+    }
 
         // Filtro de período
         const periodItems = document.querySelectorAll('.period-item');
@@ -90,86 +125,113 @@ class CoreApp {
 
         // Navegação por teclado
         document.addEventListener('keydown', (e) => this.handleKeyboardNavigation(e));
-
-        // Inicializa comportamento de scroll do FAB
-        // this.initFabScrollBehavior(); // Movido para init() após carregamento completo
+    // Garantir visibilidade do FAB após reanexar listeners
+    if (typeof this.updateFabVisibilityByView === 'function') this.updateFabVisibilityByView();
     }
 
-    // Método auxiliar para reinicializar comportamento do FAB após mudanças no DOM
-    reinitializeFabBehavior() {
-        const currentTab = this.currentTab || localStorage.getItem('coreCurrentTab') || 'home';
-        
-        if (currentTab === 'home' || currentTab === 'transactions') {
-            // Aguarda o DOM estar pronto e reinicializa
+    initFabBehaviors() {
+        // Ensure FAB exists (create if needed) before attaching behaviors
+        if (typeof this.updateFabVisibilityByView === 'function') this.updateFabVisibilityByView();
+
+        // Remove previous handlers if existent
+        if (this._fabHandlers) {
+            window.removeEventListener('scroll', this._fabHandlers.onScroll, { passive: true });
+            window.removeEventListener('resize', this._fabHandlers.onResize);
+            window.removeEventListener('scroll', this._fabHandlers.onCheckOverlap, { passive: true });
+        }
+
+        // Handlers that query the FAB dynamically to avoid stale references
+        let lastY = window.scrollY;
+        let ticking = false;
+
+        const onScroll = () => {
+            if (ticking) return;
+            ticking = true;
             requestAnimationFrame(() => {
-                setTimeout(() => {
-                    this.initFabScrollBehavior();
-                }, 100);
+                const fab = document.getElementById('fabButton');
+                const current = window.scrollY;
+                if (fab) {
+                    if (current > lastY + 10) {
+                        fab.classList.add('fab-hidden');
+                    } else if (current < lastY - 10) {
+                        fab.classList.remove('fab-hidden');
+                    }
+                }
+                lastY = current;
+                ticking = false;
             });
-        }
+        };
+
+        const selectorsToAvoid = ['.transactions-summary-card', '.financial-cards', '.transactions-toolbar', '.month-balance-card'];
+        const checkOverlap = () => {
+            const fab = document.getElementById('fabButton');
+            if (!fab) return;
+            const fabRect = fab.getBoundingClientRect();
+            let overlap = false;
+            selectorsToAvoid.forEach(sel => {
+                document.querySelectorAll(sel).forEach(el => {
+                    const r = el.getBoundingClientRect();
+                    const intersects = !(fabRect.right < r.left || fabRect.left > r.right || fabRect.bottom < r.top || fabRect.top > r.bottom);
+                    if (intersects) overlap = true;
+                });
+            });
+            fab.classList.toggle('fab-repositioned', overlap);
+        };
+
+        const onResize = () => requestAnimationFrame(checkOverlap);
+
+        // Save handlers for potential removal later
+        this._fabHandlers = {
+            onScroll,
+            onResize,
+            onCheckOverlap: () => requestAnimationFrame(checkOverlap)
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onResize);
+        window.addEventListener('scroll', this._fabHandlers.onCheckOverlap, { passive: true });
+
+        // Run once on init
+        setTimeout(() => {
+            checkOverlap();
+            // Also ensure visibility rules based on current view
+            this.updateFabVisibilityByView();
+        }, 300);
     }
 
-    initFabScrollBehavior() {
-        const fab = document.querySelector('.fab-button');
-        if (!fab) {
-            setTimeout(() => this.initFabScrollBehavior(), 100);
-            return;
-        }
-
-        // Remove event listener anterior se existir
-        if (this.scrollHandler) {
-            window.removeEventListener('scroll', this.scrollHandler, { passive: true });
-            this.scrollHandler = null;
-        }
-
-        // Reset do estado do FAB - sempre começar visível
-        fab.classList.remove('fab-scroll-hidden');
-
-        // Inicializar variáveis de controle
-        this.lastScrollY = window.scrollY;
-        this.isFabHidden = false;
-
-        // Criar nova função de scroll com bind para manter contexto
-        this.scrollHandler = this.handleFabScroll.bind(this);
-
-        window.addEventListener('scroll', this.scrollHandler, { passive: true });
-        
-        console.log('FAB scroll behavior initialized');
-    }
-
-    handleFabScroll() {
-        const fab = document.querySelector('.fab-button');
+    updateFabVisibilityByView() {
         const appContainer = document.querySelector('.app-container');
-        
-        if (!fab || !appContainer) {
-            return;
+        const fabContainer = document.querySelector('.app-container');
+        if (!appContainer || !fabContainer) return;
+
+        let fab = document.getElementById('fabButton');
+        // If FAB was removed for any reason, recreate it to guarantee availability
+        if (!fab) {
+            const fabHTML = `
+                <button class="fab-button" id="fabButton" title="Adicionar Transação">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+            `;
+            // Append to the document body to avoid being removed when app-container is replaced
+            document.body.insertAdjacentHTML('beforeend', fabHTML);
+            fab = document.getElementById('fabButton');
+            // Reattach the click listener
+            if (fab) fab.addEventListener('click', () => this.showAddTransactionModal());
         }
 
-        // Verifica se estamos nas abas corretas
-        const isFabVisible = appContainer.classList.contains('home-view') || 
-                           appContainer.classList.contains('transactions-view');
-
-        if (!isFabVisible) {
-            return;
-        }
-
-        const currentScrollY = window.scrollY;
-        const scrollDifference = currentScrollY - this.lastScrollY;
-
-        // Threshold para evitar mudanças muito pequenas
-        if (Math.abs(scrollDifference) > 5) {
-            if (scrollDifference > 0 && !this.isFabHidden) {
-                // Rolar para baixo - ocultar FAB
-                fab.classList.add('fab-scroll-hidden');
-                this.isFabHidden = true;
-                console.log('FAB hidden on scroll down');
-            } else if (scrollDifference < 0 && this.isFabHidden) {
-                // Rolar para cima - mostrar FAB
-                fab.classList.remove('fab-scroll-hidden');
-                this.isFabHidden = false;
-                console.log('FAB shown on scroll up');
-            }
-            this.lastScrollY = currentScrollY;
+        if (appContainer.classList.contains('home-view') || appContainer.classList.contains('transactions-view')) {
+            // Force visibility and ensure not hidden by scroll class
+            fab.style.display = 'flex';
+            fab.style.visibility = 'visible';
+            fab.classList.remove('fab-hidden');
+            // clear inline opacity to let CSS handle hover/focus behavior
+            fab.style.opacity = '';
+        } else {
+            // hide fully in other views
+            fab.style.visibility = 'hidden';
+            fab.style.display = 'none';
         }
     }
 
@@ -305,8 +367,6 @@ class CoreApp {
             if (modal) {
                 modal.remove();
                 document.body.classList.remove('modal-open');
-                // Reinicializa comportamento do FAB após fechar modal
-                this.reinitializeFabBehavior();
             }
         };
 
@@ -387,8 +447,6 @@ class CoreApp {
             // Atualiza a aba de transações se estiver aberta
             if (this.currentTab === 'transactions') {
                 this.modules.transactions.renderTransactionsTab();
-                // Reinicializa FAB após renderizar transações
-                this.reinitializeFabBehavior();
             }
             
             // Atualiza os dados financeiros na tela inicial
@@ -693,16 +751,8 @@ class CoreApp {
         // Persiste aba atual
         this.currentTab = tabType;
         localStorage.setItem('coreCurrentTab', tabType);
-
-        // Reinicializa comportamento de scroll do FAB se necessário
-        if (tabType === 'home' || tabType === 'transactions') {
-            // Usar requestAnimationFrame para garantir que o DOM está pronto
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    this.initFabScrollBehavior();
-                }, 150);
-            });
-        }
+    // Atualiza visibilidade do FAB após a navegação
+    if (typeof this.updateFabVisibilityByView === 'function') this.updateFabVisibilityByView();
     }
 
     navigateToTabByType(tabType) {
@@ -811,13 +861,11 @@ class CoreApp {
                 this.modules.router.showTab('settings');
             } else if (savedTab === 'transactions') {
                 this.modules.router.showTab('transactions');
-                // Reinicializa comportamento de scroll do FAB
-                setTimeout(() => {
-                    this.initFabScrollBehavior();
-                }, 100);
             } else if (savedTab === 'reports') {
                 this.modules.router.showTab('reports');
             }
+            // Atualiza visibilidade do FAB com base na view carregada
+            if (typeof this.updateFabVisibilityByView === 'function') this.updateFabVisibilityByView();
         } else {
             // Garante que home está ativo
             this.currentTab = 'home';
