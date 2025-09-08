@@ -5,9 +5,6 @@ class RouterModule {
     }
 
     showTab(tabType) {
-        // Atualiza o indicador ativo do navbar
-        this.updateActiveTab(tabType);
-        
         // Gerencia a navegação entre abas
         console.log(`Navegando para a aba: ${tabType}`);
         
@@ -17,14 +14,20 @@ class RouterModule {
                 this.app.goBackToHome();
                 break;
             case 'transactions':
+                // Atualiza o indicador ativo do navbar
+                this.updateActiveTab(tabType);
                 // Aqui será implementada a aba de transações
                 this.showTransactionsTab();
                 break;
             case 'reports':
+                // Atualiza o indicador ativo do navbar
+                this.updateActiveTab(tabType);
                 // Aqui será implementada a aba de relatórios
                 this.showReportsTab();
                 break;
             case 'settings':
+                // Atualiza o indicador ativo do navbar
+                this.updateActiveTab(tabType);
                 // Aqui será implementada a aba de ajustes
                 this.showSettingsTab();
                 break;
@@ -34,18 +37,27 @@ class RouterModule {
     updateActiveTab(activeTab) {
         const navItems = document.querySelectorAll('.nav-item');
         const navbar = document.querySelector('.navbar');
-        
         // Remove classe ativa de todos os itens
         navItems.forEach(item => item.classList.remove('active'));
-        
+
         // Adiciona classe ativa ao item correto
         const activeItem = document.querySelector(`[data-tab="${activeTab}"]`);
         if (activeItem) {
             activeItem.classList.add('active');
-            
-            // Atualiza o indicador animado
+            // Anima o indicador da aba anterior para a nova
             if (navbar) {
-                navbar.setAttribute('data-active', activeTab);
+                // Descobre a aba anterior
+                const previousTab = navbar.getAttribute('data-active') || 'home';
+                console.log(`Animando indicador de ${previousTab} para ${activeTab}`);
+                // Sempre anima, mesmo se for a mesma aba (para casos de restauração)
+                // Primeiro, seta para a aba anterior
+                navbar.setAttribute('data-active', previousTab);
+                // Força reflow para garantir que a mudança seja aplicada
+                void navbar.offsetWidth;
+                // Agora anima para a nova aba
+                requestAnimationFrame(() => {
+                    navbar.setAttribute('data-active', activeTab);
+                });
             }
         }
     }

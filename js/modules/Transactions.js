@@ -214,10 +214,9 @@ class TransactionsModule {
             </div>
         `;
 
-        // Substitui apenas a área acima da navbar mantendo o nó da navbar intacto
+        // Substitui apenas a área acima da navbar mantendo o nó da navbar e FAB intactos
         const navbar = mainContent.querySelector('.navbar');
         const fabButton = mainContent.querySelector('.fab-button');
-        
         if (navbar && fabButton) {
             const transactionsWrapper = document.createElement('div');
             transactionsWrapper.innerHTML = transactionsHTML;
@@ -225,7 +224,7 @@ class TransactionsModule {
             // Insere o conteúdo de transações antes da navbar sem recriá-la
             mainContent.insertBefore(transactionsWrapper, navbar);
 
-            // Remove quaisquer seções antigas (anteriores à navbar) mantendo a navbar e FAB intactos
+            // Remove quaisquer seções antigas (anteriores à navbar) mantendo navbar e FAB intactos
             const siblings = Array.from(mainContent.children);
             for (const child of siblings) {
                 if (child !== navbar && child !== transactionsWrapper && child !== fabButton) {
@@ -233,9 +232,10 @@ class TransactionsModule {
                 }
             }
         } else {
-            // Fallback: Preserva o FAB ao substituir o conteúdo
+            // Fallback: preserva navbar/FAB se existirem
+            const navbarHTML = navbar ? navbar.outerHTML : '';
             const fabHTML = fabButton ? fabButton.outerHTML : '';
-            mainContent.innerHTML = transactionsHTML + fabHTML;
+            mainContent.innerHTML = transactionsHTML + navbarHTML + fabHTML;
         }
 
         // Anexa event listeners
@@ -277,13 +277,24 @@ class TransactionsModule {
     }
 
     applyTransactionsAnimations() {
-        // Aplica animações aos elementos da aba de transações
-        const elements = document.querySelectorAll('.transactions-toolbar, .transactions-summary-card, .transactions-message');
+        // Aplica animações staggered aos elementos de transações com timing padronizado
+        const elements = [
+            document.querySelector('.app-header'),
+            document.querySelector('.period-filter'),
+            document.querySelector('.transactions-toolbar'),
+            document.querySelector('.transactions-summary-card'),
+            document.querySelector('.transactions-message')
+        ].filter(el => el); // Remove elementos null
         
-        elements.forEach((element, index) => {
+        // Reset inicial para garantir estado consistente
+        elements.forEach(element => {
             element.style.opacity = '0';
             element.style.transform = 'translateY(20px)';
-            
+            element.style.transition = 'none';
+        });
+        
+        // Aplicar animações com timing consistente
+        elements.forEach((element, index) => {
             setTimeout(() => {
                 element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
                 element.style.opacity = '1';

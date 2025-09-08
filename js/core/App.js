@@ -36,16 +36,71 @@ class CoreApp {
         setTimeout(() => {
             this.initFabScrollBehavior();
         }, 500);
+        
+            // Observa remoção da navbar/FAB
+            this.setupNavbarAndFabWatcher();
     }
+    
+        // Observador que reinser navbar e FAB se removidos
+        setupNavbarAndFabWatcher() {
+            try {
+                const container = document.querySelector('.app-container');
+                if (!container) return;
+                if (this._navbarFabObserver) return;
+            
+                this._navbarFabObserver = new MutationObserver((mutations) => {
+                    for (const m of mutations) {
+                        if (m.removedNodes && m.removedNodes.length) {
+                            for (const node of m.removedNodes) {
+                                if (node && node.classList && node.classList.contains) {
+                                    if (node.classList.contains('navbar')) {
+                                        // Reinsere a navbar
+                                        const navbarHTML = this.getNavbarHTML ? this.getNavbarHTML() : '';
+                                        container.insertAdjacentHTML('beforeend', navbarHTML);
+                                        this.setupEventListeners();
+                                        this.modules.router && this.modules.router.updateActiveTab && this.modules.router.updateActiveTab(this.currentTab || 'home');
+                                    }
+                                    if (node.classList.contains('fab-button')) {
+                                        // Reinsere o FAB
+                                        const fabButton = document.getElementById('fabButton');
+                                        if (!fabButton) {
+                                            const fabHTML = `<button id="fabButton" class="fab-button" type="button"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7H5"/></svg></button>`;
+                                            container.insertAdjacentHTML('beforeend', fabHTML);
+                                            this.setupEventListeners();
+                                            this.initFabScrollBehavior();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                this._navbarFabObserver.observe(container, { childList: true });
+            } catch (e) {
+                console.error('setupNavbarAndFabWatcher erro', e);
+            }
+        }
 
     applyInitialAnimations() {
-        // Aplica animações staggered aos elementos da página
-        const elements = document.querySelectorAll('.financial-cards .card, .period-filter, .app-header, .month-balance-card, .bank-accounts-card, .credit-cards-card');
+        // Aplica animações staggered aos elementos da página com timing padronizado
+        const elements = [
+            document.querySelector('.app-header'),
+            document.querySelector('.period-filter'),
+            ...Array.from(document.querySelectorAll('.financial-cards .card')),
+            document.querySelector('.month-balance-card'),
+            document.querySelector('.bank-accounts-card'),
+            document.querySelector('.credit-cards-card')
+        ].filter(el => el); // Remove elementos null
         
-        elements.forEach((element, index) => {
+        // Reset inicial para garantir estado consistente
+        elements.forEach(element => {
             element.style.opacity = '0';
             element.style.transform = 'translateY(20px)';
-            
+            element.style.transition = 'none';
+        });
+        
+        // Aplicar animações com timing consistente
+        elements.forEach((element, index) => {
             setTimeout(() => {
                 element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
                 element.style.opacity = '1';
@@ -718,40 +773,66 @@ class CoreApp {
         const mainContent = document.querySelector('.app-container');
 
         if (mainContent && this.modules.settings && this.modules.settings.originalContent) {
-            mainContent.innerHTML = this.modules.settings.originalContent;
+            // Salva o estado atual da navbar antes de restaurar
+            const currentNavbar = document.querySelector('.navbar');
+            const currentActiveTab = currentNavbar ? currentNavbar.getAttribute('data-active') : 'settings';
+
+            // Preserva navbar e FAB existentes (mesma lógica do SettingsModule)
+            const existingNavbar = mainContent.querySelector('.navbar');
+            const existingFab = mainContent.querySelector('.fab-button');
+
+            // Cria wrapper com conteúdo original
+            const homeWrapper = document.createElement('div');
+            homeWrapper.innerHTML = this.modules.settings.originalContent;
+
+            // Remove navbar e FAB do wrapper (eles serão preservados)
+            const wrapperNavbar = homeWrapper.querySelector('.navbar');
+            const wrapperFab = homeWrapper.querySelector('.fab-button');
+            if (wrapperNavbar) wrapperNavbar.remove();
+            if (wrapperFab) wrapperFab.remove();
+
+            // Substitui o conteúdo mantendo navbar e FAB intactos
+            if (existingNavbar && existingFab) {
+                // Insere o conteúdo de home antes da navbar sem recriá-la
+                mainContent.insertBefore(homeWrapper, existingNavbar);
+
+                // Remove quaisquer seções antigas (anteriores à navbar) mantendo navbar e FAB intactos
+                const siblings = Array.from(mainContent.children);
+                for (const child of siblings) {
+                    if (child !== existingNavbar && child !== homeWrapper && child !== existingFab) {
+                        mainContent.removeChild(child);
+                    }
+                }
+            } else {
+                // Fallback: recria tudo se navbar/FAB não existirem
+                mainContent.innerHTML = this.modules.settings.originalContent;
+            }
 
             // Adiciona classe home-view
             mainContent.classList.add('home-view');
             mainContent.classList.remove('transactions-view', 'settings-view', 'reports-view');
 
-            // Reanexa os event listeners
+            // Reanexa os event listeners apenas aos novos elementos (não aos preservados)
             this.setupEventListeners();
 
             // Atualiza o estado do botão de foco
             this.updateFocusButtonState();
 
-            // Atualiza estado silenciosamente sem animação na navbar
+            // Atualiza estado da aba atual
             this.currentTab = 'home';
             localStorage.setItem('coreCurrentTab', 'home');
 
-            // Atualiza navbar visual
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-
-            const homeItem = document.querySelector('[data-tab="home"]');
-            if (homeItem) {
-                homeItem.classList.add('active');
-            }
-
-            const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                // Força a animação resetando o data-active para uma posição intermediária
-                navbar.setAttribute('data-active', 'settings'); // Começa da posição de settings
-                // Força reflow para garantir que a mudança seja aplicada
-                navbar.offsetHeight;
+            // Restaura o estado anterior da navbar para permitir animação
+            const restoredNavbar = document.querySelector('.navbar');
+            if (restoredNavbar) {
+                restoredNavbar.setAttribute('data-active', currentActiveTab);
+                // Força reflow
+                void restoredNavbar.offsetWidth;
                 // Agora anima para home
                 requestAnimationFrame(() => {
-                    navbar.setAttribute('data-active', 'home');
+                    if (this.modules.router && this.modules.router.updateActiveTab) {
+                        this.modules.router.updateActiveTab('home');
+                    }
                 });
             }
 

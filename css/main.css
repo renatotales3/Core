@@ -1377,6 +1377,38 @@ html {
     animation-fill-mode: forwards;
 }
 
+/* Animações específicas da aba de Transações */
+.transactions-toolbar {
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.transactions-summary-card {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.transactions-message {
+    animation: fadeIn 0.4s ease-out 0.3s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* Animações específicas da aba de Ajustes */
+.settings-header {
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.settings-card {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
 /* Navbar sem animação para evitar flicker em refresh e trocas de aba */
 .navbar {
     opacity: 1;
@@ -1504,6 +1536,9 @@ html {
     gap: 16px;
     margin-bottom: 24px;
     padding: 0;
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+    opacity: 0;
+    animation-fill-mode: forwards;
 }
 
 .settings-title {
@@ -1791,7 +1826,7 @@ html {
 
 .modal-overlay.active {
     display: flex;
-    animation: fadeIn 0.2s ease-out;
+    /* Sem animação para abertura/fechamento do modal de seleção de tema */
 }
 
 /* Esconde a navbar quando qualquer modal estiver aberto */
@@ -1807,8 +1842,8 @@ html {
     width: 90%;
     max-height: 80vh;
     overflow: hidden;
-    transform: scale(0.9);
-    transition: var(--transition);
+    transform: scale(1);
+    transition: none;
 }
 
 .modal-overlay.active .modal-content {

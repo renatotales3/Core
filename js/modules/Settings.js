@@ -9,6 +9,10 @@ class SettingsModule {
 
     async init() {
         await this.loadSettings();
+        // Garante que o tema escuro seja aplicado no primeiro carregamento
+        if (!localStorage.getItem('coreTheme')) {
+            this.applyTheme('dark');
+        }
     }
 
     async loadSettings() {
@@ -16,7 +20,7 @@ class SettingsModule {
         this.currentSettings = {
             userName: localStorage.getItem('coreUserName') || 'Usuário',
             userPhoto: localStorage.getItem('coreUserPhoto') || null,
-            theme: localStorage.getItem('coreTheme') || 'light',
+            theme: localStorage.getItem('coreTheme') || 'dark',
             accentColor: localStorage.getItem('coreAccentColor') || 'indigo',
             security: false // Removido toda a complexidade de criptografia
         };
@@ -75,24 +79,28 @@ class SettingsModule {
             </div>
         `;
 
-        // Substitui apenas a área acima da navbar mantendo o nó da navbar intacto
+        // Substitui apenas a área acima da navbar mantendo o nó da navbar e FAB intactos
         const navbar = mainContent.querySelector('.navbar');
-        if (navbar) {
+        const fabButton = mainContent.querySelector('.fab-button');
+        if (navbar && fabButton) {
             const settingsWrapper = document.createElement('div');
             settingsWrapper.innerHTML = settingsHTML;
 
             // Insere o conteúdo de ajustes antes da navbar sem recriá-la
             mainContent.insertBefore(settingsWrapper, navbar);
 
-            // Remove quaisquer seções antigas (anteriores à navbar) mantendo a navbar intacta
+            // Remove quaisquer seções antigas (anteriores à navbar) mantendo navbar e FAB intactos
             const siblings = Array.from(mainContent.children);
             for (const child of siblings) {
-                if (child !== navbar && child !== settingsWrapper) {
+                if (child !== navbar && child !== settingsWrapper && child !== fabButton) {
                     mainContent.removeChild(child);
                 }
             }
         } else {
-            mainContent.innerHTML = settingsHTML;
+            // Fallback: preserva navbar/FAB se existirem
+            const navbarHTML = navbar ? navbar.outerHTML : '';
+            const fabHTML = fabButton ? fabButton.outerHTML : '';
+            mainContent.innerHTML = settingsHTML + navbarHTML + fabHTML;
         }
 
         // Anexa os event listeners
@@ -106,10 +114,17 @@ class SettingsModule {
         // Reanexa os event listeners da navbar
         this.reattachNavbarEvents();
         
-        // Aplica animações aos elementos de settings com pequeno delay para garantir renderização
-        setTimeout(() => {
-            this.applySettingsAnimations();
-        }, 50);
+        // Força a re-aplicação da animação CSS no header
+        const settingsHeader = document.querySelector('.settings-header');
+        if (settingsHeader) {
+            settingsHeader.style.animation = 'none';
+            // Reflow para reiniciar a animação
+            void settingsHeader.offsetWidth;
+            settingsHeader.style.animation = 'slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both';
+            settingsHeader.style.opacity = '0';
+        }
+        // Aplica animação JS apenas para os cards
+        this.applySettingsAnimations();
         
         // Scroll para o topo
         window.scrollTo(0, 0);
@@ -125,9 +140,11 @@ class SettingsModule {
         themeOptions.forEach(option => {
             option.addEventListener('click', () => {
                 const value = option.dataset.value;
-                this.updateTheme(value);
                 this.hideModal('themeModal');
-                this.updateThemeButton(value);
+                setTimeout(() => {
+                    this.updateTheme(value);
+                    this.updateThemeButton(value);
+                }, 200); // Aplica o tema após o modal fechar
             });
         });
 
@@ -555,21 +572,19 @@ class SettingsModule {
     }
 
     applySettingsAnimations() {
-        // Aplica animações staggered aos elementos de settings seguindo o mesmo padrão da aba home
-        const elements = document.querySelectorAll('.settings-container, .settings-header, .settings-section, .settings-card');
-        
-        elements.forEach((element, index) => {
-            // Mesmo padrão da aba home: opacidade 0 e translateY
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            
-            // Mesmo delay e transição da aba home
+        // Aplica animação JS apenas para os cards, header usa animação CSS slideInLeft
+        const card = document.querySelector('.settings-card');
+        if (card) {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'none';
             setTimeout(() => {
-                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
+                card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        }
+        // O header .settings-header já recebe slideInLeft via CSS
     }
 }
 
