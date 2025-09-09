@@ -1,1 +1,9 @@
 node_modules
+
+# Ignore variation files
+*_NEW.js
+*_SIMPLE.js
+*new.js
+*simple.js
+*NEW*
+*SIMPLE*
