@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  flutter:
+    build: .
+    volumes:
+      - .:/app
+      - flutter_pub_cache:/flutter/.pub-cache
+      - android_sdk:/android-sdk
+      - app_build:/app/build
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - PUB_CACHE=/flutter/.pub-cache
+      - ANDROID_SDK_ROOT=/android-sdk
+    tty: true
+volumes:
+  flutter_pub_cache:
+  android_sdk:
+  app_build:

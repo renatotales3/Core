@@ -1,0 +1,30 @@
+
+name: core_app
+description: App de finanças pessoais
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.4.0
+  intl: ^0.18.1
+  shared_preferences: ^2.2.2
+  hive: ^2.2.3
+  fl_chart: ^0.55.2
+  responsive_framework: ^0.2.0
+  go_router: ^13.0.0
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.6
+
+flutter:
+  uses-material-design: true

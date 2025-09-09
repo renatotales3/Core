@@ -246,6 +246,13 @@ class TransactionsModule {
 
         // Aplica animações
         this.applyTransactionsAnimations();
+        
+        // Configura animações de hover após as animações iniciais
+        if (this.app.modules.animations) {
+            setTimeout(() => {
+                this.app.modules.animations.setupHoverAnimations();
+            }, 800);
+        }
     }
 
     calculateFinancialSummary() {
@@ -277,30 +284,33 @@ class TransactionsModule {
     }
 
     applyTransactionsAnimations() {
-        // Aplica animações staggered aos elementos de transações com timing padronizado
-        const elements = [
-            document.querySelector('.app-header'),
-            document.querySelector('.period-filter'),
-            document.querySelector('.transactions-toolbar'),
-            document.querySelector('.transactions-summary-card'),
-            document.querySelector('.transactions-message')
-        ].filter(el => el); // Remove elementos null
-        
-        // Reset inicial para garantir estado consistente
-        elements.forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            element.style.transition = 'none';
-        });
-        
-        // Aplicar animações com timing consistente
-        elements.forEach((element, index) => {
-            setTimeout(() => {
-                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
+        // Usa o módulo centralizado de animações
+        if (this.app.modules.animations) {
+            this.app.modules.animations.applyTransactionsAnimations();
+        } else {
+            // Fallback para manter compatibilidade
+            const elements = [
+                document.querySelector('.app-header'),
+                document.querySelector('.period-filter'),
+                document.querySelector('.transactions-toolbar'),
+                document.querySelector('.transactions-summary-card'),
+                document.querySelector('.transactions-message')
+            ].filter(el => el);
+            
+            elements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'none';
+            });
+            
+            elements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
     }
 
     reattachNavbarEvents() {

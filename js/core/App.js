@@ -82,35 +82,18 @@ class CoreApp {
         }
 
     applyInitialAnimations() {
-        // Aplica animações staggered aos elementos da página com timing padronizado
-        const elements = [
-            document.querySelector('.app-header'),
-            document.querySelector('.period-filter'),
-            ...Array.from(document.querySelectorAll('.financial-cards .card')),
-            document.querySelector('.month-balance-card'),
-            document.querySelector('.bank-accounts-card'),
-            document.querySelector('.credit-cards-card')
-        ].filter(el => el); // Remove elementos null
+        // Usa o módulo centralizado de animações
+        this.modules.animations.applyHomeAnimations();
         
-        // Reset inicial para garantir estado consistente
-        elements.forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            element.style.transition = 'none';
-        });
-        
-        // Aplicar animações com timing consistente
-        elements.forEach((element, index) => {
-            setTimeout(() => {
-                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
+        // Configura animações de hover após as animações iniciais
+        setTimeout(() => {
+            this.modules.animations.setupHoverAnimations();
+        }, 800);
     }
 
     async initializeModules() {
         // Inicializa todos os módulos
+        this.modules.animations = new AnimationsModule();
         this.modules.dashboard = new DashboardModule(this);
         this.modules.router = new RouterModule(this);
         this.modules.utils = new UtilsModule();
@@ -323,6 +306,11 @@ class CoreApp {
 
         document.body.insertAdjacentHTML('beforeend', modalHTML);
         document.body.classList.add('modal-open');
+        
+        // Aplica animação de entrada do modal
+        if (this.modules.animations) {
+            this.modules.animations.applyModalAnimation('#addTransactionModal');
+        }
 
         // Configura os event listeners do modal
         this.setupTransactionModalEvents();
@@ -358,14 +346,26 @@ class CoreApp {
         // Fechar modal
         const closeModal = () => {
             if (modal) {
-                modal.remove();
-                document.body.classList.remove('modal-open');
-                // Reinicializa comportamento do FAB após fechar modal
-                this.reinitializeFabBehavior();
+                if (this.modules.animations) {
+                    // Aplica animação de saída antes de remover
+                    this.modules.animations.applyModalExitAnimation('#addTransactionModal', () => {
+                        modal.remove();
+                        document.body.classList.remove('modal-open');
+                        // Reinicializa comportamento do FAB após fechar modal
+                        setTimeout(() => {
+                            this.initFabScrollBehavior();
+                        }, 100);
+                    });
+                } else {
+                    modal.remove();
+                    document.body.classList.remove('modal-open');
+                    // Reinicializa comportamento do FAB após fechar modal
+                    setTimeout(() => {
+                        this.initFabScrollBehavior();
+                    }, 100);
+                }
             }
-        };
-
-        closeBtn.addEventListener('click', closeModal);
+        };        closeBtn.addEventListener('click', closeModal);
         cancelBtn.addEventListener('click', closeModal);
 
         // Fechar ao clicar fora

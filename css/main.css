@@ -46,6 +46,16 @@ div:active,
     -moz-outline: none !important;
 }
 
+/* Adiciona transições suaves para elementos interativos */
+.card,
+.settings-card,
+.nav-item,
+.period-item,
+.fab-button,
+.focus-button {
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
 /* Remove barras de rolagem em todos os navegadores */
 * {
     scrollbar-width: none; /* Firefox */
@@ -1340,73 +1350,68 @@ html {
     }
 }
 
-/* Animações dos elementos principais - MELHORADAS com física */
+/* Animações dos elementos principais - PADRONIZADAS
+   Nota: Animações agora são aplicadas via JavaScript para maior controle */
 .app-header {
-    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .period-filter {
-    animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .financial-cards {
-    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .month-balance-card {
-    animation: bounceIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .bank-accounts-card {
-    animation: bounceIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .credit-cards-card {
-    animation: fadeIn 0.4s ease-out 0.75s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
+}
+
+.fab-button {
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 /* Animações específicas da aba de Transações */
 .transactions-toolbar {
-    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .transactions-summary-card {
-    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .transactions-message {
-    animation: fadeIn 0.4s ease-out 0.3s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 /* Animações específicas da aba de Ajustes */
 .settings-header {
-    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 .settings-card {
-    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
     opacity: 0;
-    animation-fill-mode: forwards;
+    transform: translateY(20px);
 }
 
 /* Navbar sem animação para evitar flicker em refresh e trocas de aba */

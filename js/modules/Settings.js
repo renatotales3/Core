@@ -114,17 +114,17 @@ class SettingsModule {
         // Reanexa os event listeners da navbar
         this.reattachNavbarEvents();
         
-        // Força a re-aplicação da animação CSS no header
-        const settingsHeader = document.querySelector('.settings-header');
-        if (settingsHeader) {
-            settingsHeader.style.animation = 'none';
-            // Reflow para reiniciar a animação
-            void settingsHeader.offsetWidth;
-            settingsHeader.style.animation = 'slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both';
-            settingsHeader.style.opacity = '0';
+        // Aplica animações padronizadas usando o módulo centralizado
+        if (this.app.modules.animations) {
+            this.app.modules.animations.applySettingsAnimations();
+            // Configura animações de hover após as animações iniciais
+            setTimeout(() => {
+                this.app.modules.animations.setupHoverAnimations();
+            }, 800);
+        } else {
+            // Fallback para o método original
+            this.applySettingsAnimations();
         }
-        // Aplica animação JS apenas para os cards
-        this.applySettingsAnimations();
         
         // Scroll para o topo
         window.scrollTo(0, 0);
@@ -169,21 +169,39 @@ class SettingsModule {
             modal.style.display = 'flex';
             modal.classList.add('active');
             document.body.classList.add('modal-open');
+            
+            // Aplica animação de entrada usando o módulo centralizado
+            if (this.app.modules.animations) {
+                this.app.modules.animations.applyModalAnimation(`#${modalId}`);
+            }
         }
     }
 
     hideModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-                // Remove a classe global quando todos os modais estiverem fechados
-                const anyOpen = document.querySelector('.modal-overlay.active');
-                if (!anyOpen) {
-                    document.body.classList.remove('modal-open');
-                }
-            }, 200);
+            if (this.app.modules.animations) {
+                // Aplica animação de saída antes de ocultar
+                this.app.modules.animations.applyModalExitAnimation(`#${modalId}`, () => {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    // Remove a classe global quando todos os modais estiverem fechados
+                    const anyOpen = document.querySelector('.modal-overlay.active');
+                    if (!anyOpen) {
+                        document.body.classList.remove('modal-open');
+                    }
+                });
+            } else {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    // Remove a classe global quando todos os modais estiverem fechados
+                    const anyOpen = document.querySelector('.modal-overlay.active');
+                    if (!anyOpen) {
+                        document.body.classList.remove('modal-open');
+                    }
+                }, 200);
+            }
         }
     }
 
