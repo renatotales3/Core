@@ -1,6 +1,6 @@
 # 💰 Core - No centro das suas finanças
 
-Um PWA (Progressive Web App) moderno e elegante para controle financeiro pessoal, inspirado no design minimalista do Dizzo.
+Um PWA (Progressive Web App) moderno e elegante para controle financeiro pessoal.
 
 ## ✨ Características
 
