@@ -1,0 +1,4 @@
+/* CSS Global para Core Finance App */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
