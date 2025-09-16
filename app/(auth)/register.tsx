@@ -32,7 +32,7 @@ interface FormErrors {
 }
 
 export default function RegisterScreen() {
-  const { register } = useAuth();
+  const { registerOnly } = useAuth();
   
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
@@ -89,7 +89,7 @@ export default function RegisterScreen() {
     setIsLoading(true);
 
     try {
-      const result = await register({
+      const result = await registerOnly({
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -97,8 +97,10 @@ export default function RegisterScreen() {
       });
       
       if (result.success) {
-        // Sucesso - o AuthContext vai lidar com a navegação
-        console.log('✅ Registro realizado com sucesso');
+        // Sucesso - navegar para tela de login
+        console.log('✅ Registro realizado com sucesso, navegando para login');
+        router.replace('/(auth)/login');
+        return;
       } else {
         // Erro de autenticação
         setErrors(prev => ({

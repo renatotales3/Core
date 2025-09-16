@@ -67,7 +67,12 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <TouchableOpacity
       style={buttonStyle}
-      onPress={onPress}
+      onPress={(event) => {
+        console.log('🔵 Button - onPress chamado:', title, 'disabled:', isDisabledOrLoading);
+        if (onPress && !isDisabledOrLoading) {
+          onPress(event);
+        }
+      }}
       disabled={isDisabledOrLoading}
       activeOpacity={0.8}
       {...props}

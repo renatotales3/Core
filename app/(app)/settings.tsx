@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, SafeAreaView, Alert } from 'react-native';
+import { router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { Button, Card } from '../../src/components/ui';
 import { colors, spacing, typography } from '../../src/constants/theme';
@@ -8,41 +9,63 @@ export default function SettingsScreen() {
   const { logout, user, resetApp } = useAuth();
 
   const handleLogout = () => {
-    Alert.alert(
-      'Sair',
-      'Tem certeza que deseja sair da sua conta?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Sair',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              console.log('🔵 Settings - Fazendo logout...');
-              await logout();
-              console.log('✅ Settings - Logout concluído');
-            } catch (error) {
-              console.error('🔴 Settings - Erro no logout:', error);
-            }
-          },
-        },
-      ]
-    );
+    console.log('🔵 Settings - handleLogout chamado');
+    console.log('🔵 Settings - logout function available:', typeof logout);
+    
+    // Teste sem Alert primeiro para debug
+    console.log('🔵 Settings - Chamando performLogout diretamente (sem Alert)');
+    performLogout();
+  };
+
+  const performLogout = async () => {
+    console.log('🟢 Settings - performLogout INICIADO');
+    try {
+      console.log('🔵 Settings - Fazendo logout...');
+      console.log('🔵 Settings - Chamando logout()...');
+      
+      await logout();
+      
+      console.log('✅ Settings - Logout concluído');
+      
+      // Forçar navegação para login após logout
+      console.log('🚀 Settings - Navegando para login após logout');
+      router.replace('/(auth)/login');
+    } catch (error) {
+      console.error('🔴 Settings - Erro no logout:', error);
+      console.error('🔴 Settings - Erro stack:', (error as Error)?.stack);
+      Alert.alert('Erro', 'Erro ao fazer logout. Tente novamente.');
+    }
+    console.log('🟢 Settings - performLogout FINALIZADO');
   };
 
   const handleResetApp = () => {
-    Alert.alert(
-      'Reset App',
-      'Isso vai resetar completamente o app (apenas para debugging). Continuar?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: resetApp,
-        },
-      ]
-    );
+    console.log('🔵 Settings - handleResetApp chamado');
+    console.log('🔵 Settings - resetApp function available:', typeof resetApp);
+    
+    // Teste sem Alert primeiro para debug
+    console.log('🔵 Settings - Chamando performResetApp diretamente (sem Alert)');
+    performResetApp();
+  };
+
+  const performResetApp = async () => {
+    console.log('🟢 Settings - performResetApp INICIADO');
+    try {
+      console.log('🔵 Settings - Executando resetApp...');
+      console.log('🔵 Settings - Chamando resetApp()...');
+      
+      await resetApp();
+      
+      console.log('✅ Settings - Reset concluído');
+      
+      // Forçar navegação para login após reset
+      console.log('🚀 Settings - Navegando para login após reset');
+      router.replace('/(auth)/login');
+    } catch (error) {
+      console.error('🔴 Settings - Erro no reset:', error);
+      console.error('🔴 Settings - Erro stack:', (error as Error)?.stack);
+      Alert.alert('Erro', 'Erro ao resetar app. Tente novamente.');
+    }
+    console.log('🟢 Settings - performResetApp FINALIZADO');
   };
 
   return (
@@ -100,7 +123,10 @@ export default function SettingsScreen() {
         <Button
           title="Sair da conta"
           variant="danger"
-          onPress={handleLogout}
+          onPress={() => {
+            console.log('🟢 Settings - Botão logout pressionado!');
+            handleLogout();
+          }}
           fullWidth
           style={{ marginBottom: spacing[4] }}
         />
@@ -109,7 +135,10 @@ export default function SettingsScreen() {
         <Button
           title="Reset App (Debug)"
           variant="outline"
-          onPress={handleResetApp}
+          onPress={() => {
+            console.log('🟢 Settings - Botão reset pressionado!');
+            handleResetApp();
+          }}
           fullWidth
         />
       </View>

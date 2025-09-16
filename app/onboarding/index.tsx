@@ -7,9 +7,14 @@ import { Button } from '../../src/components/ui';
 import { colors, spacing, typography } from '../../src/constants/theme';
 
 export default function OnboardingIndex() {
-  const { completeOnboarding } = useAuth();
+  const { completeOnboarding, isAuthenticated } = useAuth();
 
   const handleCompleteOnboarding = async () => {
+    await completeOnboarding();
+    router.replace('/');
+  };
+
+  const handleSkipOnboarding = async () => {
     await completeOnboarding();
     router.replace('/');
   };
@@ -50,7 +55,7 @@ export default function OnboardingIndex() {
             textAlign: 'center',
             marginBottom: spacing[4],
           }}>
-            Bem-vindo ao Core
+            {isAuthenticated ? 'Bem-vindo de volta!' : 'Bem-vindo ao Core'}
           </Text>
 
           {/* Subtítulo */}
@@ -60,7 +65,7 @@ export default function OnboardingIndex() {
             textAlign: 'center',
             marginBottom: spacing[2],
           }}>
-            No centro das suas finanças
+            {isAuthenticated ? 'Você já está logado' : 'No centro das suas finanças'}
           </Text>
 
           {/* Descrição */}
@@ -71,68 +76,87 @@ export default function OnboardingIndex() {
             marginBottom: spacing[12],
             lineHeight: typography.lineHeight.base * 1.3,
           }}>
-            Controle total sobre seu dinheiro com design moderno e funcionalidades inteligentes
+            {isAuthenticated 
+              ? 'Você está logado! Complete o tour rápido para conhecer os recursos ou pule para ir direto ao app.'
+              : 'Controle total sobre seu dinheiro com design moderno e funcionalidades inteligentes'
+            }
           </Text>
 
-          {/* Funcionalidades */}
-          <View style={{ marginBottom: spacing[12], width: '100%' }}>
-            {[
-              { icon: '📊', title: 'Dashboard Inteligente', desc: 'Visão completa das suas finanças' },
-              { icon: '💳', title: 'Controle de Gastos', desc: 'Organize e categorize transações' },
-              { icon: '📈', title: 'Investimentos', desc: 'Acompanhe seu portfólio' },
-              { icon: '🎯', title: 'Metas Financeiras', desc: 'Defina e alcance objetivos' },
-            ].map((item, index) => (
-              <View key={index} style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: spacing[4],
-                paddingHorizontal: spacing[4],
-              }}>
-                <Text style={{ fontSize: 24, marginRight: spacing[3] }}>{item.icon}</Text>
-                <View style={{ flex: 1 }}>
-                  <Text style={{
-                    fontSize: typography.fontSize.base,
-                    fontWeight: '600',
-                    color: colors.text.primary,
-                    marginBottom: spacing[1],
-                  }}>
-                    {item.title}
-                  </Text>
-                  <Text style={{
-                    fontSize: typography.fontSize.sm,
-                    color: colors.text.secondary,
-                  }}>
-                    {item.desc}
-                  </Text>
+          {/* Funcionalidades - só mostrar para novos usuários */}
+          {!isAuthenticated && (
+            <View style={{ marginBottom: spacing[12], width: '100%' }}>
+              {[
+                { icon: '📊', title: 'Dashboard Inteligente', desc: 'Visão completa das suas finanças' },
+                { icon: '💳', title: 'Controle de Gastos', desc: 'Organize e categorize transações' },
+                { icon: '📈', title: 'Investimentos', desc: 'Acompanhe seu portfólio' },
+                { icon: '🎯', title: 'Metas Financeiras', desc: 'Defina e alcance objetivos' },
+              ].map((item, index) => (
+                <View key={index} style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: spacing[4],
+                  paddingHorizontal: spacing[4],
+                }}>
+                  <Text style={{ fontSize: 24, marginRight: spacing[3] }}>{item.icon}</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{
+                      fontSize: typography.fontSize.base,
+                      fontWeight: '600',
+                      color: colors.text.primary,
+                      marginBottom: spacing[1],
+                    }}>
+                      {item.title}
+                    </Text>
+                    <Text style={{
+                      fontSize: typography.fontSize.sm,
+                      color: colors.text.secondary,
+                    }}>
+                      {item.desc}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            ))}
+              ))}
+            </View>
+          )}
+
+          {/* Botões */}
+          <View style={{ width: '100%', gap: spacing[3] }}>
+            <Button
+              title={isAuthenticated ? "Fazer tour rápido" : "Começar jornada 🚀"}
+              onPress={handleCompleteOnboarding}
+              fullWidth
+              size="lg"
+            />
+            
+            {isAuthenticated && (
+              <Button
+                title="Pular e ir ao app"
+                onPress={handleSkipOnboarding}
+                variant="outline"
+                fullWidth
+                size="md"
+              />
+            )}
           </View>
 
-          {/* Botão Começar */}
-          <Button
-            title="Começar jornada 🚀"
-            onPress={handleCompleteOnboarding}
-            fullWidth
-            size="lg"
-          />
-
-          {/* Indicador */}
-          <View style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: spacing[8],
-            gap: spacing[2],
-          }}>
-            {[0, 1, 2, 3].map((item, index) => (
-              <View key={index} style={{
-                width: 12,
-                height: 12,
-                borderRadius: 6,
-                backgroundColor: index === 0 ? colors.primary[500] : colors.border.primary,
-              }} />
-            ))}
-          </View>
+          {/* Indicador - só mostrar para novos usuários */}
+          {!isAuthenticated && (
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop: spacing[8],
+              gap: spacing[2],
+            }}>
+              {[0, 1, 2, 3].map((item, index) => (
+                <View key={index} style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: 6,
+                  backgroundColor: index === 0 ? colors.primary[500] : colors.border.primary,
+                }} />
+              ))}
+            </View>
+          )}
         </View>
       </LinearGradient>
     </SafeAreaView>

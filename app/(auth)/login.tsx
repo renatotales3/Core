@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, SocialIcon, Icon } from '../../src/components/ui';
+import { Button, Input, Icon, SocialIcon } from '../../src/components/ui';
 import { colors, spacing, typography, borderRadius } from '../../src/constants/theme';
 import { loginSchema } from '../../src/utils/validation';
 
@@ -26,7 +26,9 @@ interface FormErrors {
 }
 
 export default function LoginScreen() {
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle, isLoading: authIsLoading } = useAuth();
+  
+  console.log('🔍 LoginScreen - AuthContext isLoading:', authIsLoading);
   
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -35,6 +37,8 @@ export default function LoginScreen() {
   
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log('🔍 LoginScreen - Estado atual:', { isLoading, formData, errors });
 
   // Atualizar campo do formulário
   const updateField = (field: keyof FormData, value: string) => {
@@ -48,15 +52,19 @@ export default function LoginScreen() {
 
   // Validar formulário
   const validateForm = async (): Promise<boolean> => {
+    console.log('🔵 LoginScreen - validateForm chamado');
     try {
       await loginSchema.validate(formData, { abortEarly: false });
+      console.log('🟢 LoginScreen - Validação passou');
       setErrors({});
       return true;
     } catch (error: any) {
+      console.log('🔴 LoginScreen - Erro na validação:', error);
       const newErrors: FormErrors = {};
       
       if (error.inner) {
         error.inner.forEach((err: any) => {
+          console.log('🔴 LoginScreen - Erro específico:', err.path, err.message);
           if (err.path) {
             newErrors[err.path as keyof FormErrors] = err.message;
           }
@@ -97,35 +105,54 @@ export default function LoginScreen() {
 
   // Fazer login
   const handleLogin = async () => {
+    console.log('🔵 LoginScreen - handleLogin chamado');
+    console.log('🔵 LoginScreen - Form data:', formData);
+    
     // Limpar erro geral anterior
     setErrors(prev => ({ ...prev, general: undefined }));
     
     // Validar formulário
     const isValid = await validateForm();
-    if (!isValid) return;
+    console.log('🔵 LoginScreen - Validação:', isValid);
+    
+    if (!isValid) {
+      console.log('🔴 LoginScreen - Validação falhou');
+      return;
+    }
 
+    console.log('🔵 LoginScreen - Iniciando login...');
     setIsLoading(true);
 
     try {
       const result = await login(formData);
+      console.log('🔵 LoginScreen - Resultado do login:', result);
       
       if (result.success) {
-        // Sucesso - o AuthContext vai lidar com a navegação
-        console.log('✅ Login realizado com sucesso');
+        // Sucesso - navegar diretamente para o app
+        console.log('✅ LoginScreen - Login realizado com sucesso, navegando para app');
+        
+        // Aguardar um momento para o estado ser atualizado
+        setTimeout(() => {
+          router.replace('/(app)');
+        }, 500);
+        
+        return;
       } else {
         // Erro de autenticação
+        console.log('🔴 LoginScreen - Erro no login:', result.error);
         setErrors(prev => ({
           ...prev,
           general: result.error || 'Erro ao fazer login',
         }));
       }
     } catch (error) {
-      console.error('Erro inesperado no login:', error);
+      console.error('🔴 LoginScreen - Erro inesperado no login:', error);
       setErrors(prev => ({
         ...prev,
         general: 'Erro inesperado. Tente novamente.',
       }));
     } finally {
+      console.log('🔵 LoginScreen - Finalizando loading');
       setIsLoading(false);
     }
   };
@@ -225,13 +252,36 @@ export default function LoginScreen() {
                 }}>
                   {errors.general}
                 </Text>
+                {errors.general.includes('não encontrado') && (
+                  <Text style={{
+                    fontSize: typography.fontSize.xs,
+                    color: colors.error[500],
+                    textAlign: 'center',
+                    marginTop: spacing[1],
+                  }}>
+                    Verifique se o email está correto ou cadastre-se primeiro.
+                  </Text>
+                )}
+                {errors.general.includes('incorreta') && (
+                  <Text style={{
+                    fontSize: typography.fontSize.xs,
+                    color: colors.error[500],
+                    textAlign: 'center',
+                    marginTop: spacing[1],
+                  }}>
+                    Verifique se a senha está correta.
+                  </Text>
+                )}
               </View>
             )}
 
             {/* Botão de login */}
             <Button
               title="Entrar"
-              onPress={handleLogin}
+              onPress={() => {
+                console.log('🔵 Botão pressionado!');
+                handleLogin();
+              }}
               isLoading={isLoading}
               style={{ marginBottom: spacing[6] }}
             />

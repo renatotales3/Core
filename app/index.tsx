@@ -1,7 +1,8 @@
-import { Redirect } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { useAuth } from '../src/context/AuthContext';
 import { colors } from '../src/constants/theme';
+import { useEffect } from 'react';
 
 export default function Index() {
   const { isLoading, isAuthenticated, hasCompletedOnboarding } = useAuth();
@@ -9,8 +10,30 @@ export default function Index() {
   console.log('🔍 Index - Estado atual:', {
     isLoading,
     isAuthenticated,
-    hasCompletedOnboarding
+    hasCompletedOnboarding,
+    timestamp: new Date().toISOString()
   });
+
+  // Efeito para forçar navegação quando estado muda
+  useEffect(() => {
+    if (!isLoading) {
+      console.log('🎯 Index - useEffect navegação:', {
+        isAuthenticated,
+        hasCompletedOnboarding
+      });
+      
+      if (isAuthenticated && hasCompletedOnboarding) {
+        console.log('🚀 Index - Forçando navegação para app via router.replace');
+        router.replace('/(app)');
+      } else if (isAuthenticated && !hasCompletedOnboarding) {
+        console.log('🚀 Index - Forçando navegação para onboarding via router.replace');
+        router.replace('/onboarding');
+      } else if (!isAuthenticated) {
+        console.log('🚀 Index - Forçando navegação para login via router.replace');
+        router.replace('/(auth)/login');
+      }
+    }
+  }, [isLoading, isAuthenticated, hasCompletedOnboarding]);
 
   // Mostrar loading enquanto verifica estado de autenticação
   if (isLoading) {
@@ -30,22 +53,23 @@ export default function Index() {
   }
 
   // Debug: mostrar estado atual
-  console.log('🎯 Index - Decidindo navegação:', {
+  console.log('🎯 Index - Decidindo navegação (fallback):', {
     hasCompletedOnboarding,
-    isAuthenticated
+    isAuthenticated,
+    timestamp: new Date().toISOString()
   });
 
-  // Lógica de navegação baseada no estado
-  if (!hasCompletedOnboarding) {
-    console.log('🏁 Redirecionando para onboarding');
-    return <Redirect href="/onboarding" />;
-  }
-
+  // Lógica de navegação baseada no estado (fallback)
   if (!isAuthenticated) {
-    console.log('🔐 Redirecionando para login');
+    console.log('🔐 Redirecionando para login - usuário não autenticado');
     return <Redirect href="/(auth)/login" />;
   }
 
-  console.log('📱 Redirecionando para app');
+  if (!hasCompletedOnboarding) {
+    console.log('🏁 Redirecionando para onboarding - onboarding não completado');
+    return <Redirect href="/onboarding" />;
+  }
+
+  console.log('📱 Redirecionando para app - usuário autenticado e onboarding completo');
   return <Redirect href="/(app)" />;
 }

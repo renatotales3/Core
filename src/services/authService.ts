@@ -113,6 +113,93 @@ class AuthService {
   }
 
   /**
+   * Registrar usuário (apenas registro, sem login automático)
+   */
+  async registerOnly(data: RegisterData): Promise<AuthResponse> {
+    try {
+      console.log('🔵 AuthService - Iniciando registro (sem login):', { email: data.email });
+
+      const { email, password, firstName, lastName } = data;
+
+      // Criar usuário no Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const firebaseUser = userCredential.user;
+
+      console.log('🟢 AuthService - Usuário criado no Firebase Auth:', firebaseUser.uid);
+
+      // Criar perfil do usuário
+      const userProfile: UserProfile = {
+        firstName,
+        lastName,
+        currency: 'BRL',
+        monthlyIncome: 0,
+        financialGoals: [],
+        notifications: {
+          dailyReminder: true,
+          weeklyReport: true,
+          goalMilestones: true,
+          expenseAlerts: true,
+          investmentUpdates: true,
+        },
+        theme: 'dark',
+      };
+
+      // Salvar dados do usuário no Firestore
+      const appUser: AppUser = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email!,
+        displayName: firebaseUser.displayName || null,
+        photoURL: firebaseUser.photoURL || null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        profile: userProfile,
+      };
+
+      console.log('🟡 AuthService - Salvando no Firestore:', { uid: appUser.uid });
+
+      // Preparar dados para o Firestore (remover campos undefined)
+      const firestoreData = {
+        uid: appUser.uid,
+        email: appUser.email,
+        ...(appUser.displayName && { displayName: appUser.displayName }),
+        ...(appUser.photoURL && { photoURL: appUser.photoURL }),
+        profile: userProfile,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+
+      await setDoc(doc(db, 'users', firebaseUser.uid), firestoreData);
+
+      console.log('🟢 AuthService - Dados salvos no Firestore');
+
+      // Criar categorias padrão para o usuário
+      try {
+        await firestoreService.createDefaultCategories(firebaseUser.uid);
+        console.log('🟢 AuthService - Categorias padrão criadas');
+      } catch (categoriesError) {
+        console.error('🔴 Erro ao criar categorias padrão:', categoriesError);
+        // Não falhar o registro por causa das categorias
+      }
+
+      // FAZER LOGOUT IMEDIATAMENTE APÓS O REGISTRO
+      await signOut(auth);
+      console.log('🟢 AuthService - Logout realizado após registro');
+
+      return {
+        success: true,
+        user: undefined, // Não retornar usuário pois foi feito logout
+      };
+    } catch (error) {
+      console.error('🔴 AuthService - Erro no registro:', error);
+      const authError = error as AuthError;
+      return {
+        success: false,
+        error: this.getErrorMessage(authError.code),
+      };
+    }
+  }
+
+  /**
    * Fazer login
    */
   async login(data: LoginData): Promise<AuthResponse> {
@@ -137,10 +224,20 @@ class AuthService {
       console.log('🟢 AuthService - Dados encontrados no Firestore');
 
       const userData = userDoc.data();
+      
+      // Verificar e converter timestamps com segurança
+      const createdAt = userData.createdAt ? 
+        (userData.createdAt as Timestamp).toDate() : 
+        new Date();
+      
+      const updatedAt = userData.updatedAt ? 
+        (userData.updatedAt as Timestamp).toDate() : 
+        new Date();
+
       const appUser: AppUser = {
         ...userData,
-        createdAt: (userData.createdAt as Timestamp).toDate(),
-        updatedAt: (userData.updatedAt as Timestamp).toDate(),
+        createdAt,
+        updatedAt,
       } as AppUser;
 
       console.log('🟢 AuthService - Login concluído com sucesso');
@@ -164,9 +261,13 @@ class AuthService {
    */
   async logout(): Promise<void> {
     try {
+      console.log('🟢 AuthService - logout INICIADO');
+      console.log('🔵 AuthService - Executando signOut...');
       await signOut(auth);
+      console.log('✅ AuthService - signOut CONCLUÍDO');
+      console.log('🟢 AuthService - logout FINALIZADO');
     } catch (error) {
-      console.error('Erro ao fazer logout:', error);
+      console.error('🔴 AuthService - Erro ao fazer logout:', error);
       throw error;
     }
   }
@@ -202,10 +303,20 @@ class AuthService {
       if (!userDoc.exists()) return null;
 
       const userData = userDoc.data();
+      
+      // Verificar e converter timestamps com segurança
+      const createdAt = userData.createdAt ? 
+        (userData.createdAt as Timestamp).toDate() : 
+        new Date();
+      
+      const updatedAt = userData.updatedAt ? 
+        (userData.updatedAt as Timestamp).toDate() : 
+        new Date();
+
       return {
         ...userData,
-        createdAt: (userData.createdAt as Timestamp).toDate(),
-        updatedAt: (userData.updatedAt as Timestamp).toDate(),
+        createdAt,
+        updatedAt,
       } as AppUser;
     } catch (error) {
       console.error('Erro ao buscar dados do usuário:', error);

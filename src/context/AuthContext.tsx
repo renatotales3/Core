@@ -17,6 +17,7 @@ interface AuthContextType extends AuthState {
   // Métodos de autenticação
   login: (data: LoginData) => Promise<AuthResponse>;
   register: (data: RegisterData) => Promise<AuthResponse>;
+  registerOnly: (data: RegisterData) => Promise<AuthResponse>;
   loginWithGoogle: () => Promise<AuthResponse>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<AuthResponse>;
@@ -45,11 +46,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     hasCompletedOnboarding: false,
   });
 
+  // Flag para ignorar onAuthStateChanged durante registro
+  const [isRegistering, setIsRegistering] = useState(false);
+
   // Verificar estado de onboarding na inicialização
   useEffect(() => {
     const checkOnboardingStatus = async () => {
       try {
-        // DEBUGGING: Vamos limpar tudo para garantir estado limpo
         console.log('🔍 AuthContext - Verificando onboarding...');
         
         const hasCompleted = await AsyncStorage.getItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
@@ -89,36 +92,57 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Monitor de estado de autenticação do Firebase
   useEffect(() => {
+    console.log('🔧 AuthContext - Configurando onAuthStateChanged listener');
+    
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: User | null) => {
       try {
-        console.log('🔍 AuthContext - Mudança de estado Firebase:', { 
+        console.log('🔍 AuthContext - onAuthStateChanged chamado:', { 
           uid: firebaseUser?.uid || 'null', 
-          email: firebaseUser?.email || 'null' 
+          email: firebaseUser?.email || 'null',
+          isRegistering,
+          timestamp: new Date().toISOString()
         });
 
+        // Ignorar mudanças durante o processo de registro
+        if (isRegistering) {
+          console.log('🟡 AuthContext - Ignorando onAuthStateChanged durante registro');
+          return;
+        }
+
         if (firebaseUser) {
-          console.log('🔵 AuthContext - Usuário logado, buscando dados...');
+          console.log('🔵 AuthContext - Usuário logado detectado pelo onAuthStateChanged, buscando dados...');
           // Usuário logado - buscar dados completos
           const userData = await authService.getCurrentUserData();
           
           if (userData) {
-            console.log('🟢 AuthContext - Dados do usuário carregados:', userData.uid);
+            console.log('🟢 AuthContext - Dados do usuário carregados via onAuthStateChanged:', userData.uid);
             // Salvar dados do usuário localmente
             await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
+            
+            // Auto-completar onboarding para usuários existentes no login
+            // (não para novos registros, apenas logins)
+            const currentOnboardingStatus = await AsyncStorage.getItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
+            if (currentOnboardingStatus !== 'true') {
+              console.log('🟡 AuthContext - Auto-completando onboarding para usuário existente via onAuthStateChanged');
+              await AsyncStorage.setItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING, 'true');
+            }
             
             setState(prev => ({
               ...prev,
               user: userData,
               isAuthenticated: true,
+              hasCompletedOnboarding: true, // Sempre true para usuários que fazem login
               isLoading: false,
             }));
+            
+            console.log('✅ AuthContext - Estado atualizado via onAuthStateChanged');
           } else {
             console.log('🔴 AuthContext - Dados do usuário não encontrados, fazendo logout');
             // Dados não encontrados - fazer logout
             await authService.logout();
           }
         } else {
-          console.log('🟡 AuthContext - Usuário não logado');
+          console.log('🟡 AuthContext - Usuário não logado detectado, resetando estado');
           // Usuário não logado
           await AsyncStorage.removeItem(STORAGE_KEYS.USER_DATA);
           
@@ -126,6 +150,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             ...prev,
             user: null,
             isAuthenticated: false,
+            hasCompletedOnboarding: false, // Resetar também o onboarding
             isLoading: false,
           }));
         }
@@ -138,20 +163,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     });
 
+    console.log('✅ AuthContext - onAuthStateChanged listener configurado');
     return unsubscribe;
-  }, []);
+  }, [isRegistering]);
 
   // Métodos de autenticação
   const login = async (data: LoginData): Promise<AuthResponse> => {
     setState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      console.log('🔵 AuthContext - Iniciando login');
+      console.log('🔵 AuthContext - Iniciando login com dados:', data);
       const response = await authService.login(data);
+      console.log('🔵 AuthContext - Resposta do authService:', response);
       
       if (response.success && response.user) {
-        console.log('🟢 AuthContext - Login realizado com sucesso');
-        // O estado será atualizado pelo onAuthStateChanged
+        console.log('🟢 AuthContext - Login realizado com sucesso, atualizando estado diretamente');
+        
+        // Auto-completar onboarding para login bem-sucedido
+        await AsyncStorage.setItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING, 'true');
+        await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(response.user));
+        
+        // Atualizar estado diretamente
+        setState(prev => ({
+          ...prev,
+          user: response.user!,
+          isAuthenticated: true,
+          hasCompletedOnboarding: true,
+          isLoading: false,
+        }));
+        
+        console.log('✅ AuthContext - Estado atualizado, usuário logado');
         return response;
       } else {
         console.log('🔴 AuthContext - Falha no login:', response.error);
@@ -169,15 +210,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const register = async (data: RegisterData): Promise<AuthResponse> => {
+    // Para manter compatibilidade, register agora chama registerOnly
+    return await registerOnly(data);
+  };
+
+  const registerOnly = async (data: RegisterData): Promise<AuthResponse> => {
     setState(prev => ({ ...prev, isLoading: true }));
-    
+    setIsRegistering(true); // Sinalizar que estamos registrando
+
     try {
-      console.log('🔵 AuthContext - Iniciando registro');
-      const response = await authService.register(data);
+      console.log('🔵 AuthContext - Iniciando registro (sem login)');
       
-      if (response.success && response.user) {
-        console.log('🟢 AuthContext - Registro realizado com sucesso');
-        // O estado será atualizado pelo onAuthStateChanged
+      // Garantir que onboarding não está marcado como concluído para novos usuários
+      await AsyncStorage.removeItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
+      
+      const response = await authService.registerOnly(data);
+
+      if (response.success) {
+        console.log('🟢 AuthContext - Registro realizado com sucesso (sem login)');
+        setState(prev => ({ 
+          ...prev, 
+          isLoading: false,
+          hasCompletedOnboarding: false, // Novos usuários precisam do onboarding
+        }));
         return response;
       } else {
         console.log('🔴 AuthContext - Falha no registro:', response.error);
@@ -191,16 +246,43 @@ export function AuthProvider({ children }: AuthProviderProps) {
         success: false,
         error: 'Erro inesperado durante o registro',
       };
+    } finally {
+      setIsRegistering(false); // Limpar flag de registro
     }
   };
 
   const logout = async (): Promise<void> => {
+    console.log('🟢 AuthContext - logout INICIADO');
     try {
+      console.log('🔵 AuthContext - Iniciando logout');
+      console.log('🔵 AuthContext - Chamando authService.logout()...');
+      
       await authService.logout();
-      // O estado será atualizado pelo onAuthStateChanged
+      
+      console.log('✅ AuthContext - authService.logout() CONCLUÍDO');
+      
+      // Resetar status de onboarding no logout para que próximo login vá direto para login
+      console.log('🔵 AuthContext - Removendo onboarding e user data do AsyncStorage...');
+      await AsyncStorage.removeItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
+      await AsyncStorage.removeItem(STORAGE_KEYS.USER_DATA);
+      console.log('🟡 AuthContext - Status de onboarding resetado');
+      
+      // Forçar atualização do estado imediatamente
+      console.log('🔵 AuthContext - Atualizando estado...');
+      setState({
+        user: null,
+        isLoading: false,
+        isAuthenticated: false,
+        hasCompletedOnboarding: false,
+      });
+      console.log('🟡 AuthContext - Estado resetado manualmente');
+      
+      console.log('✅ AuthContext - Logout realizado com sucesso');
     } catch (error) {
-      console.error('Erro durante logout:', error);
+      console.error('🔴 AuthContext - Erro no logout:', error);
+      throw error;
     }
+    console.log('🟢 AuthContext - logout FINALIZADO');
   };
 
   const resetPassword = async (email: string): Promise<AuthResponse> => {
@@ -273,34 +355,44 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Função para resetar completamente o app (útil para debugging)
   const resetApp = async (): Promise<void> => {
+    console.log('🟢 AuthContext - resetApp INICIADO');
     try {
       console.log('🔄 AuthContext - Resetando app completamente');
       
       // Fazer logout do Firebase
+      console.log('🔵 AuthContext - Chamando authService.logout() no reset...');
       await authService.logout();
+      console.log('✅ AuthContext - authService.logout() CONCLUÍDO no reset');
       
       // Limpar todo o AsyncStorage
+      console.log('🔵 AuthContext - Limpando AsyncStorage...');
       await AsyncStorage.removeItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
       await AsyncStorage.removeItem(STORAGE_KEYS.USER_DATA);
+      console.log('✅ AuthContext - AsyncStorage limpo');
       
       // Resetar estado
+      console.log('🔵 AuthContext - Resetando estado...');
       setState({
         user: null,
         isLoading: false,
         isAuthenticated: false,
         hasCompletedOnboarding: false,
       });
+      console.log('✅ AuthContext - Estado resetado');
       
       console.log('✅ AuthContext - App resetado com sucesso');
     } catch (error) {
       console.error('🔴 AuthContext - Erro ao resetar app:', error);
+      throw error;
     }
+    console.log('🟢 AuthContext - resetApp FINALIZADO');
   };
 
   const value: AuthContextType = {
     ...state,
     login,
     register,
+    registerOnly,
     loginWithGoogle,
     logout,
     resetPassword,
