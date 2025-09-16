@@ -1,73 +1,140 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-
-const { width, height } = Dimensions.get('window');
+import { useAuth } from '../../src/context/AuthContext';
+import { Button } from '../../src/components/ui';
+import { colors, spacing, typography } from '../../src/constants/theme';
 
 export default function OnboardingIndex() {
+  const { completeOnboarding } = useAuth();
+
+  const handleCompleteOnboarding = async () => {
+    await completeOnboarding();
+    router.replace('/');
+  };
+
   return (
-    <LinearGradient
-      colors={['#0A0A0F', '#131318', '#0A0A0F']}
-      style={{ flex: 1 }}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-      <View className="flex-1 justify-center items-center px-6">
-        {/* Logo/Icon Principal */}
-        <View className="w-32 h-32 bg-core-primary rounded-full justify-center items-center mb-8">
-          <Ionicons name="wallet" size={60} color="#0A0A0F" />
+    <SafeAreaView style={{ flex: 1 }}>
+      <LinearGradient
+        colors={[colors.background.primary, colors.background.secondary, colors.background.primary]}
+        style={{ flex: 1 }}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <View style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: spacing[6],
+        }}>
+          
+          {/* Logo/Icon Principal */}
+          <View style={{
+            width: 128,
+            height: 128,
+            backgroundColor: colors.primary[500],
+            borderRadius: 64,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: spacing[8],
+          }}>
+            <Text style={{ fontSize: 60 }}>💰</Text>
+          </View>
+
+          {/* Título Principal */}
+          <Text style={{
+            fontSize: typography.fontSize['4xl'],
+            fontWeight: 'bold',
+            color: colors.text.primary,
+            textAlign: 'center',
+            marginBottom: spacing[4],
+          }}>
+            Bem-vindo ao Core
+          </Text>
+
+          {/* Subtítulo */}
+          <Text style={{
+            fontSize: typography.fontSize.xl,
+            color: colors.text.secondary,
+            textAlign: 'center',
+            marginBottom: spacing[2],
+          }}>
+            No centro das suas finanças
+          </Text>
+
+          {/* Descrição */}
+          <Text style={{
+            fontSize: typography.fontSize.base,
+            color: colors.text.tertiary,
+            textAlign: 'center',
+            marginBottom: spacing[12],
+            lineHeight: typography.lineHeight.base * 1.3,
+          }}>
+            Controle total sobre seu dinheiro com design moderno e funcionalidades inteligentes
+          </Text>
+
+          {/* Funcionalidades */}
+          <View style={{ marginBottom: spacing[12], width: '100%' }}>
+            {[
+              { icon: '📊', title: 'Dashboard Inteligente', desc: 'Visão completa das suas finanças' },
+              { icon: '💳', title: 'Controle de Gastos', desc: 'Organize e categorize transações' },
+              { icon: '📈', title: 'Investimentos', desc: 'Acompanhe seu portfólio' },
+              { icon: '🎯', title: 'Metas Financeiras', desc: 'Defina e alcance objetivos' },
+            ].map((item, index) => (
+              <View key={index} style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: spacing[4],
+                paddingHorizontal: spacing[4],
+              }}>
+                <Text style={{ fontSize: 24, marginRight: spacing[3] }}>{item.icon}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={{
+                    fontSize: typography.fontSize.base,
+                    fontWeight: '600',
+                    color: colors.text.primary,
+                    marginBottom: spacing[1],
+                  }}>
+                    {item.title}
+                  </Text>
+                  <Text style={{
+                    fontSize: typography.fontSize.sm,
+                    color: colors.text.secondary,
+                  }}>
+                    {item.desc}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          {/* Botão Começar */}
+          <Button
+            title="Começar jornada 🚀"
+            onPress={handleCompleteOnboarding}
+            fullWidth
+            size="lg"
+          />
+
+          {/* Indicador */}
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: spacing[8],
+            gap: spacing[2],
+          }}>
+            {[0, 1, 2, 3].map((item, index) => (
+              <View key={index} style={{
+                width: 12,
+                height: 12,
+                borderRadius: 6,
+                backgroundColor: index === 0 ? colors.primary[500] : colors.border.primary,
+              }} />
+            ))}
+          </View>
         </View>
-
-        {/* Título Principal */}
-        <Text className="text-4xl font-bold text-core-text-primary text-center mb-4">
-          Bem-vindo ao Core
-        </Text>
-
-        {/* Subtítulo */}
-        <Text className="text-xl text-core-text-secondary text-center mb-2">
-          No centro das suas finanças
-        </Text>
-
-        {/* Descrição */}
-        <Text className="text-base text-core-text-muted text-center mb-12 leading-6">
-          Controle total sobre seu dinheiro com design moderno e funcionalidades inteligentes
-        </Text>
-
-        {/* Botão Começar */}
-        <TouchableOpacity
-          onPress={() => router.push('/onboarding/step1')}
-          className="w-full"
-        >
-          <LinearGradient
-            colors={['#00D4AA', '#6C5CE7']}
-            style={{
-              paddingVertical: 16,
-              paddingHorizontal: 32,
-              borderRadius: 16,
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <Text className="text-lg font-semibold text-white mr-2">
-              Começar
-            </Text>
-            <Ionicons name="arrow-forward" size={20} color="white" />
-          </LinearGradient>
-        </TouchableOpacity>
-
-        {/* Indicador de páginas */}
-        <View className="flex-row justify-center mt-8 space-x-2">
-          <View className="w-3 h-3 bg-core-primary rounded-full" />
-          <View className="w-3 h-3 bg-core-border rounded-full" />
-          <View className="w-3 h-3 bg-core-border rounded-full" />
-          <View className="w-3 h-3 bg-core-border rounded-full" />
-        </View>
-      </View>
-    </LinearGradient>
+      </LinearGradient>
+    </SafeAreaView>
   );
 }
