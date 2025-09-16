@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, Card } from '../../src/components/ui';
+import { Button, Input, Card, Icon } from '../../src/components/ui';
 import { colors, spacing, typography } from '../../src/constants/theme';
 import { resetPasswordSchema } from '../../src/utils/validation';
 
@@ -96,9 +96,17 @@ export default function ResetPasswordScreen() {
           justifyContent: 'center',
         }}>
           <Card padding="lg" style={{ alignItems: 'center' }}>
-            <Text style={{ fontSize: 48, marginBottom: spacing[4] }}>
-              📧
-            </Text>
+            <View style={{
+              width: 80,
+              height: 80,
+              borderRadius: 40,
+              backgroundColor: colors.success[50],
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: spacing[4],
+            }}>
+              <Icon name="email" size={40} color={colors.success[600]} />
+            </View>
             
             <Text style={{
               fontSize: typography.fontSize['2xl'],
@@ -155,15 +163,32 @@ export default function ResetPasswordScreen() {
             
             {/* Header */}
             <View style={{ marginBottom: spacing[10] }}>
-              <Text style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: 'bold',
-                color: colors.text.primary,
-                textAlign: 'center',
-                marginBottom: spacing[2],
+              <View style={{
+                alignItems: 'center',
+                marginBottom: spacing[6],
               }}>
-                Esqueceu a senha? 🔐
-              </Text>
+                <View style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: 32,
+                  backgroundColor: colors.primary[50],
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: spacing[4],
+                }}>
+                  <Icon name="password" size={32} color={colors.primary[500]} />
+                </View>
+                
+                <Text style={{
+                  fontSize: typography.fontSize['3xl'],
+                  fontWeight: 'bold',
+                  color: colors.text.primary,
+                  textAlign: 'center',
+                  marginBottom: spacing[2],
+                }}>
+                  Esqueceu a senha?
+                </Text>
+              </View>
               
               <Text style={{
                 fontSize: typography.fontSize.lg,
@@ -187,6 +212,7 @@ export default function ResetPasswordScreen() {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoComplete="email"
+                leftIcon={<Icon name="email" size={20} color={colors.text.tertiary} />}
                 containerStyle={{ marginBottom: spacing[6] }}
               />
 

@@ -26,7 +26,7 @@ interface FormErrors {
 }
 
 export default function LoginScreen() {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -65,6 +65,33 @@ export default function LoginScreen() {
       
       setErrors(newErrors);
       return false;
+    }
+  };
+
+  // Fazer login com Google
+  const handleGoogleLogin = async () => {
+    try {
+      setIsLoading(true);
+      setErrors(prev => ({ ...prev, general: undefined }));
+      
+      const result = await loginWithGoogle();
+      
+      if (result.success) {
+        console.log('✅ Login com Google realizado com sucesso');
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          general: result.error || 'Erro ao fazer login com Google',
+        }));
+      }
+    } catch (error) {
+      console.error('Erro inesperado no login com Google:', error);
+      setErrors(prev => ({
+        ...prev,
+        general: 'Erro inesperado. Tente novamente.',
+      }));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -236,44 +263,16 @@ export default function LoginScreen() {
             }} />
           </View>
 
-          {/* Botões de login social */}
+          {/* Botão de login social */}
           <View style={{ marginBottom: spacing[8] }}>
-            {/* Continue with Apple */}
-            <Button
-              title="Continuar com Apple"
-              variant="social"
-              socialType="apple"
-              leftIcon={<SocialIcon type="apple" color={colors.text.inverse} />}
-              style={{ marginBottom: spacing[3] }}
-              onPress={() => {
-                // TODO: Implementar login com Apple
-                console.log('Login com Apple');
-              }}
-            />
-
             {/* Continue with Google */}
             <Button
               title="Continuar com Google"
               variant="social"
               socialType="google"
               leftIcon={<SocialIcon type="google" color={colors.text.primary} />}
-              style={{ marginBottom: spacing[3] }}
-              onPress={() => {
-                // TODO: Implementar login com Google
-                console.log('Login com Google');
-              }}
-            />
-
-            {/* Continue with Facebook */}
-            <Button
-              title="Continuar com Facebook"
-              variant="social"
-              socialType="facebook"
-              leftIcon={<SocialIcon type="facebook" color={colors.text.inverse} />}
-              onPress={() => {
-                // TODO: Implementar login com Facebook
-                console.log('Login com Facebook');
-              }}
+              onPress={handleGoogleLogin}
+              isLoading={isLoading}
             />
           </View>
 

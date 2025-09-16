@@ -17,6 +17,7 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import firestoreService from './firestoreService';
+import { signInWithGoogle } from './googleAuthService';
 import { AppUser, RegisterData, LoginData, AuthResponse, UserProfile } from '../types/auth';
 
 class AuthService {
@@ -225,6 +226,109 @@ class AuthService {
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
       return false;
+    }
+  }
+
+  /**
+   * Login com Google
+   */
+  async loginWithGoogle(): Promise<AuthResponse> {
+    try {
+      console.log('🔵 AuthService - Iniciando login com Google');
+      
+      const result = await signInWithGoogle();
+      
+      if (!result.success) {
+        console.log('🔴 AuthService - Falha no login com Google:', result.error);
+        return {
+          success: false,
+          error: result.error || 'Erro no login com Google',
+        };
+      }
+
+      // Verificar se é redirecionamento (web)
+      if (result.redirecting) {
+        console.log('🔄 AuthService - Redirecionando para Google...');
+        return {
+          success: true,
+          redirecting: true,
+        };
+      }
+
+      if (!result.user) {
+        return {
+          success: false,
+          error: 'Usuário não recebido do Google',
+        };
+      }
+
+      const firebaseUser = result.user;
+      console.log('🟢 AuthService - Login com Google realizado:', firebaseUser.uid);
+
+      // Verificar se o usuário já existe no Firestore
+      const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+      
+      if (!userDoc.exists()) {
+        console.log('🟡 AuthService - Criando perfil para usuário do Google');
+        
+        // Criar perfil padrão para usuário do Google
+        const displayName = firebaseUser.displayName || '';
+        const [firstName = '', lastName = ''] = displayName.split(' ');
+        
+        const defaultProfile: UserProfile = {
+          firstName: firstName || 'Usuário',
+          lastName: lastName || 'Google',
+          currency: 'BRL',
+          monthlyIncome: 0,
+          notifications: {
+            dailyReminder: true,
+            weeklyReport: true,
+            goalMilestones: true,
+            expenseAlerts: true,
+            investmentUpdates: true,
+          },
+          theme: 'system' as const,
+        };
+
+        const userData: AppUser = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email!,
+          profile: defaultProfile,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        await setDoc(doc(db, 'users', firebaseUser.uid), userData);
+        console.log('🟢 AuthService - Perfil criado para usuário do Google');
+        
+        return {
+          success: true,
+          user: userData,
+        };
+      } else {
+        // Usuário já existe, buscar dados completos
+        const userData = await this.getCurrentUserData();
+        
+        if (!userData) {
+          console.log('🔴 AuthService - Erro ao buscar dados do usuário');
+          return {
+            success: false,
+            error: 'Erro ao carregar dados do usuário',
+          };
+        }
+
+        console.log('🟢 AuthService - Login com Google concluído');
+        return {
+          success: true,
+          user: userData,
+        };
+      }
+    } catch (error: any) {
+      console.error('🔴 AuthService - Erro no login com Google:', error);
+      return {
+        success: false,
+        error: this.getErrorMessage(error),
+      };
     }
   }
 

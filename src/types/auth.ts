@@ -76,4 +76,5 @@ export interface AuthResponse {
   success: boolean;
   user?: AppUser;
   error?: string;
+  redirecting?: boolean;
 }

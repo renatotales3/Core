@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { auth } from '../services/firebase';
 import authService from '../services/authService';
+import { getRedirectResult } from 'firebase/auth';
 import { AppUser, AuthState, LoginData, RegisterData, AuthResponse } from '../types/auth';
 
 // Constantes para AsyncStorage
@@ -15,6 +17,7 @@ interface AuthContextType extends AuthState {
   // Métodos de autenticação
   login: (data: LoginData) => Promise<AuthResponse>;
   register: (data: RegisterData) => Promise<AuthResponse>;
+  loginWithGoogle: () => Promise<AuthResponse>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<AuthResponse>;
   
@@ -62,6 +65,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     checkOnboardingStatus();
+  }, []);
+
+  // Verificar resultado de redirecionamento do Google Sign-In (apenas Web)
+  useEffect(() => {
+    const checkRedirectResult = async () => {
+      if (Platform.OS === 'web') {
+        try {
+          console.log('🔍 AuthContext - Verificando resultado de redirecionamento...');
+          const result = await getRedirectResult(auth);
+          if (result) {
+            console.log('🟢 AuthContext - Login com Google via redirecionamento bem-sucedido');
+            // O estado será atualizado pelo onAuthStateChanged
+          }
+        } catch (error) {
+          console.error('🔴 AuthContext - Erro no resultado de redirecionamento:', error);
+        }
+      }
+    };
+
+    checkRedirectResult();
   }, []);
 
   // Monitor de estado de autenticação do Firebase
@@ -184,6 +207,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return await authService.resetPassword(email);
   };
 
+  const loginWithGoogle = async (): Promise<AuthResponse> => {
+    setState(prev => ({ ...prev, isLoading: true }));
+    
+    try {
+      console.log('🔵 AuthContext - Iniciando login com Google');
+      const response = await authService.loginWithGoogle();
+      
+      if (response.success) {
+        if (response.redirecting) {
+          console.log('🔄 AuthContext - Redirecionando para login com Google...');
+          // Para web, retornar sucesso mas não atualizar estado ainda
+          // O estado será atualizado quando a página recarregar e o redirecionamento for processado
+          return response;
+        } else if (response.user) {
+          console.log('🟢 AuthContext - Login com Google realizado com sucesso');
+          // O estado será atualizado pelo onAuthStateChanged
+          return response;
+        }
+      }
+      
+      console.log('🔴 AuthContext - Falha no login com Google:', response.error);
+      setState(prev => ({ ...prev, isLoading: false }));
+      return response;
+    } catch (error) {
+      console.error('🔴 AuthContext - Erro inesperado no login com Google:', error);
+      setState(prev => ({ ...prev, isLoading: false }));
+      return {
+        success: false,
+        error: 'Erro inesperado durante o login com Google',
+      };
+    }
+  };
+
   // Métodos de onboarding
   const completeOnboarding = async (): Promise<void> => {
     try {
@@ -245,6 +301,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     ...state,
     login,
     register,
+    loginWithGoogle,
     logout,
     resetPassword,
     completeOnboarding,
