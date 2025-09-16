@@ -9,6 +9,7 @@ import {
   TextStyle,
 } from 'react-native';
 import { colors, typography, spacing, borderRadius } from '../../constants/theme';
+import { Icon } from './Icon';
 
 export interface InputProps extends Omit<TextInputProps, 'style'> {
   label?: string;
@@ -119,9 +120,11 @@ const Input = forwardRef<TextInput, InputProps>(({
             style={{ marginLeft: spacing[2] }}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Text style={{ color: colors.text.secondary, fontSize: 16 }}>
-              {isPasswordVisible ? '👁️' : '👁️‍🗨️'}
-            </Text>
+            <Icon 
+              name={isPasswordVisible ? 'eye-off' : 'eye'} 
+              size={20} 
+              color={colors.text.secondary} 
+            />
           </TouchableOpacity>
         )}
         

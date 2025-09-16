@@ -6,11 +6,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, Card } from '../../src/components/ui';
-import { colors, spacing, typography } from '../../src/constants/theme';
+import { Button, Input, Icon, Card } from '../../src/components/ui';
+import { colors, spacing, typography, borderRadius } from '../../src/constants/theme';
 import { registerSchema } from '../../src/utils/validation';
 
 interface FormData {
@@ -61,230 +62,238 @@ export default function RegisterScreen() {
       setErrors({});
       return true;
     } catch (error: any) {
-      const formErrors: FormErrors = {};
+      const newErrors: FormErrors = {};
       
-      error.inner?.forEach((err: any) => {
-        if (err.path) {
-          formErrors[err.path as keyof FormErrors] = err.message;
-        }
-      });
+      if (error.inner) {
+        error.inner.forEach((err: any) => {
+          if (err.path) {
+            newErrors[err.path as keyof FormErrors] = err.message;
+          }
+        });
+      }
       
-      setErrors(formErrors);
+      setErrors(newErrors);
       return false;
     }
   };
 
-  // Criar conta
+  // Fazer registro
   const handleRegister = async () => {
+    // Limpar erro geral anterior
+    setErrors(prev => ({ ...prev, general: undefined }));
+    
     // Validar formulário
     const isValid = await validateForm();
     if (!isValid) return;
 
     setIsLoading(true);
-    setErrors({});
 
     try {
-      const response = await register({
-        firstName: formData.firstName.trim(),
-        lastName: formData.lastName.trim(),
-        email: formData.email.trim().toLowerCase(),
+      const result = await register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
         password: formData.password,
       });
       
-      if (response.success) {
-        // Registro bem-sucedido - navegação será feita automaticamente pelo AuthContext
-        router.replace('/');
+      if (result.success) {
+        // Sucesso - o AuthContext vai lidar com a navegação
+        console.log('✅ Registro realizado com sucesso');
       } else {
-        setErrors({ general: response.error });
+        // Erro de autenticação
+        setErrors(prev => ({
+          ...prev,
+          general: result.error || 'Erro ao criar conta',
+        }));
       }
     } catch (error) {
-      setErrors({ general: 'Erro inesperado. Tente novamente.' });
+      console.error('Erro inesperado no registro:', error);
+      setErrors(prev => ({
+        ...prev,
+        general: 'Erro inesperado. Tente novamente.',
+      }));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
-      <KeyboardAvoidingView 
-        style={{ flex: 1 }} 
+    <SafeAreaView style={{ 
+      flex: 1, 
+      backgroundColor: colors.background.primary 
+    }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <ScrollView 
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={{
-            flex: 1,
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
             paddingHorizontal: spacing[6],
             paddingTop: spacing[12],
             paddingBottom: spacing[8],
-          }}>
-            
-            {/* Header */}
-            <View style={{ marginBottom: spacing[8] }}>
-              <Text style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: 'bold',
-                color: colors.text.primary,
-                textAlign: 'center',
-                marginBottom: spacing[2],
-              }}>
-                Criar conta 🚀
-              </Text>
-              
-              <Text style={{
-                fontSize: typography.fontSize.lg,
-                color: colors.text.secondary,
-                textAlign: 'center',
-                lineHeight: typography.lineHeight.lg,
-              }}>
-                Comece sua jornada para organizar suas finanças
-              </Text>
-            </View>
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <View style={{ alignItems: 'center', marginBottom: spacing[10] }}>
+            <Text style={{
+              fontSize: typography.fontSize['3xl'],
+              fontWeight: '700',
+              color: colors.text.primary,
+              marginBottom: spacing[2],
+            }}>
+              Criar conta
+            </Text>
+            <Text style={{
+              fontSize: typography.fontSize.base,
+              color: colors.text.secondary,
+              textAlign: 'center',
+            }}>
+              Comece sua jornada para organizar suas finanças
+            </Text>
+          </View>
 
-            {/* Form */}
-            <Card padding="lg" style={{ marginBottom: spacing[6] }}>
-              {/* Nome */}
-              <View style={{
-                flexDirection: 'row',
-                marginBottom: spacing[4],
-                gap: spacing[3],
-              }}>
-                <View style={{ flex: 1 }}>
-                  <Input
-                    label="Nome"
-                    placeholder="João"
-                    value={formData.firstName}
-                    onChangeText={(value) => updateField('firstName', value)}
-                    error={errors.firstName}
-                    autoCapitalize="words"
-                    autoComplete="given-name"
-                  />
-                </View>
-                
-                <View style={{ flex: 1 }}>
-                  <Input
-                    label="Sobrenome"
-                    placeholder="Silva"
-                    value={formData.lastName}
-                    onChangeText={(value) => updateField('lastName', value)}
-                    error={errors.lastName}
-                    autoCapitalize="words"
-                    autoComplete="family-name"
-                  />
-                </View>
-              </View>
-
-              {/* Email */}
-              <Input
-                label="Email"
-                placeholder="seu@email.com"
-                value={formData.email}
-                onChangeText={(value) => updateField('email', value)}
-                error={errors.email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-                containerStyle={{ marginBottom: spacing[4] }}
-              />
-
-              {/* Senha */}
-              <Input
-                label="Senha"
-                placeholder="Mínimo 6 caracteres"
-                value={formData.password}
-                onChangeText={(value) => updateField('password', value)}
-                error={errors.password}
-                isPassword
-                autoComplete="new-password"
-                containerStyle={{ marginBottom: spacing[4] }}
-                helperText="Deve conter: 1 minúscula, 1 maiúscula e 1 número"
-              />
-
-              {/* Confirmar Senha */}
-              <Input
-                label="Confirmar Senha"
-                placeholder="Digite a senha novamente"
-                value={formData.confirmPassword}
-                onChangeText={(value) => updateField('confirmPassword', value)}
-                error={errors.confirmPassword}
-                isPassword
-                autoComplete="new-password"
-                containerStyle={{ marginBottom: spacing[6] }}
-              />
-
-              {/* Erro geral */}
-              {errors.general && (
-                <View style={{
-                  backgroundColor: colors.error[50],
-                  padding: spacing[3],
-                  borderRadius: 8,
-                  marginBottom: spacing[4],
-                }}>
-                  <Text style={{
-                    color: colors.error[700],
-                    fontSize: typography.fontSize.sm,
-                    textAlign: 'center',
-                  }}>
-                    {errors.general}
-                  </Text>
-                </View>
-              )}
-
-              {/* Botão de Registro */}
-              <Button
-                title="Criar conta"
-                onPress={handleRegister}
-                isLoading={isLoading}
-                fullWidth
-                size="lg"
-              />
-
-              {/* Termos */}
-              <Text style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.text.tertiary,
-                textAlign: 'center',
-                marginTop: spacing[4],
-                lineHeight: typography.lineHeight.xs * 1.3,
-              }}>
-                Ao criar sua conta, você concorda com nossos{' '}
-                <Text style={{ color: colors.primary[500] }}>
-                  Termos de Uso
-                </Text>
-                {' '}e{' '}
-                <Text style={{ color: colors.primary[500] }}>
-                  Política de Privacidade
-                </Text>
-              </Text>
-            </Card>
-
-            {/* Footer */}
+          {/* Formulário */}
+          <View style={{ marginBottom: spacing[8] }}>
+            {/* Nome e Sobrenome */}
             <View style={{
               flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 'auto',
+              marginBottom: spacing[4],
+              gap: spacing[3],
             }}>
-              <Text style={{
-                color: colors.text.secondary,
-                fontSize: typography.fontSize.base,
-              }}>
-                Já tem uma conta? {' '}
-              </Text>
+              <View style={{ flex: 1 }}>
+                <Input
+                  label="Nome"
+                  placeholder="João"
+                  value={formData.firstName}
+                  onChangeText={(value) => updateField('firstName', value)}
+                  error={errors.firstName}
+                  autoCapitalize="words"
+                  leftIcon={<Icon name="user" size={20} color={colors.text.tertiary} />}
+                />
+              </View>
               
-              <Link href="/(auth)/login" asChild>
+              <View style={{ flex: 1 }}>
+                <Input
+                  label="Sobrenome"
+                  placeholder="Silva"
+                  value={formData.lastName}
+                  onChangeText={(value) => updateField('lastName', value)}
+                  error={errors.lastName}
+                  autoCapitalize="words"
+                  leftIcon={<Icon name="user" size={20} color={colors.text.tertiary} />}
+                />
+              </View>
+            </View>
+
+            {/* Email */}
+            <Input
+              label="E-mail"
+              placeholder="seu@email.com"
+              value={formData.email}
+              onChangeText={(value) => updateField('email', value)}
+              error={errors.email}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              leftIcon={<Icon name="email" size={20} color={colors.text.tertiary} />}
+              style={{ marginBottom: spacing[4] }}
+            />
+
+            {/* Senha */}
+            <Input
+              label="Senha"
+              placeholder="Mínimo 6 caracteres"
+              value={formData.password}
+              onChangeText={(value) => updateField('password', value)}
+              error={errors.password}
+              isPassword
+              leftIcon={<Icon name="password" size={20} color={colors.text.tertiary} />}
+              helperText="Deve conter: 1 minúscula, 1 maiúscula e 1 número"
+              style={{ marginBottom: spacing[4] }}
+            />
+
+            {/* Confirmar Senha */}
+            <Input
+              label="Confirmar Senha"
+              placeholder="Digite a senha novamente"
+              value={formData.confirmPassword}
+              onChangeText={(value) => updateField('confirmPassword', value)}
+              error={errors.confirmPassword}
+              isPassword
+              leftIcon={<Icon name="password" size={20} color={colors.text.tertiary} />}
+              style={{ marginBottom: spacing[6] }}
+            />
+
+            {/* Erro geral */}
+            {errors.general && (
+              <View style={{
+                padding: spacing[3],
+                backgroundColor: colors.error[50],
+                borderRadius: borderRadius.lg,
+                marginBottom: spacing[4],
+              }}>
                 <Text style={{
+                  fontSize: typography.fontSize.sm,
+                  color: colors.error[600],
+                  textAlign: 'center',
+                }}>
+                  {errors.general}
+                </Text>
+              </View>
+            )}
+
+            {/* Botão de registro */}
+            <Button
+              title="Criar conta"
+              onPress={handleRegister}
+              isLoading={isLoading}
+              fullWidth
+              size="lg"
+            />
+          </View>
+
+          {/* Link para login */}
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: spacing[8],
+          }}>
+            <Text style={{
+              fontSize: typography.fontSize.sm,
+              color: colors.text.secondary,
+            }}>
+              Já tem uma conta?{' '}
+            </Text>
+            <Link href="/(auth)/login" asChild>
+              <TouchableOpacity>
+                <Text style={{
+                  fontSize: typography.fontSize.sm,
                   color: colors.primary[500],
-                  fontSize: typography.fontSize.base,
                   fontWeight: '600',
                 }}>
                   Fazer login
                 </Text>
-              </Link>
-            </View>
+              </TouchableOpacity>
+            </Link>
+          </View>
+
+          {/* Footer de termos */}
+          <View style={{
+            paddingHorizontal: spacing[4],
+          }}>
+            <Text style={{
+              fontSize: typography.fontSize.xs,
+              color: colors.text.tertiary,
+              textAlign: 'center',
+              lineHeight: typography.lineHeight.sm,
+            }}>
+              Ao criar uma conta, você concorda com nossos{' '}
+              <Text style={{ color: colors.primary[500] }}>Termos & Condições</Text>
+              {' '}e{' '}
+              <Text style={{ color: colors.primary[500] }}>Política de Privacidade</Text>
+            </Text>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

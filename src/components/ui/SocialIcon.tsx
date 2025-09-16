@@ -1,30 +1,14 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Icon } from './Icon';
 
 interface SocialIconProps {
   type: 'apple' | 'google' | 'facebook';
   size?: number;
+  color?: string;
 }
 
-const SocialIcon: React.FC<SocialIconProps> = ({ type, size = 20 }) => {
-  const getIcon = () => {
-    switch (type) {
-      case 'apple':
-        return '🍎';
-      case 'google':
-        return 'G';
-      case 'facebook':
-        return 'f';
-      default:
-        return '🔗';
-    }
-  };
-
-  return (
-    <Text style={{ fontSize: size, fontWeight: 'bold' }}>
-      {getIcon()}
-    </Text>
-  );
+const SocialIcon: React.FC<SocialIconProps> = ({ type, size = 20, color }) => {
+  return <Icon name={type} size={size} color={color} />;
 };
 
 export default SocialIcon;

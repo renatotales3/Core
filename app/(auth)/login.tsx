@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, SocialIcon } from '../../src/components/ui';
+import { Button, Input, SocialIcon, Icon } from '../../src/components/ui';
 import { colors, spacing, typography, borderRadius } from '../../src/constants/theme';
 import { loginSchema } from '../../src/utils/validation';
 
@@ -129,14 +129,14 @@ export default function LoginScreen() {
               color: colors.text.primary,
               marginBottom: spacing[2],
             }}>
-              Welcome back
+              Bem-vindo de volta
             </Text>
             <Text style={{
               fontSize: typography.fontSize.base,
               color: colors.text.secondary,
               textAlign: 'center',
             }}>
-              Sign in to your account to continue
+              Entre na sua conta para continuar
             </Text>
           </View>
 
@@ -144,25 +144,27 @@ export default function LoginScreen() {
           <View style={{ marginBottom: spacing[8] }}>
             {/* Email */}
             <Input
-              label="Email"
-              placeholder="Enter your email"
+              label="E-mail"
+              placeholder="Digite seu e-mail"
               value={formData.email}
               onChangeText={(value) => updateField('email', value)}
               error={errors.email}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              leftIcon={<Icon name="email" size={20} color={colors.text.tertiary} />}
               style={{ marginBottom: spacing[4] }}
             />
 
             {/* Senha */}
             <Input
-              label="Password"
-              placeholder="Enter your password"
+              label="Senha"
+              placeholder="Digite sua senha"
               value={formData.password}
               onChangeText={(value) => updateField('password', value)}
               error={errors.password}
               isPassword
+              leftIcon={<Icon name="password" size={20} color={colors.text.tertiary} />}
               style={{ marginBottom: spacing[2] }}
             />
 
@@ -175,7 +177,7 @@ export default function LoginScreen() {
                     color: colors.primary[500],
                     fontWeight: '500',
                   }}>
-                    Forgot password?
+                    Esqueceu a senha?
                   </Text>
                 </TouchableOpacity>
               </Link>
@@ -201,7 +203,7 @@ export default function LoginScreen() {
 
             {/* Botão de login */}
             <Button
-              title="Sign in"
+              title="Entrar"
               onPress={handleLogin}
               isLoading={isLoading}
               style={{ marginBottom: spacing[6] }}
@@ -225,7 +227,7 @@ export default function LoginScreen() {
               color: colors.text.tertiary,
               fontWeight: '500',
             }}>
-              OR
+              OU
             </Text>
             <View style={{
               flex: 1,
@@ -238,10 +240,10 @@ export default function LoginScreen() {
           <View style={{ marginBottom: spacing[8] }}>
             {/* Continue with Apple */}
             <Button
-              title="Continue with Apple"
+              title="Continuar com Apple"
               variant="social"
               socialType="apple"
-              leftIcon={<SocialIcon type="apple" />}
+              leftIcon={<SocialIcon type="apple" color={colors.text.inverse} />}
               style={{ marginBottom: spacing[3] }}
               onPress={() => {
                 // TODO: Implementar login com Apple
@@ -251,10 +253,10 @@ export default function LoginScreen() {
 
             {/* Continue with Google */}
             <Button
-              title="Continue with Google"
+              title="Continuar com Google"
               variant="social"
               socialType="google"
-              leftIcon={<SocialIcon type="google" />}
+              leftIcon={<SocialIcon type="google" color={colors.text.primary} />}
               style={{ marginBottom: spacing[3] }}
               onPress={() => {
                 // TODO: Implementar login com Google
@@ -264,10 +266,10 @@ export default function LoginScreen() {
 
             {/* Continue with Facebook */}
             <Button
-              title="Continue with Facebook"
+              title="Continuar com Facebook"
               variant="social"
               socialType="facebook"
-              leftIcon={<SocialIcon type="facebook" />}
+              leftIcon={<SocialIcon type="facebook" color={colors.text.inverse} />}
               onPress={() => {
                 // TODO: Implementar login com Facebook
                 console.log('Login com Facebook');
@@ -285,7 +287,7 @@ export default function LoginScreen() {
               fontSize: typography.fontSize.sm,
               color: colors.text.secondary,
             }}>
-              Don't have an account?{' '}
+              Não tem uma conta?{' '}
             </Text>
             <Link href="/(auth)/register" asChild>
               <TouchableOpacity>
@@ -294,7 +296,7 @@ export default function LoginScreen() {
                   color: colors.primary[500],
                   fontWeight: '600',
                 }}>
-                  Sign up
+                  Cadastre-se
                 </Text>
               </TouchableOpacity>
             </Link>
@@ -311,10 +313,10 @@ export default function LoginScreen() {
               textAlign: 'center',
               lineHeight: typography.lineHeight.sm,
             }}>
-              By signing in, you agree to our{' '}
-              <Text style={{ color: colors.primary[500] }}>Terms & Conditions</Text>
-              {' '}and{' '}
-              <Text style={{ color: colors.primary[500] }}>Privacy Policy</Text>
+              Ao entrar, você concorda com nossos{' '}
+              <Text style={{ color: colors.primary[500] }}>Termos & Condições</Text>
+              {' '}e{' '}
+              <Text style={{ color: colors.primary[500] }}>Política de Privacidade</Text>
             </Text>
           </View>
         </ScrollView>
