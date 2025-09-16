@@ -3,15 +3,16 @@ import {
   TouchableOpacity,
   Text,
   ActivityIndicator,
-  TouchableOpacityProps,
   ViewStyle,
   TextStyle,
+  TouchableOpacityProps,
+  View,
 } from 'react-native';
-import { colors, typography, spacing, borderRadius } from '../../constants/theme';
+import { colors, typography, spacing, borderRadius, shadows } from '../../constants/theme';
 
 export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   title: string;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'social' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   isDisabled?: boolean;
@@ -20,9 +21,10 @@ export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   rightIcon?: React.ReactNode;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  socialType?: 'apple' | 'google' | 'facebook';
 }
 
-export default function Button({
+const Button: React.FC<ButtonProps> = ({
   title,
   variant = 'primary',
   size = 'md',
@@ -33,108 +35,143 @@ export default function Button({
   rightIcon,
   style,
   textStyle,
+  socialType,
   onPress,
   ...props
-}: ButtonProps) {
-  const disabled = isDisabled || isLoading;
+}) => {
+  const isDisabledOrLoading = isDisabled || isLoading;
 
-  // Estilos do container
-  const containerStyle: ViewStyle = {
+  // Estilos base do botão
+  const buttonStyle: ViewStyle = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: borderRadius.lg,
-    ...getVariantStyles(variant, disabled),
+    borderRadius: borderRadius.xl,
+    ...getVariantStyles(variant, socialType),
     ...getSizeStyles(size),
     ...(fullWidth && { width: '100%' }),
+    ...(variant === 'primary' && shadows.sm),
+    ...(isDisabledOrLoading && { opacity: 0.6 }),
     ...style,
   };
 
   // Estilos do texto
-  const titleStyle: TextStyle = {
+  const textStyles: TextStyle = {
     fontWeight: '600',
-    ...getTextVariantStyles(variant, disabled),
+    textAlign: 'center',
+    ...getTextVariantStyles(variant, socialType),
     ...getTextSizeStyles(size),
     ...textStyle,
   };
 
   return (
     <TouchableOpacity
-      style={containerStyle}
+      style={buttonStyle}
       onPress={onPress}
-      disabled={disabled}
+      disabled={isDisabledOrLoading}
       activeOpacity={0.8}
       {...props}
     >
+      {/* Ícone à esquerda */}
       {leftIcon && !isLoading && (
-        <Text style={{ marginRight: spacing[2] }}>{leftIcon}</Text>
+        <View style={{ marginRight: spacing[3] }}>
+          {leftIcon}
+        </View>
       )}
-      
-      {isLoading ? (
+
+      {/* Loading spinner */}
+      {isLoading && (
         <ActivityIndicator
           size="small"
-          color={getSpinnerColor(variant)}
-          style={{ marginRight: leftIcon || rightIcon ? spacing[2] : 0 }}
+          color={getSpinnerColor(variant, socialType)}
+          style={{ marginRight: spacing[2] }}
         />
-      ) : null}
-      
-      <Text style={titleStyle}>{title}</Text>
-      
+      )}
+
+      {/* Texto do botão */}
+      <Text style={textStyles}>{title}</Text>
+
+      {/* Ícone à direita */}
       {rightIcon && !isLoading && (
-        <Text style={{ marginLeft: spacing[2] }}>{rightIcon}</Text>
+        <View style={{ marginLeft: spacing[2] }}>
+          {rightIcon}
+        </View>
       )}
     </TouchableOpacity>
   );
-}
+};
+
+export default Button;
 
 // Estilos por variante
-function getVariantStyles(variant: ButtonProps['variant'], disabled: boolean): ViewStyle {
-  const baseStyle: ViewStyle = {
-    opacity: disabled ? 0.6 : 1,
-  };
-
+function getVariantStyles(variant: ButtonProps['variant'], socialType?: string): ViewStyle {
   switch (variant) {
     case 'primary':
       return {
-        ...baseStyle,
         backgroundColor: colors.primary[500],
       };
     
     case 'secondary':
       return {
-        ...baseStyle,
-        backgroundColor: colors.background.secondary,
+        backgroundColor: colors.background.tertiary,
         borderWidth: 1,
         borderColor: colors.border.primary,
       };
     
     case 'outline':
       return {
-        ...baseStyle,
         backgroundColor: 'transparent',
         borderWidth: 1,
-        borderColor: colors.primary[500],
+        borderColor: colors.border.secondary,
       };
     
     case 'ghost':
       return {
-        ...baseStyle,
         backgroundColor: 'transparent',
       };
     
+    case 'social':
+      switch (socialType) {
+        case 'apple':
+          return {
+            backgroundColor: colors.social.apple,
+            borderWidth: 1,
+            borderColor: colors.social.apple,
+          };
+        case 'google':
+          return {
+            backgroundColor: colors.background.primary,
+            borderWidth: 1,
+            borderColor: colors.border.secondary,
+          };
+        case 'facebook':
+          return {
+            backgroundColor: colors.social.facebook,
+            borderWidth: 1,
+            borderColor: colors.social.facebook,
+          };
+        default:
+          return {
+            backgroundColor: colors.background.primary,
+            borderWidth: 1,
+            borderColor: colors.border.secondary,
+          };
+      }
+    
     case 'danger':
       return {
-        ...baseStyle,
         backgroundColor: colors.error[500],
       };
     
     default:
-      return baseStyle;
+      return {
+        backgroundColor: colors.primary[500],
+      };
   }
 }
 
 // Estilos de texto por variante
-function getTextVariantStyles(variant: ButtonProps['variant'], disabled: boolean): TextStyle {
+function getTextVariantStyles(variant: ButtonProps['variant'], socialType?: string): TextStyle {
   switch (variant) {
     case 'primary':
       return {
@@ -148,22 +185,42 @@ function getTextVariantStyles(variant: ButtonProps['variant'], disabled: boolean
     
     case 'outline':
       return {
-        color: colors.primary[500],
+        color: colors.text.primary,
       };
     
     case 'ghost':
       return {
-        color: colors.text.primary,
+        color: colors.primary[500],
       };
+    
+    case 'social':
+      switch (socialType) {
+        case 'apple':
+          return {
+            color: colors.text.inverse,
+          };
+        case 'google':
+          return {
+            color: colors.text.primary,
+          };
+        case 'facebook':
+          return {
+            color: colors.text.inverse,
+          };
+        default:
+          return {
+            color: colors.text.primary,
+          };
+      }
     
     case 'danger':
       return {
-        color: colors.text.primary,
+        color: colors.text.inverse,
       };
     
     default:
       return {
-        color: colors.text.primary,
+        color: colors.text.inverse,
       };
   }
 }
@@ -173,30 +230,30 @@ function getSizeStyles(size: ButtonProps['size']): ViewStyle {
   switch (size) {
     case 'sm':
       return {
-        paddingHorizontal: spacing[3],
+        paddingHorizontal: spacing[4],
         paddingVertical: spacing[2],
-        minHeight: 36,
+        minHeight: 40,
       };
     
     case 'md':
       return {
-        paddingHorizontal: spacing[4],
-        paddingVertical: spacing[3],
-        minHeight: 44,
+        paddingHorizontal: spacing[6],
+        paddingVertical: spacing[4],
+        minHeight: 48,
       };
     
     case 'lg':
       return {
-        paddingHorizontal: spacing[6],
-        paddingVertical: spacing[4],
-        minHeight: 52,
+        paddingHorizontal: spacing[8],
+        paddingVertical: spacing[5],
+        minHeight: 56,
       };
     
     default:
       return {
-        paddingHorizontal: spacing[4],
-        paddingVertical: spacing[3],
-        minHeight: 44,
+        paddingHorizontal: spacing[6],
+        paddingVertical: spacing[4],
+        minHeight: 48,
       };
   }
 }
@@ -231,20 +288,32 @@ function getTextSizeStyles(size: ButtonProps['size']): TextStyle {
 }
 
 // Cor do spinner por variante
-function getSpinnerColor(variant: ButtonProps['variant']): string {
+function getSpinnerColor(variant: ButtonProps['variant'], socialType?: string): string {
   switch (variant) {
     case 'primary':
-    case 'danger':
-      return colors.text.primary;
+      return colors.text.inverse;
     
     case 'secondary':
-    case 'ghost':
+    case 'outline':
       return colors.text.primary;
     
-    case 'outline':
+    case 'ghost':
       return colors.primary[500];
     
+    case 'social':
+      switch (socialType) {
+        case 'apple':
+        case 'facebook':
+          return colors.text.inverse;
+        case 'google':
+        default:
+          return colors.text.primary;
+      }
+    
+    case 'danger':
+      return colors.text.inverse;
+    
     default:
-      return colors.text.primary;
+      return colors.text.inverse;
   }
 }

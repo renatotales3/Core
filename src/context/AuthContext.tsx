@@ -23,6 +23,9 @@ interface AuthContextType extends AuthState {
   
   // Métodos de dados do usuário
   refreshUserData: () => Promise<void>;
+  
+  // Método de reset (debugging)
+  resetApp: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,14 +46,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const checkOnboardingStatus = async () => {
       try {
+        // DEBUGGING: Vamos limpar tudo para garantir estado limpo
+        console.log('🔍 AuthContext - Verificando onboarding...');
+        
         const hasCompleted = await AsyncStorage.getItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
+        console.log('🔍 AuthContext - Onboarding completed:', hasCompleted);
         
         setState(prev => ({
           ...prev,
           hasCompletedOnboarding: hasCompleted === 'true',
         }));
       } catch (error) {
-        console.error('Erro ao verificar status do onboarding:', error);
+        console.error('🔴 AuthContext - Erro ao verificar status do onboarding:', error);
       }
     };
 
@@ -208,6 +215,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  // Função para resetar completamente o app (útil para debugging)
+  const resetApp = async (): Promise<void> => {
+    try {
+      console.log('🔄 AuthContext - Resetando app completamente');
+      
+      // Fazer logout do Firebase
+      await authService.logout();
+      
+      // Limpar todo o AsyncStorage
+      await AsyncStorage.removeItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
+      await AsyncStorage.removeItem(STORAGE_KEYS.USER_DATA);
+      
+      // Resetar estado
+      setState({
+        user: null,
+        isLoading: false,
+        isAuthenticated: false,
+        hasCompletedOnboarding: false,
+      });
+      
+      console.log('✅ AuthContext - App resetado com sucesso');
+    } catch (error) {
+      console.error('🔴 AuthContext - Erro ao resetar app:', error);
+    }
+  };
+
   const value: AuthContextType = {
     ...state,
     login,
@@ -216,6 +249,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     resetPassword,
     completeOnboarding,
     refreshUserData,
+    resetApp,
   };
 
   return (

@@ -13,16 +13,16 @@ import { AuthProvider } from '../src/context/AuthContext';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-const CoreDarkTheme = {
-  ...DarkTheme,
+const CoreLightTheme = {
+  ...DefaultTheme,
   colors: {
-    ...DarkTheme.colors,
-    primary: '#00D4AA',
-    background: '#0A0A0F',
-    card: '#131318',
-    text: '#FFFFFF',
-    border: '#2A2A35',
-    notification: '#00D4AA',
+    ...DefaultTheme.colors,
+    primary: '#0EA5E9',
+    background: '#FFFFFF',
+    card: '#F8FAFC',
+    text: '#0F172A',
+    border: '#E2E8F0',
+    notification: '#0EA5E9',
   },
 };
 
@@ -45,13 +45,13 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <ThemeProvider value={CoreDarkTheme}>
+      <ThemeProvider value={CoreLightTheme}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(app)" options={{ headerShown: false }} />
           <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         </Stack>
-        <StatusBar style="light" backgroundColor="#0A0A0F" />
+        <StatusBar style="dark" backgroundColor="#FFFFFF" />
       </ThemeProvider>
     </AuthProvider>
   );

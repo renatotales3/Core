@@ -23,6 +23,7 @@ export interface InputProps extends Omit<TextInputProps, 'style'> {
   containerStyle?: ViewStyle;
   inputStyle?: TextStyle;
   labelStyle?: TextStyle;
+  style?: ViewStyle; // Adicionar esta linha
 }
 
 const Input = forwardRef<TextInput, InputProps>(({
@@ -38,6 +39,7 @@ const Input = forwardRef<TextInput, InputProps>(({
   containerStyle,
   inputStyle,
   labelStyle,
+  style,
   ...props
 }, ref) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -49,6 +51,7 @@ const Input = forwardRef<TextInput, InputProps>(({
   const mainContainerStyle: ViewStyle = {
     width: '100%',
     ...containerStyle,
+    ...style, // Adicionar style aqui
   };
 
   // Estilos do container do input
@@ -147,7 +150,7 @@ function getVariantStyles(variant: InputProps['variant']): ViewStyle {
   switch (variant) {
     case 'filled':
       return {
-        backgroundColor: colors.background.secondary,
+        backgroundColor: colors.background.tertiary,
         borderColor: colors.border.primary,
       };
     

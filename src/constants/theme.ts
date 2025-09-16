@@ -1,60 +1,60 @@
-// Design System - Cores, tipografia e espaçamentos
+// Design System - Tema Moderno e Clean
 export const colors = {
-  // Cores principais
+  // Azul principal (seguindo o design da referência)
   primary: {
-    50: '#E6FDF7',
-    100: '#CCFBEF',
-    200: '#99F6E0',
-    300: '#66F2D0',
-    400: '#33ECC1',
-    500: '#00D4AA', // Cor principal
-    600: '#00AA88',
-    700: '#008066',
-    800: '#005544',
-    900: '#002B22',
+    50: '#F0F9FF',
+    100: '#E0F2FE', 
+    200: '#BAE6FD',
+    300: '#7DD3FC',
+    400: '#38BDF8',
+    500: '#0EA5E9', // Azul principal
+    600: '#0284C7',
+    700: '#0369A1',
+    800: '#075985',
+    900: '#0C4A6E',
   },
   
-  // Escala de cinzas (dark theme)
+  // Escala de cinzas moderna
   gray: {
-    50: '#F9FAFB',
-    100: '#F3F4F6',
-    200: '#E5E7EB',
-    300: '#D1D5DB',
-    400: '#9CA3AF',
-    500: '#6B7280',
-    600: '#4B5563',
-    700: '#374151',
-    800: '#1F2937',
-    900: '#111827',
-    950: '#030712',
+    50: '#F8FAFC',
+    100: '#F1F5F9',
+    200: '#E2E8F0',
+    300: '#CBD5E1',
+    400: '#94A3B8',
+    500: '#64748B',
+    600: '#475569',
+    700: '#334155',
+    800: '#1E293B',
+    900: '#0F172A',
+    950: '#020617',
   },
   
-  // Cores do tema dark
+  // Backgrounds (tema claro)
   background: {
-    primary: '#0A0A0F',    // Fundo principal
-    secondary: '#131318',  // Cards e elementos
-    tertiary: '#1C1C23',   // Inputs e modais
+    primary: '#FFFFFF',    // Fundo principal branco
+    secondary: '#F8FAFC',  // Fundo secundário
+    tertiary: '#F1F5F9',   // Inputs e cards
   },
   
   text: {
-    primary: '#FFFFFF',
-    secondary: '#A1A1AA',
-    tertiary: '#71717A',
-    inverse: '#000000',
+    primary: '#0F172A',    // Texto principal (quase preto)
+    secondary: '#64748B',  // Texto secundário
+    tertiary: '#94A3B8',   // Texto suave
+    inverse: '#FFFFFF',    // Texto branco
   },
   
   border: {
-    primary: '#2A2A35',
-    secondary: '#404040',
-    tertiary: '#525252',
+    primary: '#E2E8F0',
+    secondary: '#CBD5E1',
+    tertiary: '#94A3B8',
   },
   
   // Cores de estado
   success: {
     50: '#F0FDF4',
-    500: '#22C55E',
-    600: '#16A34A',
-    700: '#15803D',
+    500: '#10B981',
+    600: '#059669',
+    700: '#047857',
   },
   
   error: {
@@ -76,6 +76,13 @@ export const colors = {
     500: '#3B82F6',
     600: '#2563EB',
     700: '#1D4ED8',
+  },
+
+  // Cores para redes sociais
+  social: {
+    apple: '#000000',
+    google: '#4285F4',
+    facebook: '#1877F2',
   },
 } as const;
 

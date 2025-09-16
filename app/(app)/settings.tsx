@@ -5,7 +5,7 @@ import { Button, Card } from '../../src/components/ui';
 import { colors, spacing, typography } from '../../src/constants/theme';
 
 export default function SettingsScreen() {
-  const { logout, user } = useAuth();
+  const { logout, user, resetApp } = useAuth();
 
   const handleLogout = () => {
     Alert.alert(
@@ -16,7 +16,30 @@ export default function SettingsScreen() {
         {
           text: 'Sair',
           style: 'destructive',
-          onPress: logout,
+          onPress: async () => {
+            try {
+              console.log('🔵 Settings - Fazendo logout...');
+              await logout();
+              console.log('✅ Settings - Logout concluído');
+            } catch (error) {
+              console.error('🔴 Settings - Erro no logout:', error);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleResetApp = () => {
+    Alert.alert(
+      'Reset App',
+      'Isso vai resetar completamente o app (apenas para debugging). Continuar?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: resetApp,
         },
       ]
     );
@@ -78,6 +101,15 @@ export default function SettingsScreen() {
           title="Sair da conta"
           variant="danger"
           onPress={handleLogout}
+          fullWidth
+          style={{ marginBottom: spacing[4] }}
+        />
+
+        {/* Botão de reset (debugging) */}
+        <Button
+          title="Reset App (Debug)"
+          variant="outline"
+          onPress={handleResetApp}
           fullWidth
         />
       </View>

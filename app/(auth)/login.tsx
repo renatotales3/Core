@@ -5,13 +5,13 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Alert,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, Card } from '../../src/components/ui';
-import { colors, spacing, typography } from '../../src/constants/theme';
+import { Button, Input, SocialIcon } from '../../src/components/ui';
+import { colors, spacing, typography, borderRadius } from '../../src/constants/theme';
 import { loginSchema } from '../../src/utils/validation';
 
 interface FormData {
@@ -53,175 +53,269 @@ export default function LoginScreen() {
       setErrors({});
       return true;
     } catch (error: any) {
-      const formErrors: FormErrors = {};
+      const newErrors: FormErrors = {};
       
-      error.inner?.forEach((err: any) => {
-        if (err.path) {
-          formErrors[err.path as keyof FormErrors] = err.message;
-        }
-      });
+      if (error.inner) {
+        error.inner.forEach((err: any) => {
+          if (err.path) {
+            newErrors[err.path as keyof FormErrors] = err.message;
+          }
+        });
+      }
       
-      setErrors(formErrors);
+      setErrors(newErrors);
       return false;
     }
   };
 
   // Fazer login
   const handleLogin = async () => {
+    // Limpar erro geral anterior
+    setErrors(prev => ({ ...prev, general: undefined }));
+    
     // Validar formulário
     const isValid = await validateForm();
     if (!isValid) return;
 
     setIsLoading(true);
-    setErrors({});
 
     try {
-      const response = await login(formData);
+      const result = await login(formData);
       
-      if (response.success) {
-        // Login bem-sucedido - navegação será feita automaticamente pelo AuthContext
-        router.replace('/');
+      if (result.success) {
+        // Sucesso - o AuthContext vai lidar com a navegação
+        console.log('✅ Login realizado com sucesso');
       } else {
-        setErrors({ general: response.error });
+        // Erro de autenticação
+        setErrors(prev => ({
+          ...prev,
+          general: result.error || 'Erro ao fazer login',
+        }));
       }
     } catch (error) {
-      setErrors({ general: 'Erro inesperado. Tente novamente.' });
+      console.error('Erro inesperado no login:', error);
+      setErrors(prev => ({
+        ...prev,
+        general: 'Erro inesperado. Tente novamente.',
+      }));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
-      <KeyboardAvoidingView 
-        style={{ flex: 1 }} 
+    <SafeAreaView style={{ 
+      flex: 1, 
+      backgroundColor: colors.background.primary 
+    }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <ScrollView 
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View style={{
-            flex: 1,
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
             paddingHorizontal: spacing[6],
             paddingTop: spacing[16],
             paddingBottom: spacing[8],
-          }}>
-            
-            {/* Header */}
-            <View style={{ marginBottom: spacing[10] }}>
-              <Text style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: 'bold',
-                color: colors.text.primary,
-                textAlign: 'center',
-                marginBottom: spacing[2],
-              }}>
-                Bem-vindo de volta! 👋
-              </Text>
-              
-              <Text style={{
-                fontSize: typography.fontSize.lg,
-                color: colors.text.secondary,
-                textAlign: 'center',
-                lineHeight: typography.lineHeight.lg,
-              }}>
-                Entre na sua conta para continuar gerenciando suas finanças
-              </Text>
-            </View>
-
-            {/* Form */}
-            <Card padding="lg" style={{ marginBottom: spacing[6] }}>
-              {/* Email */}
-              <Input
-                label="Email"
-                placeholder="seu@email.com"
-                value={formData.email}
-                onChangeText={(value) => updateField('email', value)}
-                error={errors.email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-                containerStyle={{ marginBottom: spacing[4] }}
-              />
-
-              {/* Senha */}
-              <Input
-                label="Senha"
-                placeholder="Sua senha"
-                value={formData.password}
-                onChangeText={(value) => updateField('password', value)}
-                error={errors.password}
-                isPassword
-                autoComplete="password"
-                containerStyle={{ marginBottom: spacing[6] }}
-              />
-
-              {/* Erro geral */}
-              {errors.general && (
-                <View style={{
-                  backgroundColor: colors.error[50],
-                  padding: spacing[3],
-                  borderRadius: 8,
-                  marginBottom: spacing[4],
-                }}>
-                  <Text style={{
-                    color: colors.error[700],
-                    fontSize: typography.fontSize.sm,
-                    textAlign: 'center',
-                  }}>
-                    {errors.general}
-                  </Text>
-                </View>
-              )}
-
-              {/* Botão de Login */}
-              <Button
-                title="Entrar"
-                onPress={handleLogin}
-                isLoading={isLoading}
-                fullWidth
-                size="lg"
-              />
-
-              {/* Link para reset de senha */}
-              <View style={{ marginTop: spacing[4], alignItems: 'center' }}>
-                <Link href="/(auth)/reset-password" asChild>
-                  <Text style={{
-                    color: colors.primary[500],
-                    fontSize: typography.fontSize.sm,
-                    textDecorationLine: 'underline',
-                  }}>
-                    Esqueceu sua senha?
-                  </Text>
-                </Link>
-              </View>
-            </Card>
-
-            {/* Footer */}
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 'auto',
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <View style={{ alignItems: 'center', marginBottom: spacing[12] }}>
+            <Text style={{
+              fontSize: typography.fontSize['3xl'],
+              fontWeight: '700',
+              color: colors.text.primary,
+              marginBottom: spacing[2],
             }}>
-              <Text style={{
-                color: colors.text.secondary,
-                fontSize: typography.fontSize.base,
-              }}>
-                Não tem uma conta? {' '}
-              </Text>
-              
-              <Link href="/(auth)/register" asChild>
-                <Text style={{
-                  color: colors.primary[500],
-                  fontSize: typography.fontSize.base,
-                  fontWeight: '600',
-                }}>
-                  Criar conta
-                </Text>
+              Welcome back
+            </Text>
+            <Text style={{
+              fontSize: typography.fontSize.base,
+              color: colors.text.secondary,
+              textAlign: 'center',
+            }}>
+              Sign in to your account to continue
+            </Text>
+          </View>
+
+          {/* Formulário */}
+          <View style={{ marginBottom: spacing[8] }}>
+            {/* Email */}
+            <Input
+              label="Email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChangeText={(value) => updateField('email', value)}
+              error={errors.email}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={{ marginBottom: spacing[4] }}
+            />
+
+            {/* Senha */}
+            <Input
+              label="Password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChangeText={(value) => updateField('password', value)}
+              error={errors.password}
+              isPassword
+              style={{ marginBottom: spacing[2] }}
+            />
+
+            {/* Link esqueceu senha */}
+            <View style={{ alignItems: 'flex-end', marginBottom: spacing[6] }}>
+              <Link href="/(auth)/reset-password" asChild>
+                <TouchableOpacity>
+                  <Text style={{
+                    fontSize: typography.fontSize.sm,
+                    color: colors.primary[500],
+                    fontWeight: '500',
+                  }}>
+                    Forgot password?
+                  </Text>
+                </TouchableOpacity>
               </Link>
             </View>
+
+            {/* Erro geral */}
+            {errors.general && (
+              <View style={{
+                padding: spacing[3],
+                backgroundColor: colors.error[50],
+                borderRadius: borderRadius.lg,
+                marginBottom: spacing[4],
+              }}>
+                <Text style={{
+                  fontSize: typography.fontSize.sm,
+                  color: colors.error[600],
+                  textAlign: 'center',
+                }}>
+                  {errors.general}
+                </Text>
+              </View>
+            )}
+
+            {/* Botão de login */}
+            <Button
+              title="Sign in"
+              onPress={handleLogin}
+              isLoading={isLoading}
+              style={{ marginBottom: spacing[6] }}
+            />
+          </View>
+
+          {/* Divisor OR */}
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: spacing[6],
+          }}>
+            <View style={{
+              flex: 1,
+              height: 1,
+              backgroundColor: colors.border.primary,
+            }} />
+            <Text style={{
+              marginHorizontal: spacing[4],
+              fontSize: typography.fontSize.sm,
+              color: colors.text.tertiary,
+              fontWeight: '500',
+            }}>
+              OR
+            </Text>
+            <View style={{
+              flex: 1,
+              height: 1,
+              backgroundColor: colors.border.primary,
+            }} />
+          </View>
+
+          {/* Botões de login social */}
+          <View style={{ marginBottom: spacing[8] }}>
+            {/* Continue with Apple */}
+            <Button
+              title="Continue with Apple"
+              variant="social"
+              socialType="apple"
+              leftIcon={<SocialIcon type="apple" />}
+              style={{ marginBottom: spacing[3] }}
+              onPress={() => {
+                // TODO: Implementar login com Apple
+                console.log('Login com Apple');
+              }}
+            />
+
+            {/* Continue with Google */}
+            <Button
+              title="Continue with Google"
+              variant="social"
+              socialType="google"
+              leftIcon={<SocialIcon type="google" />}
+              style={{ marginBottom: spacing[3] }}
+              onPress={() => {
+                // TODO: Implementar login com Google
+                console.log('Login com Google');
+              }}
+            />
+
+            {/* Continue with Facebook */}
+            <Button
+              title="Continue with Facebook"
+              variant="social"
+              socialType="facebook"
+              leftIcon={<SocialIcon type="facebook" />}
+              onPress={() => {
+                // TODO: Implementar login com Facebook
+                console.log('Login com Facebook');
+              }}
+            />
+          </View>
+
+          {/* Link para registro */}
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+            <Text style={{
+              fontSize: typography.fontSize.sm,
+              color: colors.text.secondary,
+            }}>
+              Don't have an account?{' '}
+            </Text>
+            <Link href="/(auth)/register" asChild>
+              <TouchableOpacity>
+                <Text style={{
+                  fontSize: typography.fontSize.sm,
+                  color: colors.primary[500],
+                  fontWeight: '600',
+                }}>
+                  Sign up
+                </Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
+
+          {/* Footer de termos */}
+          <View style={{
+            marginTop: spacing[10],
+            paddingHorizontal: spacing[4],
+          }}>
+            <Text style={{
+              fontSize: typography.fontSize.xs,
+              color: colors.text.tertiary,
+              textAlign: 'center',
+              lineHeight: typography.lineHeight.sm,
+            }}>
+              By signing in, you agree to our{' '}
+              <Text style={{ color: colors.primary[500] }}>Terms & Conditions</Text>
+              {' '}and{' '}
+              <Text style={{ color: colors.primary[500] }}>Privacy Policy</Text>
+            </Text>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
