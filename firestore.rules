@@ -1,0 +1,75 @@
+// Regras de segurança do Firestore para o projeto Core Finance
+// Estas regras devem ser aplicadas no Firebase Console
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Regras para coleção de transações
+    match /transactions/{transactionId} {
+      // Permitir leitura e escrita apenas para o próprio usuário
+      allow read, write: if request.auth != null && 
+                         request.auth.uid == resource.data.userId;
+      
+      // Permitir criação se o usuário estiver autenticado e o documento pertencer a ele
+      allow create: if request.auth != null && 
+                    request.auth.uid == request.resource.data.userId;
+    }
+    
+    // Regras para coleção de usuários (se existir)
+    match /users/{userId} {
+      // Permitir leitura e escrita apenas para o próprio usuário
+      allow read, write: if request.auth != null && 
+                         request.auth.uid == userId;
+    }
+    
+    // Regras para coleção de categorias (se existir)
+    match /categories/{categoryId} {
+      // Permitir leitura para usuários autenticados
+      allow read: if request.auth != null;
+      
+      // Permitir escrita apenas para o próprio usuário
+      allow write: if request.auth != null && 
+                   request.auth.uid == resource.data.userId;
+    }
+    
+    // Regras para coleção de metas financeiras (se existir)
+    match /goals/{goalId} {
+      allow read, write: if request.auth != null && 
+                         request.auth.uid == resource.data.userId;
+    }
+    
+    // Regras para coleção de orçamentos (se existir)
+    match /budgets/{budgetId} {
+      allow read, write: if request.auth != null && 
+                         request.auth.uid == resource.data.userId;
+    }
+  }
+}
+
+/*
+INSTRUÇÕES PARA APLICAR AS REGRAS:
+
+1. Acesse o Firebase Console: https://console.firebase.google.com/
+2. Selecione seu projeto "core-004587"
+3. No menu lateral, clique em "Firestore Database"
+4. Clique na aba "Rules"
+5. Substitua as regras existentes pelo código acima
+6. Clique em "Publish" para aplicar as mudanças
+
+IMPORTANTE:
+- Estas regras garantem que cada usuário só pode acessar seus próprios dados
+- É necessário que o campo 'userId' esteja presente em todos os documentos
+- O usuário deve estar autenticado (request.auth != null)
+
+PARA DESENVOLVIMENTO/TESTE (NÃO USE EM PRODUÇÃO):
+Se quiser regras mais permissivas para testes, use:
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+*/

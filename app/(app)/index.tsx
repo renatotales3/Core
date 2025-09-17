@@ -1,32 +1,325 @@
-import React from 'react';
-import { View, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, SafeAreaView, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { Text } from '../../src/components/ui/Text';
 import { Header } from '../../src/components/common/Header';
-import { BarChartIcon } from '../../src/components/ui/Icons';
+import { 
+  BarChartIcon, 
+  TrendingUpIcon, 
+  TrendingDownIcon,
+  PlusIcon,
+  MinusIcon,
+  PieChartIcon,
+  WalletIcon
+} from '../../src/components/ui/Icons';
+import { 
+  FinancialSummaryCard, 
+  QuickActionButton, 
+  TransactionItem,
+  ExpensesByCategoryChart
+} from '../../src/components/financial';
 import { colors, spacing } from '../../src/design-system/tokens';
+import { useAuth } from '../../src/context/AuthContext';
+import { useTransactions, useFinancialSummary, useExpensesByCategory } from '../../src/hooks/useFinancialData';
+import { sampleDataHelper } from '../../src/utils/sampleDataHelper';
+import { testFirestore } from '../../src/utils/testFirestore';
+import { useResponsive } from '../../src/hooks/useResponsive';
 
 export default function DashboardScreen() {
+  const { user } = useAuth();
+  const { getResponsiveSpacing, getResponsiveFontSize, isSmall } = useResponsive();
+  
+  // Responsive values
+  const screenPadding = getResponsiveSpacing(24);
+  const topPadding = getResponsiveSpacing(64);
+  const bottomPadding = getResponsiveSpacing(32);
+  const sectionSpacing = getResponsiveSpacing(32);
+  const titleFontSize = getResponsiveFontSize(18);
+  const cardSpacing = getResponsiveSpacing(8);
+  
+  // Log de debug
+  console.log('🏠 Dashboard: Usuário atual:', user?.uid ? 'Autenticado' : 'Não autenticado');
+  console.log('🏠 Dashboard: User object:', user);
+  
+  // Hooks para dados financeiros
+  const { transactions, loading: transactionsLoading, error: transactionsError } = useTransactions(5);
+  const { summary, loading: summaryLoading, error: summaryError } = useFinancialSummary();
+  const { expensesByCategory, loading: expensesLoading, error: expensesError } = useExpensesByCategory();
+  
+  // Estado para primeira carga
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  // Criar dados de exemplo na primeira vez que o usuário acessa
+  useEffect(() => {
+    const createSampleDataIfNeeded = async () => {
+      if (!user?.uid) return;
+      
+      try {
+        // Testar conexão com Firestore primeiro
+        console.log('🧪 Testando conexão com Firestore...');
+        await testFirestore.runFullTest(user.uid);
+        
+        // Aguardar os dados carregarem primeiro
+        if (transactionsLoading || summaryLoading) return;
+        
+        // Criar dados de exemplo se necessário
+        const created = await sampleDataHelper.createSampleDataIfNeeded(
+          user.uid,
+          transactions.length > 0
+        );
+        
+        if (created) {
+          console.log('✅ Dados de exemplo criados para o dashboard');
+        }
+        
+        setIsFirstLoad(false);
+      } catch (error) {
+        console.error('🔴 Erro ao verificar/criar dados de exemplo:', error);
+        setIsFirstLoad(false);
+      }
+    };
+
+    // Aguardar um pouco para que os hooks carreguem
+    const timer = setTimeout(createSampleDataIfNeeded, 1000);
+    return () => clearTimeout(timer);
+  }, [user?.uid, transactions.length, transactionsLoading, summaryLoading]);
+  // Estados de loading principais
+  const isLoading = summaryLoading || expensesLoading || transactionsLoading;
+  const hasError = summaryError || expensesError || transactionsError;
+
+  const handleAddIncome = () => {
+    console.log('Adicionar receita');
+  };
+
+  const handleAddExpense = () => {
+    console.log('Adicionar despesa');
+  };
+
+  const handleViewReports = () => {
+    console.log('Ver relatórios');
+  };
+
+  const handleViewAllTransactions = () => {
+    console.log('Ver todas as transações');
+  };
+
+  // Loading state principal
+  if (isLoading && isFirstLoad) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
+        <View style={{ 
+          flex: 1, 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          paddingHorizontal: spacing[6]
+        }}>
+          <ActivityIndicator size="large" color={colors.primary[600]} />
+          <Text style={{
+            color: colors.text.secondary,
+            marginTop: spacing[4],
+            fontWeight: '500',
+            textAlign: 'center'
+          }}>
+            Carregando seus dados financeiros...
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Error state
+  if (hasError) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
+        <View style={{ 
+          flex: 1, 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          paddingHorizontal: spacing[6]
+        }}>
+          <Text style={{
+            color: colors.text.primary,
+            fontSize: 18,
+            fontWeight: 'bold',
+            marginBottom: spacing[2],
+            textAlign: 'center'
+          }}>
+            Erro ao carregar dados
+          </Text>
+          <Text style={{
+            color: colors.text.secondary,
+            textAlign: 'center'
+          }}>
+            {summaryError || expensesError || transactionsError}
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
-      <View style={{
-        flex: 1,
-        paddingHorizontal: spacing[6],
-        paddingTop: spacing[16],
-      }}>
+      <ScrollView 
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          paddingHorizontal: screenPadding,
+          paddingTop: topPadding,
+          paddingBottom: bottomPadding,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
         <Header 
           title="Dashboard" 
           icon={BarChartIcon}
           subtitle="Visão geral das suas finanças"
         />
-        
-        <Text style={{
-          fontSize: 18,
-          color: colors.text.secondary,
-          marginBottom: spacing[10],
-        }}>
-          Bem-vindo ao seu painel financeiro!
-        </Text>
-      </View>
+
+        {/* Seção de Resumo Financeiro */}
+        <View style={{ marginBottom: sectionSpacing }}>
+          <FinancialSummaryCard
+            title="Saldo Total"
+            amount={summary?.totalBalance || 0}
+            change={summary?.balanceChange || 0}
+            changeType="increase"
+            icon={WalletIcon}
+            variant="balance"
+          />
+
+          <View style={{
+            flexDirection: isSmall ? 'column' : 'row',
+            justifyContent: 'space-between',
+          }}>
+            <View style={{ 
+              flex: 1, 
+              marginRight: isSmall ? 0 : cardSpacing,
+              marginBottom: isSmall ? cardSpacing : 0
+            }}>
+              <FinancialSummaryCard
+                title="Receitas"
+                amount={summary?.monthlyIncome || 0}
+                change={summary?.incomeChange || 0}
+                changeType="increase"
+                icon={TrendingUpIcon}
+                variant="income"
+              />
+            </View>
+
+            <View style={{ 
+              flex: 1, 
+              marginLeft: isSmall ? 0 : cardSpacing 
+            }}>
+              <FinancialSummaryCard
+                title="Despesas"
+                amount={summary?.monthlyExpense || 0}
+                change={summary?.expenseChange || 0}
+                changeType="decrease"
+                icon={TrendingDownIcon}
+                variant="expense"
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* Ações Rápidas */}
+        <View style={{ marginBottom: sectionSpacing }}>
+          <Text style={{
+            fontSize: titleFontSize,
+            fontWeight: '600',
+            color: colors.text.primary,
+            marginBottom: getResponsiveSpacing(16),
+          }}>
+            Ações Rápidas
+          </Text>
+
+          <View style={{
+            flexDirection: isSmall ? 'column' : 'row',
+            justifyContent: 'space-between',
+            gap: isSmall ? getResponsiveSpacing(12) : 0,
+          }}>
+            <QuickActionButton
+              title="Adicionar Receita"
+              icon={PlusIcon}
+              variant="success"
+              onPress={handleAddIncome}
+            />
+
+            <QuickActionButton
+              title="Adicionar Despesa"
+              icon={MinusIcon}
+              variant="danger"
+              onPress={handleAddExpense}
+            />
+
+            <QuickActionButton
+              title="Relatórios"
+              icon={PieChartIcon}
+              variant="primary"
+              onPress={handleViewReports}
+            />
+          </View>
+        </View>
+
+        {/* Gráfico de Gastos por Categoria */}
+        {expensesByCategory.length > 0 && (
+          <ExpensesByCategoryChart
+            data={expensesByCategory}
+            totalExpenses={summary?.monthlyExpense || 0}
+          />
+        )}
+
+        {/* Transações Recentes */}
+        <View style={{ marginBottom: getResponsiveSpacing(24) }}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: getResponsiveSpacing(16),
+          }}>
+            <Text style={{
+              fontSize: titleFontSize,
+              fontWeight: '600',
+              color: colors.text.primary,
+            }}>
+              Transações Recentes
+            </Text>
+
+            <Text 
+              style={{
+                fontSize: getResponsiveFontSize(14),
+                color: colors.primary[600],
+                fontWeight: '500',
+              }}
+              onPress={handleViewAllTransactions}
+            >
+              Ver todas
+            </Text>
+          </View>
+
+          {transactions.length > 0 ? (
+            transactions.map((transaction) => (
+              <TransactionItem
+                key={transaction.id}
+                transaction={transaction}
+                onPress={() => console.log('Transaction pressed:', transaction.id)}
+              />
+            ))
+          ) : (
+            <View style={{
+              paddingVertical: getResponsiveSpacing(32),
+              alignItems: 'center'
+            }}>
+              <Text style={{
+                color: colors.text.secondary,
+                textAlign: 'center',
+                fontSize: getResponsiveFontSize(14),
+                lineHeight: getResponsiveFontSize(20),
+              }}>
+                Nenhuma transação encontrada.{'\n'}
+                Comece adicionando uma receita ou despesa!
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
