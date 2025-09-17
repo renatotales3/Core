@@ -40,7 +40,7 @@ import {
   // Categories
   ShoppingCart,
   Car,
-  Home as HomeIcon,
+  Home as HouseBase,
   Utensils,
   Coffee,
   Gamepad2,
@@ -86,7 +86,7 @@ import {
   Signal,
   
 } from 'lucide-react-native';
-import { colors } from '../design-system/tokens';
+import { colors } from '../../design-system/tokens';
 
 // Tamanhos padronizados dos ícones
 type IconSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl';
@@ -179,7 +179,7 @@ export const LineChartIcon = createIcon(LineChart);
 // ==================== CATEGORIES ====================
 export const ShoppingIcon = createIcon(ShoppingCart);
 export const CarIcon = createIcon(Car);
-export const HouseIcon = createIcon(HomeIcon);
+export const HouseIcon = createIcon(HouseBase);
 export const FoodIcon = createIcon(Utensils);
 export const CoffeeIcon = createIcon(Coffee);
 export const EntertainmentIcon = createIcon(Gamepad2);

@@ -6,6 +6,7 @@ import {
   TextInputProps,
   ViewStyle,
   TextStyle,
+  Platform,
 } from 'react-native';
 import { Text } from './Text';
 import { EyeIcon, EyeOffIcon } from './Icons';
@@ -68,14 +69,23 @@ const Input = forwardRef<TextInput, InputProps>(({
   };
 
   // Estilos do input
-  const textInputStyle: TextStyle = {
-  flex: 1,
-  fontSize: typography.fontSize.base,
-  lineHeight: typography.lineHeight.base,
-  color: colors.text.primary,
-  // Remove qualquer outline visual de foco (web)
-  outlineColor: 'transparent',
-  ...inputStyle,
+  const baseInputStyle: TextStyle = {
+    flex: 1,
+    fontSize: typography.fontSize.base,
+    lineHeight: typography.lineHeight.base,
+    color: colors.text.primary,
+    ...inputStyle,
+  };
+  
+  // Estilos específicos para web
+  const webInputStyle = Platform.OS === 'web' ? {
+    outline: 'none',
+    outlineOffset: 0,
+  } : {};
+  
+  const textInputStyle = {
+    ...baseInputStyle,
+    ...webInputStyle,
   };
 
   // Estilos do label

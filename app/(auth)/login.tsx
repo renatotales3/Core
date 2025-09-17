@@ -38,9 +38,10 @@ export default function LoginScreen() {
   });
   
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEmailLoading, setIsEmailLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  console.log('🔍 LoginScreen - Estado atual:', { isLoading, formData, errors });
+  console.log('🔍 LoginScreen - Estado atual:', { isEmailLoading, isGoogleLoading, formData, errors });
 
   // Atualizar campo do formulário
   const updateField = (field: keyof FormData, value: string) => {
@@ -81,7 +82,7 @@ export default function LoginScreen() {
   // Fazer login com Google
   const handleGoogleLogin = async () => {
     try {
-      setIsLoading(true);
+      setIsGoogleLoading(true);
       setErrors(prev => ({ ...prev, general: undefined }));
       
       const result = await loginWithGoogle();
@@ -101,7 +102,7 @@ export default function LoginScreen() {
         general: 'Erro inesperado. Tente novamente.',
       }));
     } finally {
-      setIsLoading(false);
+      setIsGoogleLoading(false);
     }
   };
 
@@ -123,7 +124,7 @@ export default function LoginScreen() {
     }
 
     console.log('🔵 LoginScreen - Iniciando login...');
-    setIsLoading(true);
+    setIsEmailLoading(true);
 
     try {
       const result = await login(formData);
@@ -155,7 +156,7 @@ export default function LoginScreen() {
       }));
     } finally {
       console.log('🔵 LoginScreen - Finalizando loading');
-      setIsLoading(false);
+      setIsEmailLoading(false);
     }
   };
 
@@ -179,20 +180,34 @@ export default function LoginScreen() {
         >
           {/* Header */}
           <View style={{ alignItems: 'center', marginBottom: spacing[12] }}>
-            <Text style={{
+            <View style={{
+              width: 72,
+              height: 72,
+              borderRadius: 36,
+              backgroundColor: colors.primary[700],
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: spacing[4],
+            }}>
+              <LoginIcon size="xl" color="white" />
+            </View>
+
+                      <Text style={{
               fontSize: typography.fontSize['3xl'],
               fontWeight: '700',
               color: colors.text.primary,
-              marginBottom: spacing[1],
+              textAlign: 'center',
+              marginBottom: spacing[2],
             }}>
-              Bem-vindo de volta
+              Faça login na sua conta
             </Text>
+            
             <Text style={{
               fontSize: typography.fontSize.base,
               color: colors.text.secondary,
               textAlign: 'center',
             }}>
-              Entre na sua conta para continuar
+              Entre com suas credenciais para acessar o app
             </Text>
           </View>
 
@@ -284,8 +299,8 @@ export default function LoginScreen() {
                 console.log('🔵 Botão pressionado!');
                 handleLogin();
               }}
-              isLoading={isLoading}
-              style={{ marginBottom: spacing[6] }}
+              isLoading={isEmailLoading}
+              style={{ marginBottom: spacing[4] }}
             />
           </View>
 
@@ -293,7 +308,7 @@ export default function LoginScreen() {
           <View style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginBottom: spacing[6],
+            marginBottom: spacing[4],
           }}>
             <View style={{
               flex: 1,
@@ -324,7 +339,7 @@ export default function LoginScreen() {
               socialType="google"
               leftIcon={<Text style={{ fontSize: 16 }}>G</Text>}
               onPress={handleGoogleLogin}
-              isLoading={isLoading}
+              isLoading={isGoogleLoading}
             />
           </View>
 
@@ -365,9 +380,15 @@ export default function LoginScreen() {
               lineHeight: typography.lineHeight.sm,
             }}>
               Ao entrar, você concorda com nossos{' '}
-              <Text style={{ color: colors.primary[500] }}>Termos & Condições</Text>
+              <Text style={{ 
+                color: colors.primary[500],
+                fontSize: typography.fontSize.xs,
+              }}>Termos & Condições</Text>
               {' '}e{' '}
-              <Text style={{ color: colors.primary[500] }}>Política de Privacidade</Text>
+              <Text style={{ 
+                color: colors.primary[500],
+                fontSize: typography.fontSize.xs,
+              }}>Política de Privacidade</Text>
             </Text>
           </View>
         </ScrollView>

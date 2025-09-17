@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, Card, Icon } from '../../src/components/ui';
-import { colors, spacing, typography } from '../../src/constants/theme';
+import Button from '../../src/components/ui/Button';
+import Input from '../../src/components/ui/Input';
+import { Text } from '../../src/components/ui/Text';
+import { MailIcon, LockIcon } from '../../src/components/ui/Icons';
+import { colors, spacing, typography, borderRadius } from '../../src/design-system/tokens';
 import { resetPasswordSchema } from '../../src/utils/validation';
 
 interface FormData {
@@ -89,38 +92,53 @@ export default function ResetPasswordScreen() {
 
   if (isSuccess) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
+      <SafeAreaView style={{ 
+        flex: 1, 
+        backgroundColor: colors.background.primary 
+      }}>
         <View style={{
           flex: 1,
-          paddingHorizontal: spacing[8],
+          paddingHorizontal: spacing[6],
           justifyContent: 'center',
+          alignItems: 'center',
         }}>
-          <Card padding="lg" style={{ alignItems: 'center', borderRadius: 24 }}>
+          {/* Success Card */}
+          <View style={{
+            backgroundColor: colors.background.secondary,
+            borderRadius: borderRadius['2xl'],
+            padding: spacing[8],
+            alignItems: 'center',
+            borderWidth: 1,
+            borderColor: colors.border.primary,
+          }}>
+            {/* Success Icon */}
             <View style={{
               width: 88,
               height: 88,
               borderRadius: 44,
-              backgroundColor: colors.success[50],
+              backgroundColor: colors.success[700],
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: spacing[6],
             }}>
-              <Icon name="email" size={44} color={colors.success[600]} />
+              <MailIcon size="xl" color="white" />
             </View>
+
             <Text style={{
               fontSize: typography.fontSize['2xl'],
-              fontWeight: 'bold',
+              fontWeight: '700',
               color: colors.text.primary,
               textAlign: 'center',
               marginBottom: spacing[2],
             }}>
               Email enviado!
             </Text>
+
             <Text style={{
-              fontSize: typography.fontSize.lg,
+              fontSize: typography.fontSize.base,
               color: colors.text.secondary,
               textAlign: 'center',
-              lineHeight: typography.lineHeight.lg * 1.2,
+              lineHeight: typography.lineHeight.relaxed,
               marginBottom: spacing[8],
             }}>
               Enviamos um link para redefinir sua senha para{' '}
@@ -129,144 +147,135 @@ export default function ResetPasswordScreen() {
               </Text>
               . Verifique sua caixa de entrada e spam.
             </Text>
+
             <Button
               title="Voltar ao Login"
               onPress={() => router.replace('/(auth)/login')}
-              fullWidth
               variant="secondary"
               size="lg"
-              style={{ borderRadius: 16 }}
-              textStyle={{ fontSize: typography.fontSize.lg }}
+              style={{ minWidth: 200 }}
             />
-          </Card>
+          </View>
         </View>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
+    <SafeAreaView style={{ 
+      flex: 1, 
+      backgroundColor: colors.background.primary 
+    }}>
       <KeyboardAvoidingView 
         style={{ flex: 1 }} 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView 
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View style={{
-            flex: 1,
-            paddingHorizontal: spacing[8],
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingHorizontal: spacing[6],
             paddingTop: spacing[16],
-            paddingBottom: spacing[12],
-          }}>
-            
-            {/* Header */}
-            <View style={{ marginBottom: spacing[12] }}>
-              <View style={{
-                alignItems: 'center',
-                marginBottom: spacing[8],
-              }}>
-                <View style={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: 36,
-                  backgroundColor: colors.primary[50],
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: spacing[4],
-                }}>
-                  <Icon name="password" size={36} color={colors.primary[500]} />
-                </View>
-                <Text style={{
-                  fontSize: typography.fontSize['3xl'],
-                  fontWeight: 'bold',
-                  color: colors.text.primary,
-                  textAlign: 'center',
-                  marginBottom: spacing[2],
-                }}>
-                  Esqueceu a senha?
-                </Text>
-              </View>
-              <Text style={{
-                fontSize: typography.fontSize.lg,
-                color: colors.text.secondary,
-                textAlign: 'center',
-                lineHeight: typography.lineHeight.lg * 1.2,
-              }}>
-                Digite seu email e enviaremos um link para redefinir sua senha
-              </Text>
+            paddingBottom: spacing[10],
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <View style={{ alignItems: 'center', marginBottom: spacing[12] }}>
+            <View style={{
+              width: 72,
+              height: 72,
+              borderRadius: 36,
+              backgroundColor: colors.primary[700],
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: spacing[4],
+            }}>
+              <LockIcon size="xl" color="white" />
             </View>
 
-            {/* Form */}
-            <Card padding="lg" style={{ marginBottom: spacing[10], borderRadius: 20 }}>
-              {/* Email */}
-              <Input
-                label="Email"
-                placeholder="seu@email.com"
-                value={formData.email}
-                onChangeText={(value) => updateField('email', value)}
-                error={errors.email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-                leftIcon={<Icon name="email" size={24} color={colors.text.tertiary} />}
-                containerStyle={{ marginBottom: spacing[8] }}
-              />
-
-              {/* Erro geral */}
-              {errors.general && (
-                <View style={{
-                  backgroundColor: colors.error[50],
-                  padding: spacing[3],
-                  borderRadius: 8,
-                  marginBottom: spacing[4],
-                }}>
-                  <Text style={{
-                    color: colors.error[700],
-                    fontSize: typography.fontSize.sm,
-                    textAlign: 'center',
-                  }}>
-                    {errors.general}
-                  </Text>
-                </View>
-              )}
-
-              {/* Botão de Reset */}
-              <Button
-                title="Enviar link"
-                onPress={handleResetPassword}
-                isLoading={isLoading}
-                fullWidth
-                size="lg"
-                style={{ borderRadius: 16 }}
-                textStyle={{ fontSize: typography.fontSize.lg }}
-              />
-            </Card>
-
-            {/* Footer */}
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: spacing[8],
+            <Text style={{
+              fontSize: typography.fontSize['3xl'],
+              fontWeight: '700',
+              color: colors.text.primary,
+              textAlign: 'center',
+              marginBottom: spacing[2],
             }}>
-              <Text style={{
-                color: colors.text.secondary,
-                fontSize: typography.fontSize.lg,
+              Esqueceu a senha?
+            </Text>
+
+            <Text style={{
+              fontSize: typography.fontSize.base,
+              color: colors.text.secondary,
+              textAlign: 'center',
+            }}>
+              Digite seu email e enviaremos um link para redefinir sua senha
+            </Text>
+          </View>
+
+          {/* Form */}
+          <View style={{ marginBottom: spacing[10] }}>
+            <Input
+              label="Email"
+              placeholder="seu@email.com"
+              value={formData.email}
+              onChangeText={(value) => updateField('email', value)}
+              error={errors.email}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              leftIcon={<MailIcon size="sm" color="muted" />}
+              style={{ marginBottom: spacing[6] }}
+            />
+
+            {/* Erro geral */}
+            {errors.general && (
+              <View style={{
+                backgroundColor: colors.error[50],
+                padding: spacing[3],
+                borderRadius: borderRadius.lg,
+                marginBottom: spacing[4],
               }}>
-                Lembrou da senha? {' '}
-              </Text>
-              <Link href="/(auth)/login" asChild>
+                <Text style={{
+                  color: colors.error[600],
+                  fontSize: typography.fontSize.sm,
+                  textAlign: 'center',
+                }}>
+                  {errors.general}
+                </Text>
+              </View>
+            )}
+
+            <Button
+              title="Enviar link"
+              onPress={handleResetPassword}
+              isLoading={isLoading}
+              style={{ marginBottom: spacing[8] }}
+            />
+          </View>
+
+          {/* Footer */}
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+            <Text style={{
+              color: colors.text.secondary,
+              fontSize: typography.fontSize.sm,
+            }}>
+              Lembrou da senha?{' '}
+            </Text>
+            <Link href="/(auth)/login" asChild>
+              <TouchableOpacity>
                 <Text style={{
                   color: colors.primary[500],
-                  fontSize: typography.fontSize.lg,
+                  fontSize: typography.fontSize.sm,
                   fontWeight: '600',
                 }}>
                   Fazer login
                 </Text>
-              </Link>
-            </View>
+              </TouchableOpacity>
+            </Link>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

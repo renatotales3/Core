@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -10,8 +9,11 @@ import {
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, Icon, Card } from '../../src/components/ui';
-import { colors, spacing, typography, borderRadius } from '../../src/constants/theme';
+import Button from '../../src/components/ui/Button';
+import Input from '../../src/components/ui/Input';
+import { Text } from '../../src/components/ui/Text';
+import { UserIcon, MailIcon, LockIcon } from '../../src/components/ui/Icons';
+import { colors, spacing, typography, borderRadius } from '../../src/design-system/tokens';
 import { registerSchema } from '../../src/utils/validation';
 
 interface FormData {
@@ -131,7 +133,7 @@ export default function RegisterScreen() {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            paddingHorizontal: spacing[8],
+            paddingHorizontal: spacing[6],
             paddingTop: spacing[16],
             paddingBottom: spacing[12],
           }}
@@ -143,23 +145,23 @@ export default function RegisterScreen() {
               width: 72,
               height: 72,
               borderRadius: 36,
-              backgroundColor: colors.primary[50],
+              backgroundColor: colors.primary[700],
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: spacing[4],
             }}>
-              <Icon name="user" size={36} color={colors.primary[500]} />
+              <UserIcon size="xl" color="white" />
             </View>
             <Text style={{
               fontSize: typography.fontSize['3xl'],
-              fontWeight: 'bold',
+              fontWeight: '700',
               color: colors.text.primary,
-              marginBottom: spacing[2],
+              marginBottom: spacing[1],
             }}>
               Criar conta
             </Text>
             <Text style={{
-              fontSize: typography.fontSize.lg,
+              fontSize: typography.fontSize.base,
               color: colors.text.secondary,
               textAlign: 'center',
             }}>
@@ -172,8 +174,8 @@ export default function RegisterScreen() {
             {/* Nome e Sobrenome */}
             <View style={{
               flexDirection: 'row',
-              marginBottom: spacing[6],
-              gap: spacing[4],
+              marginBottom: spacing[4],
+              gap: spacing[3],
             }}>
               <View style={{ flex: 1 }}>
                 <Input
@@ -183,7 +185,7 @@ export default function RegisterScreen() {
                   onChangeText={(value) => updateField('firstName', value)}
                   error={errors.firstName}
                   autoCapitalize="words"
-                  leftIcon={<Icon name="user" size={24} color={colors.text.tertiary} />}
+                  leftIcon={<UserIcon size="sm" color="muted" />}
                 />
               </View>
               <View style={{ flex: 1 }}>
@@ -194,7 +196,7 @@ export default function RegisterScreen() {
                   onChangeText={(value) => updateField('lastName', value)}
                   error={errors.lastName}
                   autoCapitalize="words"
-                  leftIcon={<Icon name="user" size={24} color={colors.text.tertiary} />}
+                  leftIcon={<UserIcon size="sm" color="muted" />}
                 />
               </View>
             </View>
@@ -208,8 +210,9 @@ export default function RegisterScreen() {
               error={errors.email}
               keyboardType="email-address"
               autoCapitalize="none"
-              leftIcon={<Icon name="email" size={24} color={colors.text.tertiary} />}
-              style={{ marginBottom: spacing[6] }}
+              autoCorrect={false}
+              leftIcon={<MailIcon size="sm" color="muted" />}
+              style={{ marginBottom: spacing[4] }}
             />
 
             {/* Senha */}
@@ -220,9 +223,9 @@ export default function RegisterScreen() {
               onChangeText={(value) => updateField('password', value)}
               error={errors.password}
               isPassword
-              leftIcon={<Icon name="password" size={24} color={colors.text.tertiary} />}
+              leftIcon={<LockIcon size="sm" color="muted" />}
               helperText="Deve conter: 1 minúscula, 1 maiúscula e 1 número"
-              style={{ marginBottom: spacing[6] }}
+              style={{ marginBottom: spacing[4] }}
             />
 
             {/* Confirmar Senha */}
@@ -233,8 +236,8 @@ export default function RegisterScreen() {
               onChangeText={(value) => updateField('confirmPassword', value)}
               error={errors.confirmPassword}
               isPassword
-              leftIcon={<Icon name="password" size={24} color={colors.text.tertiary} />}
-              style={{ marginBottom: spacing[8] }}
+              leftIcon={<LockIcon size="sm" color="muted" />}
+              style={{ marginBottom: spacing[6] }}
             />
 
             {/* Erro geral */}
@@ -260,10 +263,8 @@ export default function RegisterScreen() {
               title="Criar conta"
               onPress={handleRegister}
               isLoading={isLoading}
-              fullWidth
               size="lg"
-              style={{ borderRadius: 16 }}
-              textStyle={{ fontSize: typography.fontSize.lg }}
+              style={{ marginBottom: spacing[8] }}
             />
           </View>
 
@@ -272,10 +273,10 @@ export default function RegisterScreen() {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: spacing[10],
+            marginBottom: spacing[8],
           }}>
             <Text style={{
-              fontSize: typography.fontSize.lg,
+              fontSize: typography.fontSize.sm,
               color: colors.text.secondary,
             }}>
               Já tem uma conta?{' '}
@@ -283,7 +284,7 @@ export default function RegisterScreen() {
             <Link href="/(auth)/login" asChild>
               <TouchableOpacity>
                 <Text style={{
-                  fontSize: typography.fontSize.lg,
+                  fontSize: typography.fontSize.sm,
                   color: colors.primary[500],
                   fontWeight: '600',
                 }}>
@@ -296,18 +297,23 @@ export default function RegisterScreen() {
           {/* Footer de termos */}
           <View style={{
             paddingHorizontal: spacing[4],
-            marginBottom: spacing[4],
           }}>
             <Text style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.text.tertiary,
+              fontSize: typography.fontSize.xs,
+              color: colors.text.muted,
               textAlign: 'center',
-              lineHeight: typography.lineHeight.base,
+              lineHeight: typography.lineHeight.relaxed,
             }}>
               Ao criar uma conta, você concorda com nossos{' '}
-              <Text style={{ color: colors.primary[500] }}>Termos & Condições</Text>
+              <Text style={{ 
+                color: colors.primary[500],
+                fontSize: typography.fontSize.xs,
+              }}>Termos & Condições</Text>
               {' '}e{' '}
-              <Text style={{ color: colors.primary[500] }}>Política de Privacidade</Text>
+              <Text style={{ 
+                color: colors.primary[500],
+                fontSize: typography.fontSize.xs,
+              }}>Política de Privacidade</Text>
             </Text>
           </View>
         </ScrollView>

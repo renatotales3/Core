@@ -220,7 +220,7 @@ function getTextVariantStyles(variant: ButtonProps['variant'], socialType?: stri
     
     case 'danger':
       return {
-        color: colors.text.inverse,
+        color: colors.text.primary, // Usar branco para melhor contraste
       };
     
     default:

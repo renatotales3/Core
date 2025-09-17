@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text as RNText, TextProps as RNTextProps, TextStyle } from 'react-native';
-import { colors, typography, spacing } from '../design-system/tokens';
+import { colors, typography, spacing } from '../../design-system/tokens';
 
 // Variantes de texto predefinidas
 type TextVariant =

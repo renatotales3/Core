@@ -3,6 +3,7 @@ import { View, SafeAreaView, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { Text, H1, Body } from '../../src/components/ui/Text';
+import { Header } from '../../src/components/common/Header';
 import Button from '../../src/components/ui/Button';
 import Card from '../../src/components/ui/Card';
 import { LogoutIcon, UserIcon, ShieldIcon, SettingsIcon } from '../../src/components/ui/Icons';
@@ -76,31 +77,13 @@ export default function SettingsScreen() {
       <View style={{
         flex: 1,
         paddingHorizontal: spacing[6],
-        paddingTop: spacing[12],
+        paddingTop: spacing[16],
       }}>
-        {/* Header */}
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          marginBottom: spacing[8] 
-        }}>
-          <View style={{ 
-            backgroundColor: colors.primary[500],
-            borderRadius: 12,
-            padding: spacing[2],
-            marginRight: spacing[3]
-          }}>
-            <SettingsIcon size="lg" color="white" />
-          </View>
-          <View>
-            <H1 color="primary" marginBottom={1}>
-              Configurações
-            </H1>
-            <Body color="secondary">
-              Gerencie sua conta e preferências
-            </Body>
-          </View>
-        </View>
+        <Header 
+          title="Configurações" 
+          icon={SettingsIcon}
+          subtitle="Gerencie sua conta e preferências"
+        />
 
         {/* Informações do usuário */}
         <Card variant="elevated" padding="lg" style={{ marginBottom: spacing[6] }}>
@@ -110,7 +93,7 @@ export default function SettingsScreen() {
             marginBottom: spacing[4] 
           }}>
             <View style={{
-              backgroundColor: colors.background.accent,
+              backgroundColor: colors.primary[900],
               borderRadius: 8,
               padding: spacing[2],
               marginRight: spacing[3]

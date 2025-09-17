@@ -1,8 +1,8 @@
 
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Icon } from '../../src/components/ui/Icon';
-import { colors } from '../../src/constants/theme';
+import { HouseIcon, CreditCardIcon, TrendingUpIcon, SettingsIcon } from '../../src/components/ui/Icons';
+import { colors } from '../../src/design-system/tokens';
 
 export default function AppLayout() {
   return (
@@ -11,18 +11,28 @@ export default function AppLayout() {
         screenOptions={{
           headerShown: false,
           tabBarActiveTintColor: colors.primary[500],
-          tabBarInactiveTintColor: colors.text.tertiary,
+          tabBarInactiveTintColor: colors.text.muted,
           tabBarStyle: {
             backgroundColor: colors.background.primary,
             borderTopWidth: 1,
             borderTopColor: colors.border.primary,
-            height: 64,
-            paddingBottom: 8,
-            paddingTop: 4,
+            height: 85,
+            paddingBottom: 16,
+            paddingTop: 8,
+            paddingHorizontal: 4,
           },
           tabBarLabelStyle: {
-            fontSize: 13,
-            fontWeight: '600',
+            fontSize: 11,
+            fontWeight: '500',
+            marginTop: 2,
+            marginBottom: 2,
+          },
+          tabBarIconStyle: {
+            marginTop: 2,
+            marginBottom: 0,
+          },
+          tabBarItemStyle: {
+            paddingVertical: 4,
           },
         }}
       >
@@ -31,7 +41,10 @@ export default function AppLayout() {
           options={{
             title: 'Dashboard',
             tabBarIcon: ({ color, focused }) => (
-              <Icon name="home" size={26} color={color} style={{ opacity: focused ? 1 : 0.7 }} />
+              <HouseIcon 
+                size="sm" 
+                color={focused ? 'accent' : 'muted'} 
+              />
             ),
           }}
         />
@@ -40,7 +53,10 @@ export default function AppLayout() {
           options={{
             title: 'Transações',
             tabBarIcon: ({ color, focused }) => (
-              <Icon name="transactions" size={26} color={color} style={{ opacity: focused ? 1 : 0.7 }} />
+              <CreditCardIcon 
+                size="sm" 
+                color={focused ? 'accent' : 'muted'} 
+              />
             ),
           }}
         />
@@ -49,7 +65,10 @@ export default function AppLayout() {
           options={{
             title: 'Investimentos',
             tabBarIcon: ({ color, focused }) => (
-              <Icon name="investments" size={26} color={color} style={{ opacity: focused ? 1 : 0.7 }} />
+              <TrendingUpIcon 
+                size="sm" 
+                color={focused ? 'accent' : 'muted'} 
+              />
             ),
           }}
         />
@@ -58,12 +77,15 @@ export default function AppLayout() {
           options={{
             title: 'Ajustes',
             tabBarIcon: ({ color, focused }) => (
-              <Icon name="settings" size={26} color={color} style={{ opacity: focused ? 1 : 0.7 }} />
+              <SettingsIcon 
+                size="sm" 
+                color={focused ? 'accent' : 'muted'} 
+              />
             ),
           }}
         />
       </Tabs>
-      <StatusBar style="light" backgroundColor="#0A0A0F" />
+      <StatusBar style="light" backgroundColor={colors.background.primary} />
     </>
   );
 }
