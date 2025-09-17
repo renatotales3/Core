@@ -1,14 +1,14 @@
 import React from 'react';
 import {
   TouchableOpacity,
-  Text,
   ActivityIndicator,
   ViewStyle,
   TextStyle,
   TouchableOpacityProps,
   View,
 } from 'react-native';
-import { colors, typography, spacing, borderRadius, shadows } from '../../constants/theme';
+import { Text } from './Text';
+import { colors, typography, spacing, borderRadius, shadows } from '../../design-system/tokens';
 
 export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   title: string;
@@ -94,7 +94,7 @@ const Button: React.FC<ButtonProps> = ({
       )}
 
       {/* Texto do botão */}
-      <Text style={textStyles}>{title}</Text>
+      <Text variant="button" style={textStyles}>{title}</Text>
 
       {/* Ícone à direita */}
       {rightIcon && !isLoading && (

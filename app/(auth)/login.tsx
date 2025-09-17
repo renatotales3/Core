@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -10,8 +9,11 @@ import {
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Input, Icon, SocialIcon } from '../../src/components/ui';
-import { colors, spacing, typography, borderRadius } from '../../src/constants/theme';
+import { Text, H1, Body } from '../../src/components/ui/Text';
+import Button from '../../src/components/ui/Button';
+import Input from '../../src/components/ui/Input';
+import { MailIcon, LockIcon, LoginIcon } from '../../src/components/ui/Icons';
+import { colors, spacing, typography, borderRadius } from '../../src/design-system/tokens';
 import { loginSchema } from '../../src/utils/validation';
 
 interface FormData {
@@ -170,8 +172,8 @@ export default function LoginScreen() {
           contentContainerStyle={{
             flexGrow: 1,
             paddingHorizontal: spacing[6],
-            paddingTop: spacing[16],
-            paddingBottom: spacing[8],
+            paddingTop: spacing[16], // Mais respiro no topo
+            paddingBottom: spacing[10], // Mais respiro no final
           }}
           showsVerticalScrollIndicator={false}
         >
@@ -181,7 +183,7 @@ export default function LoginScreen() {
               fontSize: typography.fontSize['3xl'],
               fontWeight: '700',
               color: colors.text.primary,
-              marginBottom: spacing[2],
+              marginBottom: spacing[1],
             }}>
               Bem-vindo de volta
             </Text>
@@ -206,7 +208,7 @@ export default function LoginScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
-              leftIcon={<Icon name="email" size={20} color={colors.text.tertiary} />}
+              leftIcon={<MailIcon size="sm" color="muted" />}
               style={{ marginBottom: spacing[4] }}
             />
 
@@ -218,7 +220,7 @@ export default function LoginScreen() {
               onChangeText={(value) => updateField('password', value)}
               error={errors.password}
               isPassword
-              leftIcon={<Icon name="password" size={20} color={colors.text.tertiary} />}
+              leftIcon={<LockIcon size="sm" color="muted" />}
               style={{ marginBottom: spacing[2] }}
             />
 
@@ -301,7 +303,7 @@ export default function LoginScreen() {
             <Text style={{
               marginHorizontal: spacing[4],
               fontSize: typography.fontSize.sm,
-              color: colors.text.tertiary,
+              color: colors.text.muted,
               fontWeight: '500',
             }}>
               OU
@@ -314,13 +316,13 @@ export default function LoginScreen() {
           </View>
 
           {/* Botão de login social */}
-          <View style={{ marginBottom: spacing[8] }}>
+          <View style={{ marginBottom: spacing[10] }}>
             {/* Continue with Google */}
             <Button
               title="Continuar com Google"
               variant="social"
               socialType="google"
-              leftIcon={<SocialIcon type="google" color={colors.text.primary} />}
+              leftIcon={<Text style={{ fontSize: 16 }}>G</Text>}
               onPress={handleGoogleLogin}
               isLoading={isLoading}
             />
@@ -358,7 +360,7 @@ export default function LoginScreen() {
           }}>
             <Text style={{
               fontSize: typography.fontSize.xs,
-              color: colors.text.tertiary,
+              color: colors.text.muted,
               textAlign: 'center',
               lineHeight: typography.lineHeight.sm,
             }}>

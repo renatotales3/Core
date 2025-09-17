@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ViewStyle } from 'react-native';
-import { colors, borderRadius, shadows } from '../../constants/theme';
+import { colors, borderRadius, shadows, spacing } from '../../design-system/tokens';
 
 export interface CardProps {
   children: React.ReactNode;
@@ -58,27 +58,27 @@ function getPaddingStyles(padding: CardProps['padding']): ViewStyle {
     
     case 'sm':
       return {
-        padding: 12,
+        padding: spacing[3],
       };
     
     case 'md':
       return {
-        padding: 16,
+        padding: spacing[4],
       };
     
     case 'lg':
       return {
-        padding: 20,
+        padding: spacing[6],
       };
     
     case 'xl':
       return {
-        padding: 24,
+        padding: spacing[8],
       };
     
     default:
       return {
-        padding: 16,
+        padding: spacing[4],
       };
   }
 }

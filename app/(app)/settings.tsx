@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Text, SafeAreaView, Alert } from 'react-native';
+import { View, SafeAreaView, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Card } from '../../src/components/ui';
-import { colors, spacing, typography } from '../../src/constants/theme';
+import { Text, H1, Body } from '../../src/components/ui/Text';
+import Button from '../../src/components/ui/Button';
+import Card from '../../src/components/ui/Card';
+import { LogoutIcon, UserIcon, ShieldIcon, SettingsIcon } from '../../src/components/ui/Icons';
+import { colors, spacing } from '../../src/design-system/tokens';
 
 export default function SettingsScreen() {
   const { logout, user, resetApp } = useAuth();
@@ -73,74 +76,91 @@ export default function SettingsScreen() {
       <View style={{
         flex: 1,
         paddingHorizontal: spacing[6],
-        paddingTop: spacing[8],
+        paddingTop: spacing[12],
       }}>
-        <Text style={{
-          fontSize: typography.fontSize['3xl'],
-          fontWeight: 'bold',
-          color: colors.text.primary,
-          marginBottom: spacing[2],
+        {/* Header */}
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          marginBottom: spacing[8] 
         }}>
-          Ajustes ⚙️
-        </Text>
-        
-        <Text style={{
-          fontSize: typography.fontSize.lg,
-          color: colors.text.secondary,
-          marginBottom: spacing[8],
-        }}>
-          Configurações da sua conta
-        </Text>
+          <View style={{ 
+            backgroundColor: colors.primary[500],
+            borderRadius: 12,
+            padding: spacing[2],
+            marginRight: spacing[3]
+          }}>
+            <SettingsIcon size="lg" color="white" />
+          </View>
+          <View>
+            <H1 color="primary" marginBottom={1}>
+              Configurações
+            </H1>
+            <Body color="secondary">
+              Gerencie sua conta e preferências
+            </Body>
+          </View>
+        </View>
 
         {/* Informações do usuário */}
-        <Card padding="lg" style={{ marginBottom: spacing[6] }}>
-          <Text style={{
-            fontSize: typography.fontSize.lg,
-            fontWeight: '600',
-            color: colors.text.primary,
-            marginBottom: spacing[2],
+        <Card variant="elevated" padding="lg" style={{ marginBottom: spacing[6] }}>
+          <View style={{ 
+            flexDirection: 'row', 
+            alignItems: 'center', 
+            marginBottom: spacing[4] 
           }}>
-            Perfil
-          </Text>
+            <View style={{
+              backgroundColor: colors.background.accent,
+              borderRadius: 8,
+              padding: spacing[2],
+              marginRight: spacing[3]
+            }}>
+              <UserIcon size="base" color="accent" />
+            </View>
+            <Text variant="h4" color="primary">
+              Perfil
+            </Text>
+          </View>
           
-          <Text style={{
-            fontSize: typography.fontSize.base,
-            color: colors.text.secondary,
-            marginBottom: spacing[1],
-          }}>
-            Nome: {user?.profile?.firstName} {user?.profile?.lastName}
-          </Text>
-          
-          <Text style={{
-            fontSize: typography.fontSize.base,
-            color: colors.text.secondary,
-          }}>
-            Email: {user?.email}
-          </Text>
+          <View style={{ marginLeft: spacing[10] }}>
+            <Body color="primary" marginBottom={2}>
+              <Text weight="medium">Nome:</Text> {user?.profile?.firstName} {user?.profile?.lastName}
+            </Body>
+            
+            <Body color="secondary">
+              <Text weight="medium">Email:</Text> {user?.email}
+            </Body>
+          </View>
         </Card>
 
-        {/* Botão de logout */}
-        <Button
-          title="Sair da conta"
-          variant="danger"
-          onPress={() => {
-            console.log('🟢 Settings - Botão logout pressionado!');
-            handleLogout();
-          }}
-          fullWidth
-          style={{ marginBottom: spacing[4] }}
-        />
+        {/* Ações */}
+        <View style={{ gap: spacing[4] }}>
+          {/* Botão de logout */}
+          <Button
+            title="Sair da conta"
+            variant="danger"
+            size="lg"
+            leftIcon={<LogoutIcon size="sm" color="white" />}
+            onPress={() => {
+              console.log('🟢 Settings - Botão logout pressionado!');
+              handleLogout();
+            }}
+            fullWidth
+          />
 
-        {/* Botão de reset (debugging) */}
-        <Button
-          title="Reset App (Debug)"
-          variant="outline"
-          onPress={() => {
-            console.log('🟢 Settings - Botão reset pressionado!');
-            handleResetApp();
-          }}
-          fullWidth
-        />
+          {/* Botão de reset (debugging) */}
+          <Button
+            title="Reset App (Debug)"
+            variant="outline"
+            size="lg"
+            leftIcon={<ShieldIcon size="sm" color="accent" />}
+            onPress={() => {
+              console.log('🟢 Settings - Botão reset pressionado!');
+              handleResetApp();
+            }}
+            fullWidth
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

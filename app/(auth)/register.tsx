@@ -131,24 +131,35 @@ export default function RegisterScreen() {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            paddingHorizontal: spacing[6],
-            paddingTop: spacing[12],
-            paddingBottom: spacing[8],
+            paddingHorizontal: spacing[8],
+            paddingTop: spacing[16],
+            paddingBottom: spacing[12],
           }}
           showsVerticalScrollIndicator={false}
         >
           {/* Header */}
-          <View style={{ alignItems: 'center', marginBottom: spacing[10] }}>
+          <View style={{ alignItems: 'center', marginBottom: spacing[12] }}>
+            <View style={{
+              width: 72,
+              height: 72,
+              borderRadius: 36,
+              backgroundColor: colors.primary[50],
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: spacing[4],
+            }}>
+              <Icon name="user" size={36} color={colors.primary[500]} />
+            </View>
             <Text style={{
               fontSize: typography.fontSize['3xl'],
-              fontWeight: '700',
+              fontWeight: 'bold',
               color: colors.text.primary,
               marginBottom: spacing[2],
             }}>
               Criar conta
             </Text>
             <Text style={{
-              fontSize: typography.fontSize.base,
+              fontSize: typography.fontSize.lg,
               color: colors.text.secondary,
               textAlign: 'center',
             }}>
@@ -157,12 +168,12 @@ export default function RegisterScreen() {
           </View>
 
           {/* Formulário */}
-          <View style={{ marginBottom: spacing[8] }}>
+          <View style={{ marginBottom: spacing[10] }}>
             {/* Nome e Sobrenome */}
             <View style={{
               flexDirection: 'row',
-              marginBottom: spacing[4],
-              gap: spacing[3],
+              marginBottom: spacing[6],
+              gap: spacing[4],
             }}>
               <View style={{ flex: 1 }}>
                 <Input
@@ -172,10 +183,9 @@ export default function RegisterScreen() {
                   onChangeText={(value) => updateField('firstName', value)}
                   error={errors.firstName}
                   autoCapitalize="words"
-                  leftIcon={<Icon name="user" size={20} color={colors.text.tertiary} />}
+                  leftIcon={<Icon name="user" size={24} color={colors.text.tertiary} />}
                 />
               </View>
-              
               <View style={{ flex: 1 }}>
                 <Input
                   label="Sobrenome"
@@ -184,7 +194,7 @@ export default function RegisterScreen() {
                   onChangeText={(value) => updateField('lastName', value)}
                   error={errors.lastName}
                   autoCapitalize="words"
-                  leftIcon={<Icon name="user" size={20} color={colors.text.tertiary} />}
+                  leftIcon={<Icon name="user" size={24} color={colors.text.tertiary} />}
                 />
               </View>
             </View>
@@ -198,8 +208,8 @@ export default function RegisterScreen() {
               error={errors.email}
               keyboardType="email-address"
               autoCapitalize="none"
-              leftIcon={<Icon name="email" size={20} color={colors.text.tertiary} />}
-              style={{ marginBottom: spacing[4] }}
+              leftIcon={<Icon name="email" size={24} color={colors.text.tertiary} />}
+              style={{ marginBottom: spacing[6] }}
             />
 
             {/* Senha */}
@@ -210,9 +220,9 @@ export default function RegisterScreen() {
               onChangeText={(value) => updateField('password', value)}
               error={errors.password}
               isPassword
-              leftIcon={<Icon name="password" size={20} color={colors.text.tertiary} />}
+              leftIcon={<Icon name="password" size={24} color={colors.text.tertiary} />}
               helperText="Deve conter: 1 minúscula, 1 maiúscula e 1 número"
-              style={{ marginBottom: spacing[4] }}
+              style={{ marginBottom: spacing[6] }}
             />
 
             {/* Confirmar Senha */}
@@ -223,8 +233,8 @@ export default function RegisterScreen() {
               onChangeText={(value) => updateField('confirmPassword', value)}
               error={errors.confirmPassword}
               isPassword
-              leftIcon={<Icon name="password" size={20} color={colors.text.tertiary} />}
-              style={{ marginBottom: spacing[6] }}
+              leftIcon={<Icon name="password" size={24} color={colors.text.tertiary} />}
+              style={{ marginBottom: spacing[8] }}
             />
 
             {/* Erro geral */}
@@ -252,6 +262,8 @@ export default function RegisterScreen() {
               isLoading={isLoading}
               fullWidth
               size="lg"
+              style={{ borderRadius: 16 }}
+              textStyle={{ fontSize: typography.fontSize.lg }}
             />
           </View>
 
@@ -260,10 +272,10 @@ export default function RegisterScreen() {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: spacing[8],
+            marginBottom: spacing[10],
           }}>
             <Text style={{
-              fontSize: typography.fontSize.sm,
+              fontSize: typography.fontSize.lg,
               color: colors.text.secondary,
             }}>
               Já tem uma conta?{' '}
@@ -271,7 +283,7 @@ export default function RegisterScreen() {
             <Link href="/(auth)/login" asChild>
               <TouchableOpacity>
                 <Text style={{
-                  fontSize: typography.fontSize.sm,
+                  fontSize: typography.fontSize.lg,
                   color: colors.primary[500],
                   fontWeight: '600',
                 }}>
@@ -284,12 +296,13 @@ export default function RegisterScreen() {
           {/* Footer de termos */}
           <View style={{
             paddingHorizontal: spacing[4],
+            marginBottom: spacing[4],
           }}>
             <Text style={{
-              fontSize: typography.fontSize.xs,
+              fontSize: typography.fontSize.sm,
               color: colors.text.tertiary,
               textAlign: 'center',
-              lineHeight: typography.lineHeight.sm,
+              lineHeight: typography.lineHeight.base,
             }}>
               Ao criar uma conta, você concorda com nossos{' '}
               <Text style={{ color: colors.primary[500] }}>Termos & Condições</Text>

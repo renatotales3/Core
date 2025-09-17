@@ -36,20 +36,22 @@ export default function OnboardingIndex() {
           
           {/* Logo/Icon Principal */}
           <View style={{
-            width: 128,
-            height: 128,
-            backgroundColor: colors.primary[500],
-            borderRadius: 64,
+            width: 120,
+            height: 120,
+            backgroundColor: colors.primary[50],
+            borderRadius: 60,
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: spacing[8],
+            marginBottom: spacing[10],
+            borderWidth: 2,
+            borderColor: colors.primary[100],
           }}>
-            <Text style={{ fontSize: 60 }}>💰</Text>
+            <Text style={{ fontSize: 56 }}>💰</Text>
           </View>
 
           {/* Título Principal */}
           <Text style={{
-            fontSize: typography.fontSize['4xl'],
+            fontSize: typography.fontSize['5xl'],
             fontWeight: 'bold',
             color: colors.text.primary,
             textAlign: 'center',
@@ -60,21 +62,21 @@ export default function OnboardingIndex() {
 
           {/* Subtítulo */}
           <Text style={{
-            fontSize: typography.fontSize.xl,
+            fontSize: typography.fontSize['2xl'],
             color: colors.text.secondary,
             textAlign: 'center',
-            marginBottom: spacing[2],
+            marginBottom: spacing[4],
           }}>
             {isAuthenticated ? 'Você já está logado' : 'No centro das suas finanças'}
           </Text>
 
           {/* Descrição */}
           <Text style={{
-            fontSize: typography.fontSize.base,
+            fontSize: typography.fontSize.lg,
             color: colors.text.tertiary,
             textAlign: 'center',
             marginBottom: spacing[12],
-            lineHeight: typography.lineHeight.base * 1.3,
+            lineHeight: typography.lineHeight.lg * 1.2,
           }}>
             {isAuthenticated 
               ? 'Você está logado! Complete o tour rápido para conhecer os recursos ou pule para ir direto ao app.'
@@ -94,13 +96,23 @@ export default function OnboardingIndex() {
                 <View key={index} style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  marginBottom: spacing[4],
+                  marginBottom: spacing[6],
                   paddingHorizontal: spacing[4],
                 }}>
-                  <Text style={{ fontSize: 24, marginRight: spacing[3] }}>{item.icon}</Text>
+                  <View style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    backgroundColor: colors.primary[50],
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: spacing[3],
+                  }}>
+                    <Text style={{ fontSize: 22 }}>{item.icon}</Text>
+                  </View>
                   <View style={{ flex: 1 }}>
                     <Text style={{
-                      fontSize: typography.fontSize.base,
+                      fontSize: typography.fontSize.lg,
                       fontWeight: '600',
                       color: colors.text.primary,
                       marginBottom: spacing[1],
@@ -108,7 +120,7 @@ export default function OnboardingIndex() {
                       {item.title}
                     </Text>
                     <Text style={{
-                      fontSize: typography.fontSize.sm,
+                      fontSize: typography.fontSize.base,
                       color: colors.text.secondary,
                     }}>
                       {item.desc}

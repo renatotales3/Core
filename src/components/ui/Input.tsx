@@ -2,14 +2,14 @@ import React, { useState, forwardRef } from 'react';
 import {
   View,
   TextInput,
-  Text,
   TouchableOpacity,
   TextInputProps,
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { colors, typography, spacing, borderRadius } from '../../constants/theme';
-import { Icon } from './Icon';
+import { Text } from './Text';
+import { EyeIcon, EyeOffIcon } from './Icons';
+import { colors, typography, spacing, borderRadius } from '../../design-system/tokens';
 
 export interface InputProps extends Omit<TextInputProps, 'style'> {
   label?: string;
@@ -69,11 +69,13 @@ const Input = forwardRef<TextInput, InputProps>(({
 
   // Estilos do input
   const textInputStyle: TextStyle = {
-    flex: 1,
-    fontSize: typography.fontSize.base,
-    lineHeight: typography.lineHeight.base,
-    color: colors.text.primary,
-    ...inputStyle,
+  flex: 1,
+  fontSize: typography.fontSize.base,
+  lineHeight: typography.lineHeight.base,
+  color: colors.text.primary,
+  // Remove qualquer outline visual de foco (web)
+  outlineColor: 'transparent',
+  ...inputStyle,
   };
 
   // Estilos do label
@@ -89,12 +91,12 @@ const Input = forwardRef<TextInput, InputProps>(({
   const helperTextStyle: TextStyle = {
     fontSize: typography.fontSize.xs,
     marginTop: spacing[1],
-    color: hasError ? colors.error[500] : colors.text.tertiary,
+    color: hasError ? colors.error[500] : colors.text.muted,
   };
 
   return (
     <View style={mainContainerStyle}>
-      {label && <Text style={labelTextStyle}>{label}</Text>}
+      {label && <Text variant="label" style={labelTextStyle}>{label}</Text>}
       
       <View style={inputContainerStyle}>
         {leftIcon && (
@@ -110,7 +112,7 @@ const Input = forwardRef<TextInput, InputProps>(({
           editable={!isDisabled}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholderTextColor={colors.text.tertiary}
+          placeholderTextColor={colors.text.muted}
           {...props}
         />
         
@@ -120,11 +122,11 @@ const Input = forwardRef<TextInput, InputProps>(({
             style={{ marginLeft: spacing[2] }}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Icon 
-              name={isPasswordVisible ? 'eye-off' : 'eye'} 
-              size={20} 
-              color={colors.text.secondary} 
-            />
+            {isPasswordVisible ? (
+              <EyeOffIcon size="sm" color="secondary" />
+            ) : (
+              <EyeIcon size="sm" color="secondary" />
+            )}
           </TouchableOpacity>
         )}
         
@@ -136,7 +138,7 @@ const Input = forwardRef<TextInput, InputProps>(({
       </View>
       
       {(error || helperText) && (
-        <Text style={helperTextStyle}>
+        <Text variant="caption" style={helperTextStyle}>
           {error || helperText}
         </Text>
       )}
@@ -160,7 +162,7 @@ function getVariantStyles(variant: InputProps['variant']): ViewStyle {
     case 'default':
     default:
       return {
-        backgroundColor: colors.background.tertiary,
+        backgroundColor: colors.background.secondary,
         borderColor: colors.border.primary,
       };
   }

@@ -92,38 +92,36 @@ export default function ResetPasswordScreen() {
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.primary }}>
         <View style={{
           flex: 1,
-          paddingHorizontal: spacing[6],
+          paddingHorizontal: spacing[8],
           justifyContent: 'center',
         }}>
-          <Card padding="lg" style={{ alignItems: 'center' }}>
+          <Card padding="lg" style={{ alignItems: 'center', borderRadius: 24 }}>
             <View style={{
-              width: 80,
-              height: 80,
-              borderRadius: 40,
+              width: 88,
+              height: 88,
+              borderRadius: 44,
               backgroundColor: colors.success[50],
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: spacing[4],
+              marginBottom: spacing[6],
             }}>
-              <Icon name="email" size={40} color={colors.success[600]} />
+              <Icon name="email" size={44} color={colors.success[600]} />
             </View>
-            
             <Text style={{
               fontSize: typography.fontSize['2xl'],
               fontWeight: 'bold',
               color: colors.text.primary,
               textAlign: 'center',
-              marginBottom: spacing[3],
+              marginBottom: spacing[2],
             }}>
               Email enviado!
             </Text>
-            
             <Text style={{
-              fontSize: typography.fontSize.base,
+              fontSize: typography.fontSize.lg,
               color: colors.text.secondary,
               textAlign: 'center',
-              lineHeight: typography.lineHeight.base * 1.3,
-              marginBottom: spacing[6],
+              lineHeight: typography.lineHeight.lg * 1.2,
+              marginBottom: spacing[8],
             }}>
               Enviamos um link para redefinir sua senha para{' '}
               <Text style={{ color: colors.primary[500], fontWeight: '600' }}>
@@ -131,12 +129,14 @@ export default function ResetPasswordScreen() {
               </Text>
               . Verifique sua caixa de entrada e spam.
             </Text>
-            
             <Button
               title="Voltar ao Login"
               onPress={() => router.replace('/(auth)/login')}
               fullWidth
               variant="secondary"
+              size="lg"
+              style={{ borderRadius: 16 }}
+              textStyle={{ fontSize: typography.fontSize.lg }}
             />
           </Card>
         </View>
@@ -156,29 +156,28 @@ export default function ResetPasswordScreen() {
         >
           <View style={{
             flex: 1,
-            paddingHorizontal: spacing[6],
+            paddingHorizontal: spacing[8],
             paddingTop: spacing[16],
-            paddingBottom: spacing[8],
+            paddingBottom: spacing[12],
           }}>
             
             {/* Header */}
-            <View style={{ marginBottom: spacing[10] }}>
+            <View style={{ marginBottom: spacing[12] }}>
               <View style={{
                 alignItems: 'center',
-                marginBottom: spacing[6],
+                marginBottom: spacing[8],
               }}>
                 <View style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: 32,
+                  width: 72,
+                  height: 72,
+                  borderRadius: 36,
                   backgroundColor: colors.primary[50],
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: spacing[4],
                 }}>
-                  <Icon name="password" size={32} color={colors.primary[500]} />
+                  <Icon name="password" size={36} color={colors.primary[500]} />
                 </View>
-                
                 <Text style={{
                   fontSize: typography.fontSize['3xl'],
                   fontWeight: 'bold',
@@ -189,19 +188,18 @@ export default function ResetPasswordScreen() {
                   Esqueceu a senha?
                 </Text>
               </View>
-              
               <Text style={{
                 fontSize: typography.fontSize.lg,
                 color: colors.text.secondary,
                 textAlign: 'center',
-                lineHeight: typography.lineHeight.lg,
+                lineHeight: typography.lineHeight.lg * 1.2,
               }}>
                 Digite seu email e enviaremos um link para redefinir sua senha
               </Text>
             </View>
 
             {/* Form */}
-            <Card padding="lg" style={{ marginBottom: spacing[6] }}>
+            <Card padding="lg" style={{ marginBottom: spacing[10], borderRadius: 20 }}>
               {/* Email */}
               <Input
                 label="Email"
@@ -212,8 +210,8 @@ export default function ResetPasswordScreen() {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoComplete="email"
-                leftIcon={<Icon name="email" size={20} color={colors.text.tertiary} />}
-                containerStyle={{ marginBottom: spacing[6] }}
+                leftIcon={<Icon name="email" size={24} color={colors.text.tertiary} />}
+                containerStyle={{ marginBottom: spacing[8] }}
               />
 
               {/* Erro geral */}
@@ -241,6 +239,8 @@ export default function ResetPasswordScreen() {
                 isLoading={isLoading}
                 fullWidth
                 size="lg"
+                style={{ borderRadius: 16 }}
+                textStyle={{ fontSize: typography.fontSize.lg }}
               />
             </Card>
 
@@ -249,19 +249,18 @@ export default function ResetPasswordScreen() {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 'auto',
+              marginTop: spacing[8],
             }}>
               <Text style={{
                 color: colors.text.secondary,
-                fontSize: typography.fontSize.base,
+                fontSize: typography.fontSize.lg,
               }}>
                 Lembrou da senha? {' '}
               </Text>
-              
               <Link href="/(auth)/login" asChild>
                 <Text style={{
                   color: colors.primary[500],
-                  fontSize: typography.fontSize.base,
+                  fontSize: typography.fontSize.lg,
                   fontWeight: '600',
                 }}>
                   Fazer login
