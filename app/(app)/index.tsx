@@ -185,7 +185,7 @@ export default function DashboardScreen() {
         {/* Saldo Principal - Estilo Revolut */}
         <View style={{ 
           alignItems: 'center',
-          marginBottom: sectionSpacing,
+          marginBottom: topPadding,
           paddingVertical: getResponsiveSpacing(8),
           // Garantir que o bloco ocupe espaço flexível e esteja centralizado entre header e cards
           width: '100%',
