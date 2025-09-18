@@ -25,6 +25,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
   searchPlaceholder = 'Pesquisar transações...',
 }) => {
   const { getResponsiveSpacing, getResponsiveFontSize } = useResponsive();
+  const { isExtraSmall } = useResponsive();
 
   const avatarSize = 40;
   const iconSize = 24;
@@ -67,14 +68,15 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
         onPress={onSearchPress}
         style={{
           flex: 1,
-          minWidth: 140,
+          minWidth: isExtraSmall ? 100 : 120,
+          maxWidth: '100%',
           flexShrink: 1,
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: colors.background.secondary,
           borderRadius: borderRadius.lg,
-          paddingHorizontal: getResponsiveSpacing(12),
-          paddingVertical: getResponsiveSpacing(8),
+          paddingHorizontal: getResponsiveSpacing(isExtraSmall ? 8 : 12),
+          paddingVertical: getResponsiveSpacing(isExtraSmall ? 6 : 8),
           marginRight: getResponsiveSpacing(8),
         }}
         activeOpacity={0.8}
@@ -86,14 +88,16 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
           flex: 1,
           fontSize: getResponsiveFontSize(13),
           color: colors.text.secondary,
-          opacity: 0.9,
+          opacity: 0.95,
+          // garantir que o texto não force o componente a crescer
+          minWidth: 0,
         }}>
           {searchPlaceholder}
         </Text>
       </TouchableOpacity>
 
       {/* Ícones de Ação */}
-      <View style={{
+        <View style={{
         flexDirection: 'row',
         alignItems: 'center',
       }}>
@@ -114,7 +118,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
         </TouchableOpacity>
 
         {/* Espaçamento entre ícones */}
-        <View style={{ width: getResponsiveSpacing(8) }} />
+        <View style={{ width: getResponsiveSpacing(6) }} />
 
         {/* Configurações */}
         <TouchableOpacity

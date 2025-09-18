@@ -3,6 +3,7 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { HouseIcon, CreditCardIcon, TrendingUpIcon, SettingsIcon } from '../../src/components/ui/Icons';
 import { colors } from '../../src/design-system/tokens';
+// TabBarBackground removed — usar apenas tabBarStyle para visual
 
 export default function AppLayout() {
   return (
@@ -14,28 +15,31 @@ export default function AppLayout() {
           tabBarInactiveTintColor: colors.neutral[400], // Cinza para abas inativas
           tabBarStyle: {
             backgroundColor: colors.background.primary,
+            // Igualar a borda ao fundo para evitar seam
             borderTopWidth: 1,
-            borderTopColor: colors.border.primary,
-            height: 70,
-            paddingBottom: 10,
-            paddingTop: 6,
+            borderTopColor: colors.background.primary,
+            height: 60,
+            paddingBottom: 6,
+            paddingTop: 4,
             paddingHorizontal: 4,
+            elevation: 0,
+            shadowOpacity: 0,
           },
           tabBarLabelStyle: {
-            fontSize: 12,
+            fontSize: 11,
             fontWeight: '500',
             marginTop: 0,
             marginBottom: 0,
-            lineHeight: 18,
-            paddingHorizontal: 2,
+            lineHeight: 14,
+            paddingHorizontal: 0,
           },
           tabBarIconStyle: {
             marginTop: 0,
-            marginBottom: 0,
+            marginBottom: 2,
           },
           tabBarItemStyle: {
             paddingVertical: 2,
-            minWidth: 64,
+            minWidth: 48,
           },
           // Adicionar animação suave na transição
           animation: 'shift',
@@ -46,9 +50,9 @@ export default function AppLayout() {
           options={{
             title: 'Dashboard',
             tabBarIcon: ({ color, focused }) => (
-              <HouseIcon 
-                size="sm" 
-                color={focused ? '#FFFFFF' : colors.neutral[400]} 
+              <HouseIcon
+                size="sm"
+                color={focused ? '#FFFFFF' : colors.neutral[400]}
               />
             ),
           }}
@@ -58,9 +62,9 @@ export default function AppLayout() {
           options={{
             title: 'Transações',
             tabBarIcon: ({ color, focused }) => (
-              <CreditCardIcon 
-                size="sm" 
-                color={focused ? '#FFFFFF' : colors.neutral[400]} 
+              <CreditCardIcon
+                size="sm"
+                color={focused ? '#FFFFFF' : colors.neutral[400]}
               />
             ),
           }}
@@ -70,9 +74,9 @@ export default function AppLayout() {
           options={{
             title: 'Investimentos',
             tabBarIcon: ({ color, focused }) => (
-              <TrendingUpIcon 
-                size="sm" 
-                color={focused ? '#FFFFFF' : colors.neutral[400]} 
+              <TrendingUpIcon
+                size="sm"
+                color={focused ? '#FFFFFF' : colors.neutral[400]}
               />
             ),
           }}
@@ -82,9 +86,9 @@ export default function AppLayout() {
           options={{
             title: 'Ajustes',
             tabBarIcon: ({ color, focused }) => (
-              <SettingsIcon 
-                size="sm" 
-                color={focused ? '#FFFFFF' : colors.neutral[400]} 
+              <SettingsIcon
+                size="sm"
+                color={focused ? '#FFFFFF' : colors.neutral[400]}
               />
             ),
           }}

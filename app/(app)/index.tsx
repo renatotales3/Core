@@ -30,12 +30,15 @@ import { useResponsive } from '../../src/hooks/useResponsive';
 export default function DashboardScreen() {
   const { user } = useAuth();
   const { getResponsiveSpacing, getResponsiveFontSize, isSmall } = useResponsive();
+  const { isExtraSmall } = useResponsive();
   
   // Responsive values
   const screenPadding = getResponsiveSpacing(24);
   // reduzir espaçamento superior para dispositivos móveis (evita muito espaço acima da header)
   const topPadding = getResponsiveSpacing(12);
   const bottomPadding = getResponsiveSpacing(32);
+  // Garantir padding inferior mínimo para não ficar sob a bottom tab
+  const effectiveBottomPadding = Math.max(bottomPadding, layout.bottomTab.height + spacing[4]);
   // reduzir espaço entre blocos para aproximar cards do saldo
   const sectionSpacing = getResponsiveSpacing(20);
   const titleFontSize = getResponsiveFontSize(18);
@@ -168,12 +171,13 @@ export default function DashboardScreen() {
         contentContainerStyle={{
           paddingHorizontal: screenPadding,
           paddingTop: topPadding,
-          paddingBottom: bottomPadding,
-          alignItems: 'center',
+          paddingBottom: effectiveBottomPadding,
+          // stretch para evitar que o conteúdo centralize e gere efeito de "zoom" em telas diferentes
+          alignItems: 'stretch',
         }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={{ width: '100%', maxWidth: layout.container.maxWidth }}>
+        <View style={{ alignSelf: 'center', width: '100%', maxWidth: layout.container.maxWidth }}>
         <RevolutHeader 
           userName={user?.displayName || 'Usuário'}
           onSearchPress={() => console.log('Pesquisar')}
@@ -229,9 +233,11 @@ export default function DashboardScreen() {
             width: '100%'
           }}>
             <View style={{ 
-              flex: 0.5,
+              flex: isExtraSmall ? 0 : 1,
+              width: isExtraSmall ? '100%' : undefined,
+              maxWidth: isExtraSmall ? '100%' : '49%',
               paddingHorizontal: cardSpacing / 2,
-              minWidth: 160,
+              minWidth: isExtraSmall ? 0 : 120,
             }}>
               <FinancialSummaryCard
                 title="Receitas"
@@ -244,9 +250,11 @@ export default function DashboardScreen() {
             </View>
 
             <View style={{ 
-              flex: 0.5,
+              flex: isExtraSmall ? 0 : 1,
+              width: isExtraSmall ? '100%' : undefined,
+              maxWidth: isExtraSmall ? '100%' : '49%',
               paddingHorizontal: cardSpacing / 2,
-              minWidth: 160,
+              minWidth: isExtraSmall ? 0 : 120,
             }}>
               <FinancialSummaryCard
                 title="Despesas"

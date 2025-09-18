@@ -9,6 +9,7 @@ export const useResponsive = () => {
   
   // Determinar o breakpoint atual
   const isSmall = width < breakpoints.sm;
+  const isExtraSmall = width <= 320; // celulares muito estreitos
   const isMedium = width >= breakpoints.sm && width < breakpoints.md;
   const isLarge = width >= breakpoints.md && width < breakpoints.lg;
   const isXLarge = width >= breakpoints.lg;
@@ -31,10 +32,11 @@ export const useResponsive = () => {
   // Espaçamentos responsivos
   const getResponsiveSpacing = (base: number) => {
     return getResponsiveValue({
-      sm: base * 0.75,  // 25% menor em telas pequenas
-      md: base,         // Valor base para médio
-      lg: base * 1.25,  // 25% maior em telas grandes
-      xl: base * 1.5,   // 50% maior em telas extra grandes
+      // Ajustes menos agressivos para evitar "zoom" visual em alguns dispositivos
+      sm: Math.max(base * 0.85, base - 6),  // levemente menor em telas pequenas
+      md: base,                               // Valor base para médio
+      lg: Math.min(base * 1.12, base + 8),    // ligeiramente maior em telas grandes
+      xl: Math.min(base * 1.22, base + 14),   // tamanho controlado em telas extra grandes
       default: base,
     });
   };
@@ -42,10 +44,11 @@ export const useResponsive = () => {
   // Fonte responsiva
   const getResponsiveFontSize = (base: number) => {
     return getResponsiveValue({
-      sm: Math.max(base * 0.9, 12),  // No mínimo 12px
+      // Font scaling suavizada para evitar que títulos aumentem/desapareçam entre dispositivos
+      sm: Math.max(base * 0.95, 12),
       md: base,
-      lg: base * 1.1,
-      xl: base * 1.2,
+      lg: Math.min(base * 1.06, base + 2),
+      xl: Math.min(base * 1.12, base + 4),
       default: base,
     });
   };
@@ -68,6 +71,7 @@ export const useResponsive = () => {
     
     // Breakpoints
     isSmall,
+    isExtraSmall,
     isMedium,
     isLarge,
     isXLarge,

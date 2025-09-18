@@ -1,7 +1,23 @@
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { GoogleAuthProvider, signInWithCredential, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { auth } from './firebase';
 import { Platform } from 'react-native';
+
+// Modules nativos (carregar apenas quando disponível)
+let GoogleSignin: any = null;
+let statusCodes: any = {};
+if (Platform.OS !== 'web') {
+  try {
+    // usar require para evitar bundling/import top-level que quebra no web/Expo Go
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const rnGoogle = require('@react-native-google-signin/google-signin');
+    GoogleSignin = rnGoogle.GoogleSignin || rnGoogle;
+    statusCodes = rnGoogle.statusCodes || {};
+  } catch (err: any) {
+    console.warn('Módulo @react-native-google-signin/google-signin não disponível:', err && (err.message || err));
+    GoogleSignin = null;
+    statusCodes = {};
+  }
+}
 
 // Configuração do Google Sign-In
 export const configureGoogleSignIn = () => {
@@ -49,6 +65,10 @@ export const signInWithGoogle = async (): Promise<GoogleSignInResult> => {
     } else {
       // Implementação para MOBILE usando @react-native-google-signin/google-signin
       console.log('📱 Executando Google Sign-In para Mobile');
+
+      if (!GoogleSignin) {
+        throw new Error('Google Signin não está disponível no ambiente atual');
+      }
       
       // Configurar Google Sign-In se ainda não foi configurado
       configureGoogleSignIn();
@@ -59,11 +79,11 @@ export const signInWithGoogle = async (): Promise<GoogleSignInResult> => {
       }
 
       // Fazer login com Google
-      const userInfo = await GoogleSignin.signIn();
+  const userInfo = await GoogleSignin.signIn();
       
-      // Obter o ID token para autenticação no Firebase
-      const tokens = await GoogleSignin.getTokens();
-      const idToken = tokens.idToken;
+  // Obter o ID token para autenticação no Firebase
+  const tokens = await GoogleSignin.getTokens();
+  const idToken = tokens?.idToken;
       
       if (!idToken) {
         throw new Error('ID Token não recebido do Google');
@@ -84,7 +104,7 @@ export const signInWithGoogle = async (): Promise<GoogleSignInResult> => {
   } catch (error: any) {
     console.error('Erro no Google Sign-In:', error);
     
-    if (Platform.OS === 'web') {
+  if (Platform.OS === 'web') {
       // Tratar erros específicos da web
       if (error.code === 'auth/popup-closed-by-user') {
         return {
@@ -107,19 +127,19 @@ export const signInWithGoogle = async (): Promise<GoogleSignInResult> => {
           error: error.message || 'Erro inesperado no login com Google',
         };
       }
-    } else {
+      } else {
       // Tratar erros específicos do mobile
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      if (statusCodes && error.code === statusCodes.SIGN_IN_CANCELLED) {
         return {
           success: false,
           error: 'Login cancelado pelo usuário',
         };
-      } else if (error.code === statusCodes.IN_PROGRESS) {
+      } else if (statusCodes && error.code === statusCodes.IN_PROGRESS) {
         return {
           success: false,
           error: 'Login já em progresso',
         };
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      } else if (statusCodes && error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         return {
           success: false,
           error: 'Google Play Services não disponível',
