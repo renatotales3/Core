@@ -21,7 +21,7 @@ type TextVariant =
 type FontWeight = 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold';
 
 // Cores de texto disponíveis
-type TextColor = 'primary' | 'secondary' | 'muted' | 'accent' | 'success' | 'warning' | 'error' | 'white';
+type TextColor = 'primary' | 'secondary' | 'muted' | 'accent' | 'success' | 'warning' | 'error' | 'white' | 'iconDot';
 
 interface TextProps extends Omit<RNTextProps, 'style'> {
   variant?: TextVariant;
@@ -120,6 +120,7 @@ const textColors: Record<TextColor, string> = {
   warning: colors.warning[500],
   error: colors.error[500],
   white: colors.neutral[0],
+  iconDot: colors.background.accent,
 };
 
 export function Text({

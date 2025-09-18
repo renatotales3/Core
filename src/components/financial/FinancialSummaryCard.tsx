@@ -164,7 +164,7 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
       {/* Subtítulo (se houver) */}
       {subtitle && (
         <Text 
-          color="muted" 
+          color="iconDot" 
           style={{
             fontSize: responsive.getResponsiveValue({ sm: 13, md: 14, lg: 15, default: 14 }),
             fontWeight: '400',
