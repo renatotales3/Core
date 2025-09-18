@@ -228,7 +228,7 @@ export default function DashboardScreen() {
           }}>
             <View style={{ 
               flexBasis: '48%',
-              minWidth: 260,
+              minWidth: 200,
               flexGrow: 1,
               marginRight: cardSpacing,
               marginBottom: cardSpacing,
@@ -245,7 +245,7 @@ export default function DashboardScreen() {
 
             <View style={{ 
               flexBasis: '48%',
-              minWidth: 260,
+              minWidth: 200,
               flexGrow: 1,
               marginLeft: 0,
               marginBottom: cardSpacing,

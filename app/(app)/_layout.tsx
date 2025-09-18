@@ -26,7 +26,8 @@ export default function AppLayout() {
             fontWeight: '500',
             marginTop: 0,
             marginBottom: 0,
-            lineHeight: 16,
+            lineHeight: 18,
+            paddingHorizontal: 2,
           },
           tabBarIconStyle: {
             marginTop: 0,
@@ -34,6 +35,7 @@ export default function AppLayout() {
           },
           tabBarItemStyle: {
             paddingVertical: 2,
+            minWidth: 64,
           },
           // Adicionar animação suave na transição
           animation: 'shift',

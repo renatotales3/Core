@@ -67,6 +67,8 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
         onPress={onSearchPress}
         style={{
           flex: 1,
+          minWidth: 140,
+          flexShrink: 1,
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: colors.background.secondary,
@@ -80,7 +82,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
         <View style={{ marginRight: getResponsiveSpacing(8) }}>
           <SearchIcon size={18} color={colors.text.primary} />
         </View>
-        <Text style={{
+        <Text numberOfLines={1} ellipsizeMode="tail" style={{
           flex: 1,
           fontSize: getResponsiveFontSize(13),
           color: colors.text.secondary,
