@@ -446,7 +446,11 @@ class AuthService {
   /**
    * Converter códigos de erro para mensagens amigáveis
    */
-  private getErrorMessage(errorCode: string): string {
+  private getErrorMessage(errorCodeOrError: unknown): string {
+    const errorCode = typeof errorCodeOrError === 'string'
+      ? errorCodeOrError
+      : (errorCodeOrError && (errorCodeOrError as any).code) || (errorCodeOrError && (errorCodeOrError as any).message) || '';
+
     switch (errorCode) {
       case 'auth/email-already-in-use':
         return 'Este email já está sendo usado por outra conta.';

@@ -24,8 +24,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
   onAvatarPress,
   searchPlaceholder = 'Pesquisar transações...',
 }) => {
-  const { getResponsiveSpacing, getResponsiveFontSize } = useResponsive();
-  const { isExtraSmall } = useResponsive();
+  const { getResponsiveSpacing, getResponsiveFontSize, isExtraSmall } = useResponsive();
 
   const avatarSize = 40;
   const iconSize = 24;
