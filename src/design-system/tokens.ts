@@ -40,14 +40,19 @@ export const colors = {
     primary: '#000000',    // Fundo principal - preto absoluto (AMOLED)
     secondary: '#1A1A1A',   // Cards - cinza escuro elegante
     tertiary: '#2A2A2A',   // Fundo terciário - modais
-    accent: '#3E3E3E',     // Fundo de destaque - bolinhas de ícones
+    accent: '#3E3E3E',     // Fundo de destaque - usado em alguns elementos
+  },
+
+  // Cores específicas para ícones/bolinhas
+  icon: {
+    dot: '#9CA3AF', // tom de cinza mais claro para bolas dos ícones e textos associados
   },
 
   // Cores de Texto (AMOLED Premium)
   text: {
     primary: '#FFFFFF',     // Texto principal - branco absoluto
-    secondary: '#3E3E3E',   // Subtextos e complementares - cinza médio
-    muted: '#3E3E3E',       // Texto sutil - MESMA COR DAS BOLINHAS DOS ÍCONES
+    secondary: '#E5E7EB',   // Subtextos e complementares - cinza claro para legibilidade
+    muted: '#9CA3AF',       // Texto sutil - agora adota tom mais claro para contraste
     accent: '#FFFFFF',      // Texto de destaque - branco absoluto
     inverse: '#000000',     // Texto inverso (preto sobre fundo branco)
   },

@@ -45,7 +45,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
           width: avatarSize,
           height: avatarSize,
           borderRadius: avatarSize / 2,
-          backgroundColor: colors.background.accent,
+          backgroundColor: colors.icon.dot,
           alignItems: 'center',
           justifyContent: 'center',
           marginRight: getResponsiveSpacing(12),

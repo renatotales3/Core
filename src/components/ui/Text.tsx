@@ -120,7 +120,7 @@ const textColors: Record<TextColor, string> = {
   warning: colors.warning[500],
   error: colors.error[500],
   white: colors.neutral[0],
-  iconDot: colors.background.accent,
+  iconDot: colors.icon.dot,
 };
 
 export function Text({

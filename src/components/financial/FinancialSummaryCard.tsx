@@ -128,7 +128,7 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
           width: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
           height: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
           borderRadius: borderRadius.full,
-          backgroundColor: colors.background.accent, // Cinza 3E3E3E para contrastar com o card
+          backgroundColor: colors.icon.dot, // usar token icon.dot para contraste apropriado
           alignItems: 'center',
           justifyContent: 'center',
           marginRight: responsive.getResponsiveSpacing(12),
