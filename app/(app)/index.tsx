@@ -222,13 +222,16 @@ export default function DashboardScreen() {
   {/* Cards de Receitas e Despesas */}
   <View style={{ marginBottom: sectionSpacing }}>
           <View style={{
-            flexDirection: isSmall ? 'column' : 'row',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
             justifyContent: 'space-between',
           }}>
             <View style={{ 
-              flex: 1, 
-              marginRight: isSmall ? 0 : cardSpacing,
-              marginBottom: isSmall ? cardSpacing : 0
+              flexBasis: '48%',
+              minWidth: 260,
+              flexGrow: 1,
+              marginRight: cardSpacing,
+              marginBottom: cardSpacing,
             }}>
               <FinancialSummaryCard
                 title="Receitas"
@@ -241,8 +244,11 @@ export default function DashboardScreen() {
             </View>
 
             <View style={{ 
-              flex: 1, 
-              marginLeft: isSmall ? 0 : cardSpacing 
+              flexBasis: '48%',
+              minWidth: 260,
+              flexGrow: 1,
+              marginLeft: 0,
+              marginBottom: cardSpacing,
             }}>
               <FinancialSummaryCard
                 title="Despesas"

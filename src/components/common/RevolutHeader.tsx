@@ -94,7 +94,6 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
       <View style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: getResponsiveSpacing(8),
       }}>
         {/* Notificações */}
         <TouchableOpacity
@@ -111,6 +110,9 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
         >
           <BellIcon size={iconSize} color={colors.text.primary} />
         </TouchableOpacity>
+
+        {/* Espaçamento entre ícones */}
+        <View style={{ width: getResponsiveSpacing(8) }} />
 
         {/* Configurações */}
         <TouchableOpacity
