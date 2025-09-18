@@ -70,7 +70,7 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
         <View style={{
           flex: 1,
           height: barHeight,
-          backgroundColor: colors.background.accent,
+          backgroundColor: colors.icon.dot,
           borderRadius: borderRadius.md,
           marginHorizontal: getResponsiveSpacing(12),
           overflow: 'hidden',

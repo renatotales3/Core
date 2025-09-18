@@ -91,7 +91,7 @@ export default function SettingsScreen() {
             marginBottom: spacing[4] 
           }}>
             <View style={{
-              backgroundColor: colors.background.accent,
+              backgroundColor: colors.icon.dot,
               borderRadius: 8,
               padding: spacing[2],
               marginRight: spacing[3]

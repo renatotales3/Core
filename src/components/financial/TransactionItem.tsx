@@ -105,7 +105,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
         width: iconSize,
         height: iconSize,
         borderRadius: borderRadius.full,
-        backgroundColor: colors.background.accent,
+        backgroundColor: colors.icon.dot,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: iconMarginRight,

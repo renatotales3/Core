@@ -185,7 +185,7 @@ export default function ResetPasswordScreen() {
               width: 72,
               height: 72,
               borderRadius: 36,
-              backgroundColor: colors.background.accent,
+              backgroundColor: colors.icon.dot,
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: spacing[4],
