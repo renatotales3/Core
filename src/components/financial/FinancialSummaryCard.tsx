@@ -79,7 +79,7 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   const getValueColor = (): string => {
     switch (variant) {
       case 'income':
-        return colors.text.accent; // Destaque branco para valores (não usar verde)
+        return colors.success[500]; // Usar verde de sucesso para receitas (combina com barra de categorias)
       case 'expense':
         return colors.error[500]; // Vermelho para despesas
       case 'balance':
@@ -164,7 +164,7 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
       {/* Subtítulo (se houver) */}
       {subtitle && (
         <Text 
-          color="iconDot" 
+          color="secondary" 
           style={{
             fontSize: responsive.getResponsiveValue({ sm: 13, md: 14, lg: 15, default: 14 }),
             fontWeight: '400',

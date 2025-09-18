@@ -78,7 +78,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
         activeOpacity={0.8}
       >
         <View style={{ marginRight: getResponsiveSpacing(8) }}>
-          <SearchIcon size={18} color={colors.text.secondary} />
+          <SearchIcon size={18} color={colors.text.primary} />
         </View>
         <Text style={{
           flex: 1,
@@ -109,7 +109,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
           }}
           activeOpacity={0.8}
         >
-          <BellIcon size={iconSize} color={colors.text.secondary} />
+          <BellIcon size={iconSize} color={colors.text.primary} />
         </TouchableOpacity>
 
         {/* Configurações */}
@@ -125,7 +125,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
           }}
           activeOpacity={0.8}
         >
-          <SettingsIcon size={iconSize} color={colors.text.secondary} />
+          <SettingsIcon size={iconSize} color={colors.text.primary} />
         </TouchableOpacity>
       </View>
     </View>

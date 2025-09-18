@@ -45,14 +45,14 @@ export const colors = {
 
   // Cores específicas para ícones/bolinhas
   icon: {
-    dot: '#30322F', // nova cor para bolinhas e textos secundários
+    dot: '#6B6B6B', // bolinhas ligeiramente mais escuras que o texto para contraste
   },
 
   // Cores de Texto (AMOLED Premium)
   text: {
     primary: '#FFFFFF',     // Texto principal - branco absoluto
-    secondary: '#30322F',   // Subtextos e complementares - nova cor pedida
-    muted: '#30322F',       // Texto sutil - mesma cor dos secundários
+  secondary: '#E6E6E6',   // Subtextos e complementares - tom mais claro para máxima legibilidade
+  muted: '#E6E6E6',       // Texto sutil - mesma cor dos secundários
     accent: '#FFFFFF',      // Texto de destaque - branco absoluto
     inverse: '#000000',     // Texto inverso (preto sobre fundo branco)
   },
