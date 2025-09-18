@@ -34,9 +34,10 @@ export default function DashboardScreen() {
   // Responsive values
   const screenPadding = getResponsiveSpacing(24);
   // reduzir espaçamento superior para dispositivos móveis (evita muito espaço acima da header)
-  const topPadding = getResponsiveSpacing(16);
+  const topPadding = getResponsiveSpacing(12);
   const bottomPadding = getResponsiveSpacing(32);
-  const sectionSpacing = getResponsiveSpacing(32);
+  // reduzir espaço entre blocos para aproximar cards do saldo
+  const sectionSpacing = getResponsiveSpacing(20);
   const titleFontSize = getResponsiveFontSize(18);
   const cardSpacing = getResponsiveSpacing(8);
   
@@ -189,7 +190,7 @@ export default function DashboardScreen() {
           // Garantir que o bloco ocupe espaço flexível e esteja centralizado entre header e cards
           width: '100%',
           justifyContent: 'center',
-          minHeight: getResponsiveSpacing(isSmall ? 80 : 140),
+          minHeight: getResponsiveSpacing(isSmall ? 60 : 120),
         }}>
           <Text style={{
             fontSize: getResponsiveFontSize(40),
@@ -210,7 +211,7 @@ export default function DashboardScreen() {
                 fontSize: getResponsiveFontSize(14),
                 color: colors.text.accent, // destaque branco
                 textAlign: 'center',
-                marginTop: getResponsiveSpacing(4),
+                marginTop: getResponsiveSpacing(8),
                 fontWeight: '500',
               }}>
                 {summary.balanceChange >= 0 ? '+' : ''}{summary.balanceChange.toFixed(1)}% em relação ao mês anterior
