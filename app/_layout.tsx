@@ -18,12 +18,12 @@ const CoreDarkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    primary: colors.primary[500],
-    background: colors.background.primary,
-    card: colors.background.secondary,
-    text: colors.text.primary,
-    border: colors.border.primary,
-    notification: colors.primary[500],
+    primary: '#14b8a6',
+    background: '#000000', // Preto absoluto AMOLED
+    card: '#1A1A1A', // Cards cinza escuro
+    text: '#FFFFFF', // Texto branco absoluto
+    border: '#3E3E3E', // Bordas cinza médio
+    notification: '#14b8a6',
   },
 };
 

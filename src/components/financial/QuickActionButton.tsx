@@ -16,27 +16,27 @@ const getVariantStyles = (variant: QuickActionButtonProps['variant']) => {
   switch (variant) {
     case 'primary':
       return {
-        backgroundColor: colors.primary[600],
-        iconColor: colors.text.primary,
-        textColor: colors.text.primary,
+        backgroundColor: colors.text.primary, // Botão branco absoluto
+        iconColor: colors.text.inverse, // Ícone preto
+        textColor: colors.text.inverse, // Texto preto
       };
     case 'secondary':
       return {
-        backgroundColor: colors.background.secondary,
-        iconColor: colors.text.secondary,
-        textColor: colors.text.secondary,
+        backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
+        iconColor: colors.text.primary, // Ícone branco absoluto
+        textColor: colors.text.primary, // Texto branco absoluto
       };
     case 'success':
       return {
-        backgroundColor: colors.success[600],
-        iconColor: colors.text.primary,
-        textColor: colors.text.primary,
+        backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
+        iconColor: colors.success[500], // Ícone verde
+        textColor: colors.text.secondary, // Texto cinza 3E3E3E
       };
     case 'danger':
       return {
-        backgroundColor: colors.error[600],
-        iconColor: colors.text.primary,
-        textColor: colors.text.primary,
+        backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
+        iconColor: colors.error[500], // Ícone vermelho
+        textColor: colors.text.secondary, // Texto cinza 3E3E3E
       };
   }
 };

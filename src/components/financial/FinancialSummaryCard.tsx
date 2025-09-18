@@ -18,24 +18,24 @@ const getVariantStyles = (variant: FinancialSummaryCardProps['variant']) => {
   switch (variant) {
     case 'balance':
       return {
-        backgroundColor: colors.primary[600],
-        iconColor: colors.text.primary,
-        titleColor: colors.primary[200],
-        amountColor: colors.text.primary,
+        backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
+        iconColor: colors.text.primary, // Ícone branco absoluto
+        titleColor: colors.text.primary, // Título BRANCO ABSOLUTO
+        amountColor: colors.text.primary, // Valor branco absoluto
       };
     case 'income':
       return {
-        backgroundColor: colors.background.secondary,
-        iconColor: colors.success[500],
-        titleColor: colors.text.secondary,
-        amountColor: colors.success[500],
+        backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
+        iconColor: colors.text.primary, // Ícone branco absoluto
+        titleColor: colors.text.primary, // Título BRANCO ABSOLUTO
+        amountColor: colors.success[500], // Valor verde
       };
     case 'expense':
       return {
-        backgroundColor: colors.background.secondary,
-        iconColor: colors.error[500],
-        titleColor: colors.text.secondary,
-        amountColor: colors.error[500],
+        backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
+        iconColor: colors.text.primary, // Ícone branco absoluto
+        titleColor: colors.text.primary, // Título BRANCO ABSOLUTO
+        amountColor: colors.error[500], // Valor vermelho
       };
   }
 };
@@ -73,100 +73,104 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   variant,
   onPress,
 }) => {
-  const styles = getVariantStyles(variant);
   const responsive = useResponsive();
+
+  // Função para determinar cor do valor baseada no tipo e esquema AMOLED
+  const getValueColor = (): string => {
+    switch (variant) {
+      case 'income':
+        return colors.success[500]; // Verde para receitas
+      case 'expense':
+        return colors.error[500]; // Vermelho para despesas  
+      case 'balance':
+      default:
+        // Para balanço, usar branco (#FFFFFF) se positivo, vermelho se negativo
+        return amount >= 0 ? colors.text.primary : colors.error[500];
+    }
+  };
+
+  const styles = getVariantStyles(variant);
+  
+  // Formatação do valor
+  const formattedValue = formatCurrency(amount);
+
+  // Subtítulo com mudança (se houver)
+  const subtitle = change ? 
+    `${formatPercentage(change)} este mês` : 
+    undefined;
   
   const cardStyle: ViewStyle = {
     backgroundColor: styles.backgroundColor,
     borderRadius: borderRadius.xl,
-    padding: responsive.padding,
+    padding: responsive.getResponsiveSpacing(24), // Aumentado o padding
     marginBottom: responsive.getResponsiveSpacing(16),
+    marginTop: responsive.getResponsiveSpacing(8), // Melhor margem superior
     ...shadows.md,
-    // Responsivo: altura mínima para evitar "achatamento"
+    // Responsivo: altura mínima aumentada
     minHeight: responsive.getResponsiveValue({
-      sm: 120,
-      md: 140,
-      lg: 160,
-      default: 140,
+      sm: 150,
+      md: 170,
+      lg: 190,
+      default: 170,
     }),
   };
 
   const content = (
     <View style={cardStyle}>
-      {/* Header com título e ícone */}
+      {/* Header com ícone À ESQUERDA e título */}
       <View style={{
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: responsive.getResponsiveSpacing(16),
+        marginBottom: responsive.getResponsiveSpacing(20), // Mais espaço
       }}>
+        {/* Ícone à esquerda - 60% maior */}
+        <View style={{
+          width: responsive.getResponsiveValue({ sm: 45, md: 52, lg: 58, default: 52 }), // 60% maior
+          height: responsive.getResponsiveValue({ sm: 45, md: 52, lg: 58, default: 52 }), // 60% maior
+          borderRadius: borderRadius.full,
+          backgroundColor: colors.background.accent, // Cinza 3E3E3E para contrastar com o card
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: responsive.getResponsiveSpacing(16), // Espaço entre ícone e título
+        }}>
+          <Icon 
+            size={responsive.getResponsiveValue({ sm: 22, md: 26, lg: 30, default: 26 })} // 60% maior
+            color={colors.text.primary} // Ícone branco absoluto
+          />
+        </View>
+        
+        {/* Título */}
         <Text style={{
-          fontSize: responsive.fontSize.sm,
-          fontWeight: '500',
-          color: styles.titleColor,
+          fontSize: responsive.getResponsiveValue({ sm: 16, md: 18, lg: 20, default: 18 }), // Maior
+          fontWeight: '600',
+          color: colors.text.primary, // BRANCO ABSOLUTO para títulos
           flex: 1,
-          marginRight: spacing[2],
         }}>
           {title}
         </Text>
-        
-        <View style={{
-          width: responsive.getResponsiveValue({ sm: 28, md: 32, lg: 36, default: 32 }),
-          height: responsive.getResponsiveValue({ sm: 28, md: 32, lg: 36, default: 32 }),
-          borderRadius: borderRadius.full,
-          backgroundColor: variant === 'balance' ? colors.primary[500] : colors.neutral[0],
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <Icon 
-            size={responsive.getResponsiveValue({ sm: 14, md: 16, lg: 18, default: 16 })} 
-            color={styles.iconColor} 
-          />
-        </View>
       </View>
 
       {/* Valor principal */}
       <Text style={{
-        fontSize: responsive.getResponsiveValue({
-          sm: 20,
-          md: 24,
-          lg: 28,
-          default: 24,
-        }),
-        fontWeight: '700',
-        color: styles.amountColor,
-        marginBottom: change !== undefined ? responsive.getResponsiveSpacing(8) : 0,
-        lineHeight: responsive.getResponsiveValue({
-          sm: 24,
-          md: 28,
-          lg: 32,
-          default: 28,
-        }),
+        fontSize: responsive.getResponsiveValue({ sm: 22, md: 28, lg: 32, default: 28 }), // Maior
+        fontWeight: '700', // Mais bold
+        color: getValueColor(), // Função que define a cor AMOLED correta
+        marginBottom: responsive.getResponsiveSpacing(4),
       }}>
-        {formatCurrency(amount)}
+        {formattedValue}
       </Text>
 
-      {/* Mudança percentual */}
-      {change !== undefined && (
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}>
-          <Text style={{
-            fontSize: responsive.fontSize.xs,
-            fontWeight: '500',
-            color: getChangeColor(changeType),
-            lineHeight: responsive.getResponsiveValue({
-              sm: 14,
-              md: 16,
-              lg: 18,
-              default: 16,
-            }),
-          }}>
-            {formatPercentage(change)} em relação ao mês anterior
-          </Text>
-        </View>
+      {/* Subtítulo (se houver) */}
+      {subtitle && (
+        <Text 
+          color="muted" 
+          style={{
+            fontSize: responsive.getResponsiveValue({ sm: 13, md: 14, lg: 15, default: 14 }),
+            fontWeight: '400',
+          }}
+        >
+          {subtitle}
+        </Text>
       )}
     </View>
   );

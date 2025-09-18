@@ -129,11 +129,13 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-          <Text style={{
-            fontSize: metaFontSize,
-            color: colors.text.secondary,
-            marginRight: metaSpacing,
-          }}>
+          <Text 
+            color="secondary"
+            style={{
+              fontSize: metaFontSize,
+              marginRight: metaSpacing,
+            }}
+          >
             {getCategoryName(transaction.category)}
           </Text>
           
@@ -147,10 +149,12 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
                 marginRight: metaSpacing,
               }} />
               
-              <Text style={{
-                fontSize: metaFontSize,
-                color: colors.text.secondary,
-              }}>
+              <Text 
+                color="secondary"
+                style={{
+                  fontSize: metaFontSize,
+                }}
+              >
                 {formatDate(transaction.date)}
               </Text>
             </>

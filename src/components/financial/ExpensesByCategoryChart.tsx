@@ -52,11 +52,13 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
       }}>
         {/* Categoria */}
         <View style={{ width: categoryLabelWidth }}>
-          <Text style={{
-            fontSize: categoryFontSize,
-            fontWeight: '500',
-            color: colors.text.secondary,
-          }}>
+          <Text 
+            color="secondary" 
+            style={{
+              fontSize: categoryFontSize,
+              fontWeight: '500',
+            }}
+          >
             {item.category}
           </Text>
         </View>
@@ -91,10 +93,12 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
               minimumFractionDigits: 0,
             }).format(item.amount)}
           </Text>
-          <Text style={{
-            fontSize: percentageFontSize,
-            color: colors.text.muted,
-          }}>
+          <Text 
+            color="muted"
+            style={{
+              fontSize: percentageFontSize,
+            }}
+          >
             {item.percentage.toFixed(1)}%
           </Text>
         </View>

@@ -35,21 +35,21 @@ export const colors = {
     950: '#020617',
   },
 
-  // Cores de Fundo (Dark Mode Premium)
+  // Cores de Fundo (AMOLED Premium)
   background: {
-    primary: '#0A0A0F',    // Fundo principal - quase preto
-    secondary: '#111118',   // Fundo secundário - cards
-    tertiary: '#1A1A24',   // Fundo terciário - modais
-    accent: '#262633',     // Fundo de destaque
+    primary: '#000000',    // Fundo principal - preto absoluto (AMOLED)
+    secondary: '#1A1A1A',   // Cards - cinza escuro elegante
+    tertiary: '#2A2A2A',   // Fundo terciário - modais
+    accent: '#3E3E3E',     // Fundo de destaque - bolinhas de ícones
   },
 
-  // Cores de Texto
+  // Cores de Texto (AMOLED Premium)
   text: {
-    primary: '#FFFFFF',     // Texto principal
-    secondary: '#A1A1AA',   // Texto secundário
-    muted: '#71717A',       // Texto desabilitado
+    primary: '#FFFFFF',     // Texto principal - branco absoluto
+    secondary: '#3E3E3E',   // Subtextos e complementares - cinza médio
+    muted: '#3E3E3E',       // Texto sutil - MESMA COR DAS BOLINHAS DOS ÍCONES
     accent: '#14b8a6',      // Texto de destaque
-    inverse: '#0A0A0F',     // Texto inverso (escuro sobre fundo claro)
+    inverse: '#000000',     // Texto inverso (preto sobre fundo branco)
   },
 
   // Cores de Status
@@ -76,8 +76,8 @@ export const colors = {
 
   // Cores de Bordas
   border: {
-    primary: '#262633',
-    secondary: '#3A3A4A',
+    primary: '#3E3E3E',
+    secondary: '#2A2A2A',
     accent: '#14b8a6',
   },
 

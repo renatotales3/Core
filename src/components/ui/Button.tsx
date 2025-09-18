@@ -113,12 +113,12 @@ function getVariantStyles(variant: ButtonProps['variant'], socialType?: string):
   switch (variant) {
     case 'primary':
       return {
-        backgroundColor: colors.primary[500],
+        backgroundColor: colors.text.primary, // Botão branco absoluto
       };
     
     case 'secondary':
       return {
-        backgroundColor: colors.background.tertiary,
+        backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
         borderWidth: 1,
         borderColor: colors.border.primary,
       };
@@ -127,7 +127,7 @@ function getVariantStyles(variant: ButtonProps['variant'], socialType?: string):
       return {
         backgroundColor: 'transparent',
         borderWidth: 1,
-        borderColor: colors.border.secondary,
+        borderColor: colors.text.secondary, // Borda cinza 3E3E3E
       };
     
     case 'ghost':
@@ -145,7 +145,7 @@ function getVariantStyles(variant: ButtonProps['variant'], socialType?: string):
           };
         case 'google':
           return {
-            backgroundColor: colors.background.primary,
+            backgroundColor: colors.text.primary, // Botão branco absoluto para Google
             borderWidth: 1,
             borderColor: colors.border.secondary,
           };
@@ -180,22 +180,22 @@ function getTextVariantStyles(variant: ButtonProps['variant'], socialType?: stri
   switch (variant) {
     case 'primary':
       return {
-        color: colors.text.inverse,
+        color: colors.text.inverse, // Texto preto no botão branco absoluto
       };
     
     case 'secondary':
       return {
-        color: colors.text.primary,
+        color: colors.text.primary, // Texto branco absoluto no card cinza
       };
     
     case 'outline':
       return {
-        color: colors.text.primary,
+        color: colors.text.primary, // Texto branco absoluto
       };
     
     case 'ghost':
       return {
-        color: colors.primary[500],
+        color: colors.text.primary, // Texto branco absoluto
       };
     
     case 'social':
@@ -206,7 +206,7 @@ function getTextVariantStyles(variant: ButtonProps['variant'], socialType?: stri
           };
         case 'google':
           return {
-            color: colors.text.primary,
+            color: colors.text.inverse, // Texto preto no botão branco do Google
           };
         case 'facebook':
           return {
@@ -214,13 +214,13 @@ function getTextVariantStyles(variant: ButtonProps['variant'], socialType?: stri
           };
         default:
           return {
-            color: colors.text.primary,
+            color: colors.text.inverse,
           };
       }
     
     case 'danger':
       return {
-        color: colors.text.primary, // Usar branco para melhor contraste
+        color: colors.text.primary, // Texto branco absoluto
       };
     
     default:
@@ -303,7 +303,7 @@ function getSpinnerColor(variant: ButtonProps['variant'], socialType?: string): 
       return colors.text.primary;
     
     case 'ghost':
-      return colors.primary[500];
+      return colors.text.primary;
     
     case 'social':
       switch (socialType) {
@@ -312,7 +312,7 @@ function getSpinnerColor(variant: ButtonProps['variant'], socialType?: string): 
           return colors.text.inverse;
         case 'google':
         default:
-          return colors.text.primary;
+          return colors.text.inverse; // Mudado para escuro no Google
       }
     
     case 'danger':

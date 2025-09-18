@@ -3,7 +3,6 @@ import { View, SafeAreaView, ScrollView, Alert, ActivityIndicator } from 'react-
 import { Text } from '../../src/components/ui/Text';
 import { Header } from '../../src/components/common/Header';
 import { 
-  BarChartIcon, 
   TrendingUpIcon, 
   TrendingDownIcon,
   PlusIcon,
@@ -169,8 +168,6 @@ export default function DashboardScreen() {
       >
         <Header 
           title="Dashboard" 
-          icon={BarChartIcon}
-          subtitle="Visão geral das suas finanças"
         />
 
         {/* Seção de Resumo Financeiro */}

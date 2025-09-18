@@ -6,7 +6,7 @@ import { Text, H1, Body } from '../../src/components/ui/Text';
 import { Header } from '../../src/components/common/Header';
 import Button from '../../src/components/ui/Button';
 import Card from '../../src/components/ui/Card';
-import { LogoutIcon, UserIcon, ShieldIcon, SettingsIcon } from '../../src/components/ui/Icons';
+import { LogoutIcon, UserIcon, ShieldIcon } from '../../src/components/ui/Icons';
 import { colors, spacing } from '../../src/design-system/tokens';
 
 export default function SettingsScreen() {
@@ -81,8 +81,6 @@ export default function SettingsScreen() {
       }}>
         <Header 
           title="Configurações" 
-          icon={SettingsIcon}
-          subtitle="Gerencie sua conta e preferências"
         />
 
         {/* Informações do usuário */}

@@ -2,7 +2,6 @@ import React from 'react';
 import { View, SafeAreaView } from 'react-native';
 import { Text } from '../../src/components/ui/Text';
 import { Header } from '../../src/components/common/Header';
-import { CreditCardIcon } from '../../src/components/ui/Icons';
 import { colors, spacing } from '../../src/design-system/tokens';
 
 export default function TransactionsScreen() {
@@ -15,8 +14,6 @@ export default function TransactionsScreen() {
       }}>
         <Header 
           title="Transações" 
-          icon={CreditCardIcon}
-          subtitle="Histórico de movimentações"
         />
         
         <Text style={{

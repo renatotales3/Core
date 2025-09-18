@@ -10,17 +10,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Core Brand Colors (Dark Theme)
-        'core-dark': '#0A0A0F',
-        'core-darker': '#060609',
-        'core-card': '#131318',
-        'core-card-light': '#1A1A21',
-        'core-border': '#2A2A35',
+        // Core Brand Colors (AMOLED Premium)
+        'core-dark': '#000000',        // Fundo principal - preto absoluto
+        'core-card': '#1A1A1A',        // Cards - cinza escuro elegante  
+        'core-card-light': '#2A2A2A',  // Cinza mais claro
+        'core-border': '#3E3E3E',      // Bordas e bolinhas de ícones
         
         // Primary Colors (Financial Green)
-        'core-primary': '#00D4AA',
-        'core-primary-dark': '#00B894',
-        'core-primary-light': '#00E6C3',
+        'core-primary': '#14b8a6',
+        'core-primary-dark': '#0d9488',
+        'core-primary-light': '#2dd4bf',
         
         // Secondary Colors (Purple Accent)
         'core-secondary': '#6C5CE7',
@@ -28,19 +27,19 @@ module.exports = {
         'core-secondary-light': '#A29BFE',
         
         // Status Colors
-        'core-success': '#00B894',
-        'core-error': '#E17055',
-        'core-warning': '#FDCB6E',
+        'core-success': '#22c55e',
+        'core-error': '#ef4444',
+        'core-warning': '#f59e0b',
         'core-info': '#74B9FF',
         
-        // Text Colors
-        'core-text-primary': '#FFFFFF',
-        'core-text-secondary': '#B2B2C7',
-        'core-text-muted': '#74747E',
+        // Text Colors (AMOLED Premium)
+        'core-text-primary': '#FFFFFF',    // Texto principal - branco absoluto
+        'core-text-secondary': '#3E3E3E',  // Subtextos - cinza médio
+        'core-text-muted': '#3E3E3E',      // Texto sutil - MESMA COR DAS BOLINHAS
         
         // Background Gradients
         'gradient-start': '#6C5CE7',
-        'gradient-end': '#00D4AA',
+        'gradient-end': '#14b8a6',
       },
       fontFamily: {
         'core-regular': ['Inter_400Regular'],
