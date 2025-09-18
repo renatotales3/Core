@@ -48,7 +48,15 @@ const formatDateGroup = (date: Date): string => {
 
 const groupTransactionsByDate = (transactions: Transaction[]): GroupedTransactions => {
   return transactions.reduce((groups, transaction) => {
-    const date = transaction.date?.toDate ? transaction.date.toDate() : new Date(transaction.date);
+    // transaction.date pode ser Timestamp (do Firestore) ou Date
+    let date: Date;
+    if (transaction.date && typeof (transaction.date as any).toDate === 'function') {
+      date = (transaction.date as any).toDate();
+    } else if (transaction.date instanceof Date) {
+      date = transaction.date;
+    } else {
+      date = new Date(transaction.date as any);
+    }
     const dateKey = date.toDateString();
     
     if (!groups[dateKey]) {
@@ -111,8 +119,8 @@ export const TransactionTimeline: React.FC<TransactionTimelineProps> = ({
   
   // Sort transactions by date (most recent first)
   const sortedTransactions = [...transactions].sort((a, b) => {
-    const dateA = a.date?.toDate ? a.date.toDate() : new Date(a.date);
-    const dateB = b.date?.toDate ? b.date.toDate() : new Date(b.date);
+  const dateA = (a.date && typeof (a.date as any).toDate === 'function') ? (a.date as any).toDate() : (a.date instanceof Date ? a.date : new Date(a.date as any));
+  const dateB = (b.date && typeof (b.date as any).toDate === 'function') ? (b.date as any).toDate() : (b.date instanceof Date ? b.date : new Date(b.date as any));
     return dateB.getTime() - dateA.getTime();
   });
   

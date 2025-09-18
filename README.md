@@ -134,7 +134,7 @@ Core/
 
 ### Cores Principais
 - **Primary:** #0EA5E9 (Azul moderno)
-- **Success:** #10B981 (Verde)
+- **Success:** #22C55E (mantido para histórico; aplicação de destaque mudou para branco)
 - **Error:** #EF4444 (Vermelho)
 - **Background:** #FFFFFF (Branco)
 

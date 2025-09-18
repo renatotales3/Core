@@ -116,7 +116,7 @@ export default function ResetPasswordScreen() {
               width: 88,
               height: 88,
               borderRadius: 44,
-              backgroundColor: colors.success[700],
+              backgroundColor: colors.text.accent,
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: spacing[6],
@@ -142,7 +142,7 @@ export default function ResetPasswordScreen() {
               marginBottom: spacing[8],
             }}>
               Enviamos um link para redefinir sua senha para{' '}
-              <Text style={{ color: colors.primary[500], fontWeight: '600' }}>
+              <Text style={{ color: colors.text.accent, fontWeight: '600' }}>
                 {formData.email}
               </Text>
               . Verifique sua caixa de entrada e spam.
@@ -185,7 +185,7 @@ export default function ResetPasswordScreen() {
               width: 72,
               height: 72,
               borderRadius: 36,
-              backgroundColor: colors.primary[700],
+              backgroundColor: colors.background.accent,
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: spacing[4],
@@ -268,7 +268,7 @@ export default function ResetPasswordScreen() {
             <Link href="/(auth)/login" asChild>
               <TouchableOpacity>
                 <Text style={{
-                  color: colors.primary[500],
+                  color: colors.text.accent,
                   fontSize: typography.fontSize.sm,
                   fontWeight: '600',
                 }}>

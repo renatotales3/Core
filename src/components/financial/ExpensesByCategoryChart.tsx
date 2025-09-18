@@ -26,12 +26,12 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
   // Responsive values
   const containerPadding = getResponsiveSpacing(24);
   const titleFontSize = getResponsiveFontSize(18);
-  const categoryLabelWidth = getResponsiveValue({ sm: 60, md: 80, lg: 100, default: 80 });
+  const categoryLabelWidth = getResponsiveValue({ sm: 80, md: 100, lg: 120, default: 100 });
   const barHeight = getResponsiveValue({ sm: 20, md: 24, lg: 28, default: 24 });
   const categoryFontSize = getResponsiveFontSize(12);
   const valueFontSize = getResponsiveFontSize(12);
   const percentageFontSize = getResponsiveFontSize(10);
-  const itemSpacing = getResponsiveSpacing(12);
+  const itemSpacing = getResponsiveSpacing(8);
   const valueWidth = getResponsiveValue({ sm: 50, md: 60, lg: 70, default: 60 });
   const totalFontSize = getResponsiveFontSize(14);
   const totalValueFontSize = getResponsiveFontSize(16);
@@ -54,9 +54,12 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
         <View style={{ width: categoryLabelWidth }}>
           <Text 
             color="secondary" 
+            numberOfLines={1}
+            ellipsizeMode="tail"
             style={{
               fontSize: categoryFontSize,
               fontWeight: '500',
+              color: colors.text.secondary,
             }}
           >
             {item.category}
@@ -138,23 +141,29 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
         justifyContent: 'space-between',
         alignItems: 'center',
       }}>
-        <Text style={{
-          fontSize: totalFontSize,
-          fontWeight: '600',
-          color: colors.text.secondary,
-        }}>
-          Total
-        </Text>
-        <Text style={{
-          fontSize: totalValueFontSize,
-          fontWeight: '700',
-          color: colors.text.primary,
-        }}>
-          {new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          }).format(totalExpenses)}
-        </Text>
+          <Text style={{
+            fontSize: totalFontSize,
+            fontWeight: '600',
+            color: colors.text.secondary,
+            width: 100, // Fixed width for consistency
+            overflow: 'hidden', // Ensure truncation if necessary
+            textAlign: 'right', // Align text to the right
+          }}>
+            Total
+          </Text>
+          <Text style={{
+            fontSize: totalValueFontSize,
+            fontWeight: '700',
+            color: colors.text.primary,
+            width: 100, // Fixed width for consistency
+            overflow: 'hidden', // Ensure truncation if necessary
+            textAlign: 'right', // Align text to the right
+          }}>
+            {new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(totalExpenses)}
+          </Text>
       </View>
     </View>
   );

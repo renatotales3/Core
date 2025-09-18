@@ -16,10 +16,10 @@ module.exports = {
         'core-card-light': '#2A2A2A',  // Cinza mais claro
         'core-border': '#3E3E3E',      // Bordas e bolinhas de ícones
         
-        // Primary Colors (Financial Green)
-        'core-primary': '#14b8a6',
-        'core-primary-dark': '#0d9488',
-        'core-primary-light': '#2dd4bf',
+  // Primary Colors (kept for semantic use but not app-wide highlight)
+  'core-primary': '#14b8a6',
+  'core-primary-dark': '#0d9488',
+  'core-primary-light': '#2dd4bf',
         
         // Secondary Colors (Purple Accent)
         'core-secondary': '#6C5CE7',
@@ -37,9 +37,9 @@ module.exports = {
         'core-text-secondary': '#3E3E3E',  // Subtextos - cinza médio
         'core-text-muted': '#3E3E3E',      // Texto sutil - MESMA COR DAS BOLINHAS
         
-        // Background Gradients
-        'gradient-start': '#6C5CE7',
-        'gradient-end': '#14b8a6',
+  // Background Gradients (use subtle purple -> accent)
+  'gradient-start': '#6C5CE7',
+  'gradient-end': '#FFFFFF',
       },
       fontFamily: {
         'core-regular': ['Inter_400Regular'],

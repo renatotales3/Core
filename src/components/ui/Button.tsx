@@ -170,7 +170,7 @@ function getVariantStyles(variant: ButtonProps['variant'], socialType?: string):
     
     default:
       return {
-        backgroundColor: colors.primary[500],
+  backgroundColor: colors.text.accent,
       };
   }
 }

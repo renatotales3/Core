@@ -222,7 +222,7 @@ function getFocusStyles(isFocused: boolean, hasError: boolean): ViewStyle {
   
   if (isFocused) {
     return {
-      borderColor: colors.primary[500],
+      borderColor: colors.text.accent,
       borderWidth: 2,
     };
   }

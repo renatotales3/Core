@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../../src/context/AuthContext';
 import { Button } from '../../src/components/ui';
-import { colors, spacing, typography } from '../../src/constants/theme';
+import { colors, spacing, typography } from '../../src/design-system/tokens';
 
 export default function OnboardingIndex() {
   const { completeOnboarding, isAuthenticated } = useAuth();
@@ -35,16 +35,16 @@ export default function OnboardingIndex() {
         }}>
           
           {/* Logo/Icon Principal */}
-          <View style={{
+            <View style={{
             width: 120,
             height: 120,
-            backgroundColor: colors.primary[50],
+            backgroundColor: '#FAFAFA',
             borderRadius: 60,
             justifyContent: 'center',
             alignItems: 'center',
             marginBottom: spacing[10],
             borderWidth: 2,
-            borderColor: colors.primary[100],
+            borderColor: colors.border.primary,
           }}>
             <Text style={{ fontSize: 56 }}>💰</Text>
           </View>
@@ -73,7 +73,7 @@ export default function OnboardingIndex() {
           {/* Descrição */}
           <Text style={{
             fontSize: typography.fontSize.lg,
-            color: colors.text.tertiary,
+            color: colors.text.secondary,
             textAlign: 'center',
             marginBottom: spacing[12],
             lineHeight: typography.lineHeight.lg * 1.2,
@@ -100,23 +100,23 @@ export default function OnboardingIndex() {
                   paddingHorizontal: spacing[4],
                 }}>
                   <View style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 20,
-                    backgroundColor: colors.primary[50],
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: spacing[3],
-                  }}>
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          backgroundColor: colors.neutral[50],
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginRight: spacing[3],
+                        }}>
                     <Text style={{ fontSize: 22 }}>{item.icon}</Text>
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text style={{
-                      fontSize: typography.fontSize.lg,
-                      fontWeight: '600',
-                      color: colors.text.primary,
-                      marginBottom: spacing[1],
-                    }}>
+                          fontSize: typography.fontSize.lg,
+                          fontWeight: '600',
+                          color: colors.text.primary,
+                          marginBottom: spacing[1],
+                        }}>
                       {item.title}
                     </Text>
                     <Text style={{
@@ -164,7 +164,7 @@ export default function OnboardingIndex() {
                   width: 12,
                   height: 12,
                   borderRadius: 6,
-                  backgroundColor: index === 0 ? colors.primary[500] : colors.border.primary,
+          backgroundColor: index === 0 ? colors.text.primary : colors.border.primary,
                 }} />
               ))}
             </View>

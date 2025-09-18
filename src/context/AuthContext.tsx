@@ -164,23 +164,35 @@ export function AuthProvider({ children }: AuthProviderProps) {
           // Em desenvolvimento, criar usuário mockado para teste
           if (__DEV__) {
             console.log('🧪 AuthContext - Modo desenvolvimento: criando usuário mockado');
+            const now = new Date();
             const mockUser = {
               uid: 'dev-user-123',
               email: 'dev@test.com',
               displayName: 'Usuário de Desenvolvimento',
-              emailVerified: true,
               photoURL: null,
-              isAnonymous: false,
-              metadata: {
-                creationTime: new Date().toISOString(),
-                lastSignInTime: new Date().toISOString(),
+              createdAt: now,
+              updatedAt: now,
+              profile: {
+                firstName: 'Dev',
+                lastName: 'User',
+                currency: 'BRL',
+                monthlyIncome: 0,
+                financialGoals: [],
+                notifications: {
+                  dailyReminder: true,
+                  weeklyReport: true,
+                  goalMilestones: true,
+                  expenseAlerts: true,
+                  investmentUpdates: true,
+                },
+                theme: 'dark',
               },
               providerData: [],
             };
             
             safeSetState(prev => ({
               ...prev,
-              user: mockUser,
+              user: mockUser as unknown as AppUser,
               isAuthenticated: true,
               hasCompletedOnboarding: true,
               isLoading: false,

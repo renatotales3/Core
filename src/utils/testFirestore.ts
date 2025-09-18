@@ -27,7 +27,8 @@ export const testFirestore = {
       const docRef = await addDoc(collection(db, 'transactions'), testDoc);
       console.log('✅ Documento de teste criado com ID:', docRef.id);
       
-      return docRef.id;
+  // Não retornar valor (função tipada como void)
+  return;
     } catch (error) {
       console.error('🔴 Erro no teste de escrita:', error);
       throw error;

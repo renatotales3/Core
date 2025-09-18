@@ -36,7 +36,6 @@ export default function AppLayout() {
           },
           // Adicionar animação suave na transição
           animation: 'shift',
-          animationDuration: 300,
         }}
       >
         <Tabs.Screen

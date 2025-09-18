@@ -113,7 +113,7 @@ export interface Budget {
 
 // Tipos para formulários
 export interface CreateTransactionData {
-  userId: string;
+  userId?: string;
   type: TransactionType;
   category: TransactionCategory | string;
   amount: number;

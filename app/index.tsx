@@ -1,7 +1,7 @@
 import { Redirect, router } from 'expo-router';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { useAuth } from '../src/context/AuthContext';
-import { colors } from '../src/constants/theme';
+import { colors } from '../src/design-system/tokens';
 import { useEffect } from 'react';
 
 export default function Index() {
@@ -44,7 +44,7 @@ export default function Index() {
         alignItems: 'center',
         backgroundColor: colors.background.primary,
       }}>
-        <ActivityIndicator size="large" color={colors.primary[500]} />
+  <ActivityIndicator size="large" color={colors.text.accent} />
         <Text style={{ color: colors.text.primary, marginTop: 16 }}>
           Carregando...
         </Text>

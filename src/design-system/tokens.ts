@@ -48,7 +48,7 @@ export const colors = {
     primary: '#FFFFFF',     // Texto principal - branco absoluto
     secondary: '#3E3E3E',   // Subtextos e complementares - cinza médio
     muted: '#3E3E3E',       // Texto sutil - MESMA COR DAS BOLINHAS DOS ÍCONES
-    accent: '#14b8a6',      // Texto de destaque
+    accent: '#FFFFFF',      // Texto de destaque - branco absoluto
     inverse: '#000000',     // Texto inverso (preto sobre fundo branco)
   },
 
@@ -78,7 +78,7 @@ export const colors = {
   border: {
     primary: '#3E3E3E',
     secondary: '#2A2A2A',
-    accent: '#14b8a6',
+    accent: '#FFFFFF',
   },
 
   // Cores Neutras Premium
@@ -248,7 +248,7 @@ export const shadows = {
   },
   // Sombra com accent color
   accent: {
-    shadowColor: '#14b8a6',
+    shadowColor: '#FFFFFF',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

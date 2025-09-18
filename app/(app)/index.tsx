@@ -20,7 +20,7 @@ import {
   TransactionTimeline,
   ExpensesByCategoryChart
 } from '../../src/components/financial';
-import { colors, spacing } from '../../src/design-system/tokens';
+import { colors, spacing, layout } from '../../src/design-system/tokens';
 import { useAuth } from '../../src/context/AuthContext';
 import { useTransactions, useFinancialSummary, useExpensesByCategory } from '../../src/hooks/useFinancialData';
 import { sampleDataHelper } from '../../src/utils/sampleDataHelper';
@@ -33,7 +33,8 @@ export default function DashboardScreen() {
   
   // Responsive values
   const screenPadding = getResponsiveSpacing(24);
-  const topPadding = getResponsiveSpacing(64);
+  // reduzir espaçamento superior para dispositivos móveis (evita muito espaço acima da header)
+  const topPadding = getResponsiveSpacing(16);
   const bottomPadding = getResponsiveSpacing(32);
   const sectionSpacing = getResponsiveSpacing(32);
   const titleFontSize = getResponsiveFontSize(18);
@@ -115,7 +116,7 @@ export default function DashboardScreen() {
           alignItems: 'center',
           paddingHorizontal: spacing[6]
         }}>
-          <ActivityIndicator size="large" color={colors.primary[600]} />
+          <ActivityIndicator size="large" color={colors.text.accent} />
           <Text style={{
             color: colors.text.secondary,
             marginTop: spacing[4],
@@ -167,9 +168,11 @@ export default function DashboardScreen() {
           paddingHorizontal: screenPadding,
           paddingTop: topPadding,
           paddingBottom: bottomPadding,
+          alignItems: 'center',
         }}
         showsVerticalScrollIndicator={false}
       >
+        <View style={{ width: '100%', maxWidth: layout.container.maxWidth }}>
         <RevolutHeader 
           userName={user?.displayName || 'Usuário'}
           onSearchPress={() => console.log('Pesquisar')}
@@ -182,14 +185,18 @@ export default function DashboardScreen() {
         <View style={{ 
           alignItems: 'center',
           marginBottom: sectionSpacing,
-          paddingVertical: getResponsiveSpacing(24),
+          paddingVertical: getResponsiveSpacing(8),
+          // Garantir que o bloco ocupe espaço flexível e esteja centralizado entre header e cards
+          width: '100%',
+          justifyContent: 'center',
+          minHeight: getResponsiveSpacing(isSmall ? 80 : 140),
         }}>
           <Text style={{
-            fontSize: getResponsiveFontSize(48),
+            fontSize: getResponsiveFontSize(40),
             fontWeight: '700',
-            color: '#FFFFFF',
+              color: colors.text.primary,
             textAlign: 'center',
-            letterSpacing: -1,
+            letterSpacing: -0.8,
           }}>
             {new Intl.NumberFormat('pt-BR', {
               style: 'currency',
@@ -199,20 +206,20 @@ export default function DashboardScreen() {
           
           {/* Indicador de variação */}
           {summary?.balanceChange !== undefined && (
-            <Text style={{
-              fontSize: getResponsiveFontSize(14),
-              color: summary.balanceChange >= 0 ? colors.success[400] : colors.error[400],
-              textAlign: 'center',
-              marginTop: getResponsiveSpacing(4),
-              fontWeight: '500',
-            }}>
-              {summary.balanceChange >= 0 ? '+' : ''}{summary.balanceChange.toFixed(1)}% em relação ao mês anterior
-            </Text>
+              <Text style={{
+                fontSize: getResponsiveFontSize(14),
+                color: colors.text.accent, // destaque branco
+                textAlign: 'center',
+                marginTop: getResponsiveSpacing(4),
+                fontWeight: '500',
+              }}>
+                {summary.balanceChange >= 0 ? '+' : ''}{summary.balanceChange.toFixed(1)}% em relação ao mês anterior
+              </Text>
           )}
         </View>
 
-        {/* Cards de Receitas e Despesas */}
-        <View style={{ marginBottom: sectionSpacing }}>
+  {/* Cards de Receitas e Despesas */}
+  <View style={{ marginBottom: sectionSpacing }}>
           <View style={{
             flexDirection: isSmall ? 'column' : 'row',
             justifyContent: 'space-between',
@@ -291,7 +298,7 @@ export default function DashboardScreen() {
             <Text 
               style={{
                 fontSize: getResponsiveFontSize(14),
-                color: colors.primary[600],
+                color: colors.text.accent,
                 fontWeight: '500',
               }}
               onPress={handleViewAllTransactions}
@@ -304,6 +311,8 @@ export default function DashboardScreen() {
             transactions={transactions}
             onTransactionPress={(transaction) => console.log('Transaction pressed:', transaction.id)}
           />
+        </View>
+
         </View>
       </ScrollView>
     </SafeAreaView>

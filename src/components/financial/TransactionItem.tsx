@@ -87,7 +87,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
   const amountFontSize = getResponsiveFontSize(16);
   
   const isIncome = transaction.type === TransactionType.INCOME;
-  const amountColor = isIncome ? colors.success[500] : colors.error[500];
+  const amountColor = isIncome ? colors.text.accent : colors.error[500];
   const amountSign = isIncome ? '+' : '-';
 
   const content = (
@@ -98,13 +98,14 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
       borderRadius: borderRadius.lg,
       padding: containerPadding,
       marginBottom: containerMarginBottom,
+      minHeight: 76,
     }}>
       {/* Ícone da categoria */}
       <View style={{
         width: iconSize,
         height: iconSize,
         borderRadius: borderRadius.full,
-        backgroundColor: colors.background.secondary,
+        backgroundColor: colors.background.accent,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: iconMarginRight,
@@ -116,11 +117,12 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
 
       {/* Informações da transação */}
       <View style={{ flex: 1 }}>
-        <Text style={{
+        <Text numberOfLines={1} ellipsizeMode="tail" style={{
           fontSize: titleFontSize,
           fontWeight: '600',
           color: colors.text.primary,
           marginBottom: titleMarginBottom,
+          maxWidth: '100%',
         }}>
           {transaction.description}
         </Text>
@@ -163,13 +165,15 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
       </View>
 
       {/* Valor da transação */}
-      <Text style={{
-        fontSize: amountFontSize,
-        fontWeight: '700',
-        color: amountColor,
-      }}>
-        {amountSign}{formatCurrency(Math.abs(transaction.amount))}
-      </Text>
+      <View style={{ width: 110, alignItems: 'flex-end' }}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={{
+          fontSize: amountFontSize,
+          fontWeight: '700',
+          color: amountColor,
+        }}>
+          {amountSign}{formatCurrency(Math.abs(transaction.amount))}
+        </Text>
+      </View>
     </View>
   );
 

@@ -116,7 +116,7 @@ const textColors: Record<TextColor, string> = {
   secondary: colors.text.secondary,
   muted: colors.text.muted,
   accent: colors.text.accent,
-  success: colors.success[500],
+  success: colors.text.accent,
   warning: colors.warning[500],
   error: colors.error[500],
   white: colors.neutral[0],

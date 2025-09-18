@@ -28,7 +28,7 @@ const getVariantStyles = (variant: FinancialSummaryCardProps['variant']) => {
         backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
         iconColor: colors.text.primary, // Ícone branco absoluto
         titleColor: colors.text.primary, // Título BRANCO ABSOLUTO
-        amountColor: colors.success[500], // Valor verde
+          amountColor: colors.text.accent, // Valor em destaque branco (remover verde)
       };
     case 'expense':
       return {
@@ -43,7 +43,7 @@ const getVariantStyles = (variant: FinancialSummaryCardProps['variant']) => {
 const getChangeColor = (changeType: FinancialSummaryCardProps['changeType']) => {
   switch (changeType) {
     case 'increase':
-      return colors.success[500];
+      return colors.text.accent;
     case 'decrease':
       return colors.error[500];
     case 'neutral':
@@ -79,12 +79,11 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   const getValueColor = (): string => {
     switch (variant) {
       case 'income':
-        return colors.success[500]; // Verde para receitas
+        return colors.text.accent; // Destaque branco para valores (não usar verde)
       case 'expense':
-        return colors.error[500]; // Vermelho para despesas  
+        return colors.error[500]; // Vermelho para despesas
       case 'balance':
       default:
-        // Para balanço, usar branco (#FFFFFF) se positivo, vermelho se negativo
         return amount >= 0 ? colors.text.primary : colors.error[500];
     }
   };
@@ -102,17 +101,18 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   const cardStyle: ViewStyle = {
     backgroundColor: styles.backgroundColor,
     borderRadius: borderRadius.xl,
-    padding: responsive.getResponsiveSpacing(24), // Aumentado o padding
-    marginBottom: responsive.getResponsiveSpacing(16),
-    marginTop: responsive.getResponsiveSpacing(8), // Melhor margem superior
+    padding: responsive.getResponsiveSpacing(16),
+    marginBottom: responsive.getResponsiveSpacing(12),
+    marginTop: responsive.getResponsiveSpacing(6),
     ...shadows.md,
     // Responsivo: altura mínima aumentada
     minHeight: responsive.getResponsiveValue({
-      sm: 150,
-      md: 170,
-      lg: 190,
-      default: 170,
+      sm: 110,
+      md: 120,
+      lg: 140,
+      default: 120,
     }),
+    width: '100%',
   };
 
   const content = (
@@ -121,17 +121,17 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
       <View style={{
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: responsive.getResponsiveSpacing(20), // Mais espaço
+        marginBottom: responsive.getResponsiveSpacing(12),
       }}>
         {/* Ícone à esquerda - 60% maior */}
         <View style={{
-          width: responsive.getResponsiveValue({ sm: 45, md: 52, lg: 58, default: 52 }), // 60% maior
-          height: responsive.getResponsiveValue({ sm: 45, md: 52, lg: 58, default: 52 }), // 60% maior
+          width: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
+          height: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
           borderRadius: borderRadius.full,
           backgroundColor: colors.background.accent, // Cinza 3E3E3E para contrastar com o card
           alignItems: 'center',
           justifyContent: 'center',
-          marginRight: responsive.getResponsiveSpacing(16), // Espaço entre ícone e título
+          marginRight: responsive.getResponsiveSpacing(12),
         }}>
           <Icon 
             size={responsive.getResponsiveValue({ sm: 22, md: 26, lg: 30, default: 26 })} // 60% maior
@@ -140,11 +140,12 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
         </View>
         
         {/* Título */}
-        <Text style={{
-          fontSize: responsive.getResponsiveValue({ sm: 16, md: 18, lg: 20, default: 18 }), // Maior
+        <Text numberOfLines={1} ellipsizeMode="tail" style={{
+          fontSize: responsive.getResponsiveValue({ sm: 14, md: 16, lg: 18, default: 16 }),
           fontWeight: '600',
           color: colors.text.primary, // BRANCO ABSOLUTO para títulos
           flex: 1,
+          minWidth: 60,
         }}>
           {title}
         </Text>
@@ -152,11 +153,11 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
 
       {/* Valor principal */}
       <Text style={{
-        fontSize: responsive.getResponsiveValue({ sm: 22, md: 28, lg: 32, default: 28 }), // Maior
+        fontSize: responsive.getResponsiveValue({ sm: 18, md: 22, lg: 26, default: 22 }),
         fontWeight: '700', // Mais bold
         color: getValueColor(), // Função que define a cor AMOLED correta
-        marginBottom: responsive.getResponsiveSpacing(4),
-      }}>
+        marginBottom: responsive.getResponsiveSpacing(2),
+      }} numberOfLines={1} ellipsizeMode="tail">
         {formattedValue}
       </Text>
 

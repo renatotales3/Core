@@ -116,7 +116,7 @@ const iconColors: Record<IconColor, string> = {
   primary: colors.text.primary,
   secondary: colors.text.secondary,
   muted: colors.text.muted,
-  accent: colors.primary[500],
+  accent: colors.text.accent,
   success: colors.success[500],
   warning: colors.warning[500],
   error: colors.error[500],

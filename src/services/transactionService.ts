@@ -9,6 +9,7 @@ import {
   orderBy, 
   limit, 
   getDocs,
+  getDoc,
   Timestamp,
   serverTimestamp
 } from 'firebase/firestore';

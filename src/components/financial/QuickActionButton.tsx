@@ -29,7 +29,7 @@ const getVariantStyles = (variant: QuickActionButtonProps['variant']) => {
     case 'success':
       return {
         backgroundColor: colors.background.secondary, // Card cinza 1A1A1A
-        iconColor: colors.success[500], // Ícone verde
+        iconColor: colors.text.accent, // Ícone branco em destaque
         textColor: colors.text.secondary, // Texto cinza 3E3E3E
       };
     case 'danger':

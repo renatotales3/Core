@@ -29,9 +29,9 @@ const AccountCard: React.FC<AccountCardProps> = ({
       style={{
         width: cardWidth,
         height: cardHeight,
-        backgroundColor: color,
+        backgroundColor: colors.background.secondary, // padronizar cor do card
         borderRadius: borderRadius.lg,
-        padding: getResponsiveSpacing(16),
+        padding: getResponsiveSpacing(12),
         marginRight: getResponsiveSpacing(12),
         justifyContent: 'space-between',
       }}
@@ -39,16 +39,17 @@ const AccountCard: React.FC<AccountCardProps> = ({
       activeOpacity={0.8}
     >
       <View>
-        <Text style={{
+        <Text numberOfLines={1} ellipsizeMode="tail" style={{
           fontSize: getResponsiveFontSize(14),
           fontWeight: '600',
-          color: '#FFFFFF',
+          color: colors.text.primary,
+          width: '100%',
         }}>
           {bankName}
         </Text>
         <Text style={{
           fontSize: getResponsiveFontSize(12),
-          color: 'rgba(255, 255, 255, 0.8)',
+          color: colors.text.secondary,
           marginTop: 2,
         }}>
           {accountType}
@@ -58,7 +59,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
       <Text style={{
         fontSize: getResponsiveFontSize(16),
         fontWeight: '700',
-        color: '#FFFFFF',
+        color: colors.text.primary,
       }}>
         {new Intl.NumberFormat('pt-BR', {
           style: 'currency',
@@ -131,7 +132,7 @@ export const YourAccounts: React.FC<YourAccountsProps> = ({
         <Text style={{
           fontSize: getResponsiveFontSize(14),
           fontWeight: '500',
-          color: colors.primary[600],
+          color: colors.text.accent,
         }}>
           Ver todas
         </Text>
@@ -142,6 +143,7 @@ export const YourAccounts: React.FC<YourAccountsProps> = ({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: getResponsiveSpacing(24),
+          alignItems: 'center',
         }}
       >
         {mockAccounts.map((account) => (
@@ -150,7 +152,8 @@ export const YourAccounts: React.FC<YourAccountsProps> = ({
             bankName={account.bankName}
             accountType={account.accountType}
             balance={account.balance}
-            color={account.color}
+            // padronizar cor para o design do app (usar token de background para cards)
+            color={colors.background.secondary}
             onPress={() => onAccountPress?.(account.id)}
           />
         ))}

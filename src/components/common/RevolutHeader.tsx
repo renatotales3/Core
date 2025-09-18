@@ -33,9 +33,9 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
     <View style={{
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: getResponsiveSpacing(24),
-      paddingTop: getResponsiveSpacing(16),
-      paddingBottom: getResponsiveSpacing(12),
+      paddingHorizontal: getResponsiveSpacing(16),
+      paddingTop: getResponsiveSpacing(8),
+      paddingBottom: getResponsiveSpacing(8),
       backgroundColor: colors.background.primary,
     }}>
       {/* Avatar do Usuário */}
@@ -45,7 +45,7 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
           width: avatarSize,
           height: avatarSize,
           borderRadius: avatarSize / 2,
-          backgroundColor: colors.primary[600],
+          backgroundColor: colors.background.accent,
           alignItems: 'center',
           justifyContent: 'center',
           marginRight: getResponsiveSpacing(12),
@@ -71,21 +71,20 @@ export const RevolutHeader: React.FC<RevolutHeaderProps> = ({
           alignItems: 'center',
           backgroundColor: colors.background.secondary,
           borderRadius: borderRadius.lg,
-          paddingHorizontal: getResponsiveSpacing(16),
-          paddingVertical: getResponsiveSpacing(12),
-          marginRight: getResponsiveSpacing(12),
+          paddingHorizontal: getResponsiveSpacing(12),
+          paddingVertical: getResponsiveSpacing(8),
+          marginRight: getResponsiveSpacing(8),
         }}
         activeOpacity={0.8}
       >
-        <SearchIcon 
-          size={18} 
-          color={colors.text.secondary} 
-          style={{ marginRight: getResponsiveSpacing(8) }}
-        />
+        <View style={{ marginRight: getResponsiveSpacing(8) }}>
+          <SearchIcon size={18} color={colors.text.secondary} />
+        </View>
         <Text style={{
           flex: 1,
-          fontSize: getResponsiveFontSize(14),
+          fontSize: getResponsiveFontSize(13),
           color: colors.text.secondary,
+          opacity: 0.9,
         }}>
           {searchPlaceholder}
         </Text>

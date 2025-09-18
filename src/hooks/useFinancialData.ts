@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { collection, query, where, orderBy, limit, onSnapshot, Unsubscribe, Timestamp } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import { colors } from '../design-system/tokens';
 import { useAuth } from '../context/AuthContext';
 import { Transaction, TransactionType, FinancialSummary } from '../types/financial';
 
@@ -241,7 +242,7 @@ export function useExpensesByCategory() {
       shopping: '#06b6d4',
       bills: '#f97316',
       rent: '#64748b',
-      investment: '#10b981',
+        investment: colors.primary[500],
       other_expense: '#6b7280',
     };
 

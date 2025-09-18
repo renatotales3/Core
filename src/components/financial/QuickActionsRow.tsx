@@ -16,18 +16,18 @@ const getVariantColors = (variant: CircularActionButtonProps['variant']) => {
   switch (variant) {
     case 'income':
       return {
-        backgroundColor: colors.success[600],
-        iconColor: '#FFFFFF',
+        backgroundColor: colors.background.secondary,
+        iconColor: colors.text.primary,
       };
     case 'expense':
       return {
-        backgroundColor: colors.error[600],
-        iconColor: '#FFFFFF',
+        backgroundColor: colors.background.secondary,
+        iconColor: colors.text.primary,
       };
     case 'transfer':
       return {
-        backgroundColor: colors.primary[600],
-        iconColor: '#FFFFFF',
+        backgroundColor: colors.background.secondary,
+        iconColor: colors.text.primary,
       };
     case 'reports':
       return {
@@ -55,7 +55,7 @@ const CircularActionButton: React.FC<CircularActionButtonProps> = ({
   return (
     <View style={{
       alignItems: 'center',
-      flex: 1,
+      width: buttonSize + getResponsiveSpacing(8),
     }}>
       <TouchableOpacity
         style={{

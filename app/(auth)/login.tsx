@@ -184,7 +184,7 @@ export default function LoginScreen() {
               width: 72,
               height: 72,
               borderRadius: 36,
-              backgroundColor: colors.primary[700],
+              backgroundColor: colors.text.accent,
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: spacing[4],
@@ -245,7 +245,7 @@ export default function LoginScreen() {
                 <TouchableOpacity>
                   <Text style={{
                     fontSize: typography.fontSize.sm,
-                    color: colors.primary[500],
+                    color: colors.text.accent,
                     fontWeight: '500',
                   }}>
                     Esqueceu a senha?
@@ -359,7 +359,7 @@ export default function LoginScreen() {
               <TouchableOpacity>
                 <Text style={{
                   fontSize: typography.fontSize.sm,
-                  color: colors.primary[500],
+                  color: colors.text.accent,
                   fontWeight: '600',
                 }}>
                   Cadastre-se
@@ -381,12 +381,12 @@ export default function LoginScreen() {
             }}>
               Ao entrar, você concorda com nossos{' '}
               <Text style={{ 
-                color: colors.primary[500],
+                  color: colors.text.accent,
                 fontSize: typography.fontSize.xs,
               }}>Termos & Condições</Text>
               {' '}e{' '}
               <Text style={{ 
-                color: colors.primary[500],
+                color: colors.text.accent,
                 fontSize: typography.fontSize.xs,
               }}>Política de Privacidade</Text>
             </Text>

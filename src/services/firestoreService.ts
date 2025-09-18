@@ -16,6 +16,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { COLLECTIONS, Category } from '../types/firestore';
+import { colors } from '../design-system/tokens';
 
 class FirestoreService {
   /**
@@ -24,22 +25,22 @@ class FirestoreService {
   async createDefaultCategories(userId: string): Promise<void> {
     try {
       const defaultCategories: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>[] = [
-        // Categorias de Receita
-        { userId, name: 'Salário', type: 'income', color: '#22C55E', icon: '💰', isDefault: true },
-        { userId, name: 'Freelance', type: 'income', color: '#3B82F6', icon: '💻', isDefault: true },
-        { userId, name: 'Investimentos', type: 'income', color: '#8B5CF6', icon: '📈', isDefault: true },
-        { userId, name: 'Outros', type: 'income', color: '#6B7280', icon: '🎁', isDefault: true },
+        // Categorias de Receita (usar tokens semânticos em vez de hex hard-coded)
+        { userId, name: 'Salário', type: 'income', color: colors.primary[500], icon: '💰', isDefault: true },
+        { userId, name: 'Freelance', type: 'income', color: colors.secondary[500], icon: '💻', isDefault: true },
+        { userId, name: 'Investimentos', type: 'income', color: colors.primary[300], icon: '📈', isDefault: true },
+        { userId, name: 'Outros', type: 'income', color: colors.neutral[500], icon: '🎁', isDefault: true },
 
-        // Categorias de Despesas
-        { userId, name: 'Alimentação', type: 'expense', color: '#EF4444', icon: '🍕', isDefault: true },
-        { userId, name: 'Transporte', type: 'expense', color: '#F59E0B', icon: '🚗', isDefault: true },
-        { userId, name: 'Moradia', type: 'expense', color: '#8B5CF6', icon: '🏠', isDefault: true },
-        { userId, name: 'Saúde', type: 'expense', color: '#10B981', icon: '⚕️', isDefault: true },
-        { userId, name: 'Educação', type: 'expense', color: '#3B82F6', icon: '📚', isDefault: true },
-        { userId, name: 'Lazer', type: 'expense', color: '#F59E0B', icon: '🎉', isDefault: true },
-        { userId, name: 'Compras', type: 'expense', color: '#EC4899', icon: '🛍️', isDefault: true },
-        { userId, name: 'Contas', type: 'expense', color: '#6366F1', icon: '📄', isDefault: true },
-        { userId, name: 'Outros', type: 'expense', color: '#6B7280', icon: '📦', isDefault: true },
+        // Categorias de Despesas (usar tokens que fazem sentido sem forçar verde como destaque)
+        { userId, name: 'Alimentação', type: 'expense', color: colors.error[500], icon: '🍕', isDefault: true },
+        { userId, name: 'Transporte', type: 'expense', color: colors.warning[500], icon: '🚗', isDefault: true },
+        { userId, name: 'Moradia', type: 'expense', color: colors.secondary[300], icon: '🏠', isDefault: true },
+        { userId, name: 'Saúde', type: 'expense', color: colors.success[500], icon: '⚕️', isDefault: true },
+        { userId, name: 'Educação', type: 'expense', color: colors.secondary[500], icon: '📚', isDefault: true },
+        { userId, name: 'Lazer', type: 'expense', color: colors.warning[500], icon: '🎉', isDefault: true },
+        { userId, name: 'Compras', type: 'expense', color: colors.secondary[400], icon: '🛍️', isDefault: true },
+        { userId, name: 'Contas', type: 'expense', color: colors.secondary[500], icon: '📄', isDefault: true },
+        { userId, name: 'Outros', type: 'expense', color: colors.neutral[500], icon: '📦', isDefault: true },
       ];
 
       const categoriesCollection = collection(db, COLLECTIONS.CATEGORIES);
