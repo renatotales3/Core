@@ -211,7 +211,7 @@ export default function DashboardScreen() {
                 fontSize: getResponsiveFontSize(14),
                 color: colors.text.accent, // destaque branco
                 textAlign: 'center',
-                marginTop: getResponsiveSpacing(8),
+                marginTop: getResponsiveSpacing(12),
                 fontWeight: '500',
               }}>
                 {summary.balanceChange >= 0 ? '+' : ''}{summary.balanceChange.toFixed(1)}% em relação ao mês anterior
