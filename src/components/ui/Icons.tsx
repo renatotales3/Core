@@ -22,6 +22,7 @@ import {
   Trash2,
   MoreHorizontal,
   MoreVertical,
+  Bell,
   
   // Financial
   DollarSign,
@@ -161,6 +162,7 @@ export const EditIcon = createIcon(Edit);
 export const DeleteIcon = createIcon(Trash2);
 export const MoreHorizontalIcon = createIcon(MoreHorizontal);
 export const MoreVerticalIcon = createIcon(MoreVertical);
+export const BellIcon = createIcon(Bell);
 
 // ==================== FINANCIAL ====================
 export const DollarIcon = createIcon(DollarSign);

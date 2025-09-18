@@ -10,8 +10,8 @@ export default function AppLayout() {
       <Tabs
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: colors.primary[500],
-          tabBarInactiveTintColor: colors.text.muted,
+          tabBarActiveTintColor: '#FFFFFF', // Branco absoluto para aba ativa
+          tabBarInactiveTintColor: colors.neutral[400], // Cinza para abas inativas
           tabBarStyle: {
             backgroundColor: colors.background.primary,
             borderTopWidth: 1,
@@ -34,6 +34,9 @@ export default function AppLayout() {
           tabBarItemStyle: {
             paddingVertical: 4,
           },
+          // Adicionar animação suave na transição
+          animation: 'shift',
+          animationDuration: 300,
         }}
       >
         <Tabs.Screen
@@ -43,7 +46,7 @@ export default function AppLayout() {
             tabBarIcon: ({ color, focused }) => (
               <HouseIcon 
                 size="sm" 
-                color={focused ? 'accent' : 'muted'} 
+                color={focused ? '#FFFFFF' : colors.neutral[400]} 
               />
             ),
           }}
@@ -55,7 +58,7 @@ export default function AppLayout() {
             tabBarIcon: ({ color, focused }) => (
               <CreditCardIcon 
                 size="sm" 
-                color={focused ? 'accent' : 'muted'} 
+                color={focused ? '#FFFFFF' : colors.neutral[400]} 
               />
             ),
           }}
@@ -67,7 +70,7 @@ export default function AppLayout() {
             tabBarIcon: ({ color, focused }) => (
               <TrendingUpIcon 
                 size="sm" 
-                color={focused ? 'accent' : 'muted'} 
+                color={focused ? '#FFFFFF' : colors.neutral[400]} 
               />
             ),
           }}
@@ -79,7 +82,7 @@ export default function AppLayout() {
             tabBarIcon: ({ color, focused }) => (
               <SettingsIcon 
                 size="sm" 
-                color={focused ? 'accent' : 'muted'} 
+                color={focused ? '#FFFFFF' : colors.neutral[400]} 
               />
             ),
           }}

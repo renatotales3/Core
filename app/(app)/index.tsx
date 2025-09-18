@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { Text } from '../../src/components/ui/Text';
-import { Header } from '../../src/components/common/Header';
+import { RevolutHeader } from '../../src/components/common/RevolutHeader';
 import { 
+  BarChartIcon, 
   TrendingUpIcon, 
   TrendingDownIcon,
   PlusIcon,
@@ -12,8 +13,11 @@ import {
 } from '../../src/components/ui/Icons';
 import { 
   FinancialSummaryCard, 
-  QuickActionButton, 
+  QuickActionButton,
+  QuickActionsRow,
+  YourAccounts,
   TransactionItem,
+  TransactionTimeline,
   ExpensesByCategoryChart
 } from '../../src/components/financial';
 import { colors, spacing } from '../../src/design-system/tokens';
@@ -166,21 +170,49 @@ export default function DashboardScreen() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Header 
-          title="Dashboard" 
+        <RevolutHeader 
+          userName={user?.displayName || 'Usuário'}
+          onSearchPress={() => console.log('Pesquisar')}
+          onNotificationPress={() => console.log('Notificações')}
+          onSettingsPress={() => console.log('Configurações')}
+          onAvatarPress={() => console.log('Perfil')}
         />
 
-        {/* Seção de Resumo Financeiro */}
-        <View style={{ marginBottom: sectionSpacing }}>
-          <FinancialSummaryCard
-            title="Saldo Total"
-            amount={summary?.totalBalance || 0}
-            change={summary?.balanceChange || 0}
-            changeType="increase"
-            icon={WalletIcon}
-            variant="balance"
-          />
+        {/* Saldo Principal - Estilo Revolut */}
+        <View style={{ 
+          alignItems: 'center',
+          marginBottom: sectionSpacing,
+          paddingVertical: getResponsiveSpacing(24),
+        }}>
+          <Text style={{
+            fontSize: getResponsiveFontSize(48),
+            fontWeight: '700',
+            color: '#FFFFFF',
+            textAlign: 'center',
+            letterSpacing: -1,
+          }}>
+            {new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(summary?.totalBalance || 0)}
+          </Text>
+          
+          {/* Indicador de variação */}
+          {summary?.balanceChange !== undefined && (
+            <Text style={{
+              fontSize: getResponsiveFontSize(14),
+              color: summary.balanceChange >= 0 ? colors.success[400] : colors.error[400],
+              textAlign: 'center',
+              marginTop: getResponsiveSpacing(4),
+              fontWeight: '500',
+            }}>
+              {summary.balanceChange >= 0 ? '+' : ''}{summary.balanceChange.toFixed(1)}% em relação ao mês anterior
+            </Text>
+          )}
+        </View>
 
+        {/* Cards de Receitas e Despesas */}
+        <View style={{ marginBottom: sectionSpacing }}>
           <View style={{
             flexDirection: isSmall ? 'column' : 'row',
             justifyContent: 'space-between',
@@ -216,44 +248,20 @@ export default function DashboardScreen() {
           </View>
         </View>
 
-        {/* Ações Rápidas */}
+        {/* Ações Rápidas Circulares */}
         <View style={{ marginBottom: sectionSpacing }}>
-          <Text style={{
-            fontSize: titleFontSize,
-            fontWeight: '600',
-            color: colors.text.primary,
-            marginBottom: getResponsiveSpacing(16),
-          }}>
-            Ações Rápidas
-          </Text>
-
-          <View style={{
-            flexDirection: isSmall ? 'column' : 'row',
-            justifyContent: 'space-between',
-            gap: isSmall ? getResponsiveSpacing(12) : 0,
-          }}>
-            <QuickActionButton
-              title="Adicionar Receita"
-              icon={PlusIcon}
-              variant="success"
-              onPress={handleAddIncome}
-            />
-
-            <QuickActionButton
-              title="Adicionar Despesa"
-              icon={MinusIcon}
-              variant="danger"
-              onPress={handleAddExpense}
-            />
-
-            <QuickActionButton
-              title="Relatórios"
-              icon={PieChartIcon}
-              variant="primary"
-              onPress={handleViewReports}
-            />
-          </View>
+          <QuickActionsRow
+            onAddIncome={handleAddIncome}
+            onAddExpense={handleAddExpense}
+            onTransfer={() => console.log('Transferir')}
+            onReports={handleViewReports}
+          />
         </View>
+
+        {/* Suas Contas */}
+        <YourAccounts 
+          onAccountPress={(accountId) => console.log('Conta pressionada:', accountId)}
+        />
 
         {/* Gráfico de Gastos por Categoria */}
         {expensesByCategory.length > 0 && (
@@ -263,13 +271,14 @@ export default function DashboardScreen() {
           />
         )}
 
-        {/* Transações Recentes */}
+        {/* Transações Recentes - Timeline */}
         <View style={{ marginBottom: getResponsiveSpacing(24) }}>
           <View style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: getResponsiveSpacing(16),
+            marginBottom: getResponsiveSpacing(8),
+            paddingHorizontal: getResponsiveSpacing(24),
           }}>
             <Text style={{
               fontSize: titleFontSize,
@@ -291,30 +300,10 @@ export default function DashboardScreen() {
             </Text>
           </View>
 
-          {transactions.length > 0 ? (
-            transactions.map((transaction) => (
-              <TransactionItem
-                key={transaction.id}
-                transaction={transaction}
-                onPress={() => console.log('Transaction pressed:', transaction.id)}
-              />
-            ))
-          ) : (
-            <View style={{
-              paddingVertical: getResponsiveSpacing(32),
-              alignItems: 'center'
-            }}>
-              <Text style={{
-                color: colors.text.secondary,
-                textAlign: 'center',
-                fontSize: getResponsiveFontSize(14),
-                lineHeight: getResponsiveFontSize(20),
-              }}>
-                Nenhuma transação encontrada.{'\n'}
-                Comece adicionando uma receita ou despesa!
-              </Text>
-            </View>
-          )}
+          <TransactionTimeline
+            transactions={transactions}
+            onTransactionPress={(transaction) => console.log('Transaction pressed:', transaction.id)}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
