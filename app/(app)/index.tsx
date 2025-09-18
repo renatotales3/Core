@@ -227,11 +227,9 @@ export default function DashboardScreen() {
             justifyContent: 'space-between',
           }}>
             <View style={{ 
-              flexBasis: '48%',
+              width: '50%',
+              paddingHorizontal: cardSpacing / 2,
               minWidth: 200,
-              flexGrow: 1,
-              marginRight: cardSpacing,
-              marginBottom: cardSpacing,
             }}>
               <FinancialSummaryCard
                 title="Receitas"
@@ -244,11 +242,9 @@ export default function DashboardScreen() {
             </View>
 
             <View style={{ 
-              flexBasis: '48%',
+              width: '50%',
+              paddingHorizontal: cardSpacing / 2,
               minWidth: 200,
-              flexGrow: 1,
-              marginLeft: 0,
-              marginBottom: cardSpacing,
             }}>
               <FinancialSummaryCard
                 title="Despesas"
