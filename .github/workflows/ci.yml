@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ app ]
+  pull_request:
+    branches: [ app ]
+
+jobs:
+  tsc-check:
+    name: TypeScript check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
