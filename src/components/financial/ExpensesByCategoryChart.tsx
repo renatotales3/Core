@@ -24,15 +24,15 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
   const { getResponsiveValue, getResponsiveFontSize, getResponsiveSpacing } = useResponsive();
   
   // Responsive values
-  const containerPadding = getResponsiveSpacing(24);
+  const containerPadding = getResponsiveSpacing(16);
   const titleFontSize = getResponsiveFontSize(18);
-  const categoryLabelWidth = getResponsiveValue({ sm: 80, md: 100, lg: 120, default: 100 });
-  const barHeight = getResponsiveValue({ sm: 20, md: 24, lg: 28, default: 24 });
+  const categoryLabelWidth = getResponsiveValue({ sm: 80, md: 100, lg: 110, default: 90 });
+  const barHeight = getResponsiveValue({ sm: 18, md: 22, lg: 26, default: 20 });
   const categoryFontSize = getResponsiveFontSize(12);
   const valueFontSize = getResponsiveFontSize(12);
   const percentageFontSize = getResponsiveFontSize(10);
-  const itemSpacing = getResponsiveSpacing(8);
-  const valueWidth = getResponsiveValue({ sm: 50, md: 60, lg: 70, default: 60 });
+  const itemSpacing = getResponsiveSpacing(6);
+  const valueWidth = getResponsiveValue({ sm: 50, md: 56, lg: 64, default: 56 });
   const totalFontSize = getResponsiveFontSize(14);
   const totalValueFontSize = getResponsiveFontSize(16);
   
@@ -114,14 +114,14 @@ export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = (
       backgroundColor: colors.background.secondary,
       borderRadius: borderRadius.xl,
       padding: containerPadding,
-      marginBottom: getResponsiveSpacing(16),
+      marginBottom: getResponsiveSpacing(12),
     }}>
       {/* Título */}
       <Text style={{
         fontSize: titleFontSize,
         fontWeight: '700',
         color: colors.text.primary,
-        marginBottom: getResponsiveSpacing(20),
+        marginBottom: itemSpacing,
       }}>
         Gastos por Categoria
       </Text>

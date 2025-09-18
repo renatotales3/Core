@@ -76,9 +76,9 @@ const DateGroupHeader: React.FC<{ dateString: string }> = ({ dateString }) => {
   
   return (
     <View style={{
-      paddingVertical: getResponsiveSpacing(12),
-      paddingHorizontal: getResponsiveSpacing(24),
-      marginTop: getResponsiveSpacing(16),
+      paddingVertical: getResponsiveSpacing(8),
+      paddingHorizontal: getResponsiveSpacing(16),
+      marginTop: getResponsiveSpacing(12),
     }}>
       <Text style={{
         fontSize: getResponsiveFontSize(16),
@@ -135,7 +135,7 @@ export const TransactionTimeline: React.FC<TransactionTimelineProps> = ({
         <View key={dateKey}>
           <DateGroupHeader dateString={dateKey} />
           
-          <View style={{ paddingHorizontal: getResponsiveSpacing(24) }}>
+          <View style={{ paddingHorizontal: getResponsiveSpacing(16) }}>
             {groupedTransactions[dateKey].map((transaction) => (
               <TransactionItem
                 key={transaction.id}
