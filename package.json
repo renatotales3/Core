@@ -10,8 +10,8 @@
     "check-firebase": "node scripts/check-firebase.js",
     "test-firebase": "node scripts/test-firebase-connection.js",
     "test-auth": "node scripts/test-auth.js",
-  "lint": "npx eslint@8 --config .eslintrc.cjs --ext .js,.jsx,.ts,.tsx src app",
-  "lint:fix": "npx eslint@8 --config .eslintrc.cjs --ext .js,.jsx,.ts,.tsx src app --fix",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src app",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx src app --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "dependencies": {
@@ -45,10 +45,10 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
-  "@typescript-eslint/eslint-plugin": "^8.44.0",
-  "@typescript-eslint/parser": "^8.44.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "dotenv": "^17.2.2",
-  "eslint": "^8.57.1",
+    "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.6.2",
