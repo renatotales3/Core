@@ -27,7 +27,7 @@ const CoreDarkTheme = {
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  // color scheme not used; removed useColorScheme to avoid unused variable
   // Removido carregamento de fonte inexistente
   // const [loaded] = useFonts({
   //   SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
