@@ -18,3 +18,24 @@ Web ./index.ts ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 93.4% (2775/2872
 Web Bundled 19318ms index.ts (3092 modules)
 Web Bundled 81ms index.ts (1 module)
  LOG  [web] Logs will appear in the browser console
+/workspaces/Core/node_modules/expo/node_modules/@expo/cli/build/src/utils/errors.js:130
+    throw error;
+    ^
+
+Error: ENOENT: no such file or directory, watch '/workspaces/Core/node_modules/.react-native-screens-uNmBp28x/common/cpp/react/renderer/components'
+    at FSWatcher.<computed> (node:internal/fs/watchers:254:19)
+    at Object.watch (node:fs:2549:36)
+    at FallbackWatcher._watchdir (/workspaces/Core/node_modules/metro-file-map/src/watchers/FallbackWatcher.js:88:24)
+    at /workspaces/Core/node_modules/metro-file-map/src/watchers/FallbackWatcher.js:185:22
+    at Walker.<anonymous> (/workspaces/Core/node_modules/metro-file-map/src/watchers/FallbackWatcher.js:322:31)
+    at Walker.emit (node:events:519:28)
+    at /workspaces/Core/node_modules/walker/lib/walker.js:69:16
+    at FSReqCallback.oncomplete (node:fs:187:23) {
+  errno: -2,
+  syscall: 'watch',
+  code: 'ENOENT',
+  path: '/workspaces/Core/node_modules/.react-native-screens-uNmBp28x/common/cpp/react/renderer/components',
+  filename: '/workspaces/Core/node_modules/.react-native-screens-uNmBp28x/common/cpp/react/renderer/components'
+}
+
+Node.js v22.19.0

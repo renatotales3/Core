@@ -332,7 +332,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       // Forçar atualização do estado imediatamente
       console.log('🔵 AuthContext - Atualizando estado...');
-      safeSetState(prev => ({
+      safeSetState(() => ({
         user: null,
         isLoading: false,
         isAuthenticated: false,
@@ -435,7 +435,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       // Resetar estado
       console.log('🔵 AuthContext - Resetando estado...');
-      safeSetState(prev => ({
+      safeSetState(() => ({
         user: null,
         isLoading: false,
         isAuthenticated: false,

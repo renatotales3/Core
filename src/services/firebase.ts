@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
  
 // Configuração do Firebase
 const firebaseConfig = {

@@ -49,7 +49,7 @@ export default function AppLayout() {
           name="index"
           options={{
             title: 'Dashboard',
-            tabBarIcon: ({ color, focused }) => (
+            tabBarIcon: ({ color: _color, focused }) => (
               <HouseIcon
                 size="sm"
                 color={focused ? '#FFFFFF' : colors.neutral[400]}
@@ -61,7 +61,7 @@ export default function AppLayout() {
           name="transactions"
           options={{
             title: 'Transações',
-            tabBarIcon: ({ color, focused }) => (
+            tabBarIcon: ({ color: _color, focused }) => (
               <CreditCardIcon
                 size="sm"
                 color={focused ? '#FFFFFF' : colors.neutral[400]}
@@ -73,7 +73,7 @@ export default function AppLayout() {
           name="investments"
           options={{
             title: 'Investimentos',
-            tabBarIcon: ({ color, focused }) => (
+            tabBarIcon: ({ color: _color, focused }) => (
               <TrendingUpIcon
                 size="sm"
                 color={focused ? '#FFFFFF' : colors.neutral[400]}
@@ -85,7 +85,7 @@ export default function AppLayout() {
           name="settings"
           options={{
             title: 'Ajustes',
-            tabBarIcon: ({ color, focused }) => (
+            tabBarIcon: ({ color: _color, focused }) => (
               <SettingsIcon
                 size="sm"
                 color={focused ? '#FFFFFF' : colors.neutral[400]}

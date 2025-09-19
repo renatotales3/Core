@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
 import { Text } from '../ui/Text';
-import { colors, spacing, borderRadius } from '../../design-system/tokens';
+import { colors, borderRadius } from '../../design-system/tokens';
 import { useResponsive } from '../../hooks/useResponsive';
 
 interface CategoryExpense {

@@ -25,7 +25,7 @@ class AuthService {
    * Registrar novo usuário
    */
   async register(data: RegisterData): Promise<AuthResponse> {
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
     try {
       console.log('🔵 AuthService - Iniciando registro:', { email: data.email });
       

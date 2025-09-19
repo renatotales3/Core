@@ -29,7 +29,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
       style={{
         width: cardWidth,
         height: cardHeight,
-        backgroundColor: colors.background.secondary, // padronizar cor do card
+        backgroundColor: color || colors.background.secondary, // usar prop `color` se fornecida
         borderRadius: borderRadius.lg,
         padding: getResponsiveSpacing(12),
         marginRight: getResponsiveSpacing(12),

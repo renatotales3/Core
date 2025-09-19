@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text } from '../ui/Text';
-import { colors, spacing, borderRadius } from '../../design-system/tokens';
+import { colors, borderRadius } from '../../design-system/tokens';
 import { Transaction, TransactionType } from '../../types/financial';
 import { useResponsive } from '../../hooks/useResponsive';
 
