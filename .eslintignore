@@ -1,6 +1,0 @@
-node_modules/
-build/
-web-build/
-.expo/
-*.min.js
-*.bundle
