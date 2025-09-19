@@ -10,8 +10,8 @@
     "check-firebase": "node scripts/check-firebase.js",
     "test-firebase": "node scripts/test-firebase-connection.js",
     "test-auth": "node scripts/test-auth.js",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src app",
-    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx src app --fix",
+  "lint": "npx eslint@8 --config .eslintrc.cjs --ext .js,.jsx,.ts,.tsx src app",
+  "lint:fix": "npx eslint@8 --config .eslintrc.cjs --ext .js,.jsx,.ts,.tsx src app --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "dependencies": {
