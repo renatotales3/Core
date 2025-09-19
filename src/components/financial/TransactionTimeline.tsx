@@ -46,23 +46,28 @@ const formatDateGroup = (date: Date): string => {
   }
 };
 
+// Type guard for Firestore-like Timestamp objects (have toDate())
+const isTimestampLike = (v: unknown): v is { toDate: () => Date } => {
+  if (typeof v !== 'object' || v === null) return false;
+  const maybe = v as { [k: string]: unknown };
+  return typeof maybe.toDate === 'function';
+};
+
+const toDate = (value: unknown): Date => {
+  if (isTimestampLike(value)) return value.toDate();
+  if (value instanceof Date) return value;
+  return new Date(String(value));
+};
+
 const groupTransactionsByDate = (transactions: Transaction[]): GroupedTransactions => {
   return transactions.reduce((groups, transaction) => {
-    // transaction.date pode ser Timestamp (do Firestore) ou Date
-    let date: Date;
-    if (transaction.date && typeof (transaction.date as any).toDate === 'function') {
-      date = (transaction.date as any).toDate();
-    } else if (transaction.date instanceof Date) {
-      date = transaction.date;
-    } else {
-      date = new Date(transaction.date as any);
-    }
+    const date = toDate((transaction as Transaction).date);
     const dateKey = date.toDateString();
-    
+
     if (!groups[dateKey]) {
       groups[dateKey] = [];
     }
-    
+
     groups[dateKey].push(transaction);
     return groups;
   }, {} as GroupedTransactions);
@@ -119,8 +124,8 @@ export const TransactionTimeline: React.FC<TransactionTimelineProps> = ({
   
   // Sort transactions by date (most recent first)
   const sortedTransactions = [...transactions].sort((a, b) => {
-  const dateA = (a.date && typeof (a.date as any).toDate === 'function') ? (a.date as any).toDate() : (a.date instanceof Date ? a.date : new Date(a.date as any));
-  const dateB = (b.date && typeof (b.date as any).toDate === 'function') ? (b.date as any).toDate() : (b.date instanceof Date ? b.date : new Date(b.date as any));
+    const dateA = toDate(a.date);
+    const dateB = toDate(b.date);
     return dateB.getTime() - dateA.getTime();
   });
   

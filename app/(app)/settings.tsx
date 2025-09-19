@@ -2,7 +2,7 @@ import React from 'react';
 import { View, SafeAreaView, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Text, H1, Body } from '../../src/components/ui/Text';
+import { Text, Body } from '../../src/components/ui/Text';
 import { Header } from '../../src/components/common/Header';
 import Button from '../../src/components/ui/Button';
 import Card from '../../src/components/ui/Card';

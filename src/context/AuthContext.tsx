@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import { auth } from '../services/firebase';
 import authService from '../services/authService';
 import { getRedirectResult } from 'firebase/auth';
-import { AppUser, AuthState, LoginData, RegisterData, AuthResponse } from '../types/auth';
+import type { AuthState, LoginData, RegisterData, AuthResponse } from '../types/auth';
 
 // Constantes para AsyncStorage
 const STORAGE_KEYS = {
@@ -71,12 +71,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const checkOnboardingStatus = async () => {
       try {
         console.log('🔍 AuthContext - Verificando onboarding...');
-        
+
         const hasCompleted = await AsyncStorage.getItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
         console.log('🔍 AuthContext - Onboarding completed:', hasCompleted);
-        
-        safeSetState(prev => ({
-          ...prev,
+
+        safeSetState(_prev => ({
+          ..._prev,
           hasCompletedOnboarding: hasCompleted === 'true',
         }));
       } catch (error) {
@@ -144,8 +144,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
               await AsyncStorage.setItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING, 'true');
             }
             
-            safeSetState(prev => ({
-              ...prev,
+            safeSetState(_prev => ({
+              ..._prev,
               user: userData,
               isAuthenticated: true,
               hasCompletedOnboarding: true, // Sempre true para usuários que fazem login
@@ -155,8 +155,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             console.log('✅ AuthContext - Estado atualizado via onAuthStateChanged');
           } else {
             console.log('🔴 AuthContext - Dados do usuário não encontrados, fazendo logout');
-            // Dados não encontrados - fazer logout
-            await authService.logout();
+              // Dados não encontrados - fazer logout
+              await authService.logout();
           }
         } else {
           console.log('🟡 AuthContext - Usuário não logado detectado, resetando estado');
@@ -190,11 +190,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
               providerData: [],
             };
             
-            safeSetState(prev => ({
-              ...prev,
-              user: mockUser as unknown as AppUser,
-              isAuthenticated: true,
-              hasCompletedOnboarding: true,
+            safeSetState(_prev => ({
+              ..._prev,
+              user: null,
+              isAuthenticated: false,
+              hasCompletedOnboarding: false, // Resetar também o onboarding
               isLoading: false,
             }));
             
@@ -209,8 +209,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
           // Usuário não logado (produção)
           await AsyncStorage.removeItem(STORAGE_KEYS.USER_DATA);
           
-          safeSetState(prev => ({
-            ...prev,
+          safeSetState(_prev => ({
+            ..._prev,
             user: null,
             isAuthenticated: false,
             hasCompletedOnboarding: false, // Resetar também o onboarding
@@ -219,10 +219,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
       } catch (error) {
         console.error('🔴 AuthContext - Erro no monitor de autenticação:', error);
-        safeSetState(prev => ({
-          ...prev,
-          isLoading: false,
-        }));
+        safeSetState(_prev => ({
+            ..._prev,
+            isLoading: false,
+          }));
       }
     });
 
@@ -232,7 +232,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Métodos de autenticação
   const login = async (data: LoginData): Promise<AuthResponse> => {
-    safeSetState(prev => ({ ...prev, isLoading: true }));
+  safeSetState(_prev => ({ ..._prev, isLoading: true }));
     
     try {
       console.log('🔵 AuthContext - Iniciando login com dados:', data);
@@ -247,8 +247,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(response.user));
         
         // Atualizar estado diretamente
-        safeSetState(prev => ({
-          ...prev,
+        safeSetState(_prev => ({
+          ..._prev,
           user: response.user!,
           isAuthenticated: true,
           hasCompletedOnboarding: true,
@@ -259,12 +259,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return response;
       } else {
         console.log('🔴 AuthContext - Falha no login:', response.error);
-        safeSetState(prev => ({ ...prev, isLoading: false }));
+  safeSetState(_prev => ({ ..._prev, isLoading: false }));
         return response;
       }
     } catch (error) {
       console.error('🔴 AuthContext - Erro inesperado no login:', error);
-      safeSetState(prev => ({ ...prev, isLoading: false }));
+  safeSetState(_prev => ({ ..._prev, isLoading: false }));
       return {
         success: false,
         error: 'Erro inesperado durante o login',
@@ -278,7 +278,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const registerOnly = async (data: RegisterData): Promise<AuthResponse> => {
-    safeSetState(prev => ({ ...prev, isLoading: true }));
+  safeSetState(_prev => ({ ..._prev, isLoading: true }));
     setIsRegistering(true); // Sinalizar que estamos registrando
 
     try {
@@ -291,20 +291,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (response.success) {
         console.log('🟢 AuthContext - Registro realizado com sucesso (sem login)');
-        safeSetState(prev => ({ 
-          ...prev, 
+        safeSetState(_prev => ({ 
+          ..._prev, 
           isLoading: false,
           hasCompletedOnboarding: false, // Novos usuários precisam do onboarding
         }));
         return response;
       } else {
         console.log('🔴 AuthContext - Falha no registro:', response.error);
-        safeSetState(prev => ({ ...prev, isLoading: false }));
+  safeSetState(_prev => ({ ..._prev, isLoading: false }));
         return response;
       }
     } catch (error) {
       console.error('🔴 AuthContext - Erro inesperado no registro:', error);
-      safeSetState(prev => ({ ...prev, isLoading: false }));
+  safeSetState(_prev => ({ ..._prev, isLoading: false }));
       return {
         success: false,
         error: 'Erro inesperado durante o registro',
@@ -332,7 +332,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       // Forçar atualização do estado imediatamente
       console.log('🔵 AuthContext - Atualizando estado...');
-      safeSetState(prev => ({
+      safeSetState(_prev => ({
+        ..._prev,
         user: null,
         isLoading: false,
         isAuthenticated: false,
@@ -353,7 +354,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const loginWithGoogle = async (): Promise<AuthResponse> => {
-    safeSetState(prev => ({ ...prev, isLoading: true }));
+  safeSetState(_prev => ({ ..._prev, isLoading: true }));
     
     try {
       console.log('🔵 AuthContext - Iniciando login com Google');
@@ -373,11 +374,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
       
       console.log('🔴 AuthContext - Falha no login com Google:', response.error);
-      safeSetState(prev => ({ ...prev, isLoading: false }));
+      safeSetState(_prev => ({ ..._prev, isLoading: false }));
       return response;
     } catch (error) {
       console.error('🔴 AuthContext - Erro inesperado no login com Google:', error);
-      safeSetState(prev => ({ ...prev, isLoading: false }));
+      safeSetState(_prev => ({ ..._prev, isLoading: false }));
       return {
         success: false,
         error: 'Erro inesperado durante o login com Google',
@@ -389,8 +390,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const completeOnboarding = async (): Promise<void> => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING, 'true');
-      safeSetState(prev => ({
-        ...prev,
+      safeSetState(_prev => ({
+        ..._prev,
         hasCompletedOnboarding: true,
       }));
     } catch (error) {
@@ -406,8 +407,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const userData = await authService.getCurrentUserData();
       if (userData) {
         await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
-        safeSetState(prev => ({
-          ...prev,
+        safeSetState(_prev => ({
+          ..._prev,
           user: userData,
         }));
       }
@@ -435,7 +436,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       // Resetar estado
       console.log('🔵 AuthContext - Resetando estado...');
-      safeSetState(prev => ({
+      safeSetState(_prev => ({
+        ..._prev,
         user: null,
         isLoading: false,
         isAuthenticated: false,

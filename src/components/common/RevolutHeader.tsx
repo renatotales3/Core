@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, TextInput } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Text } from '../ui/Text';
 import { SearchIcon, BellIcon, SettingsIcon, UserIcon } from '../ui/Icons';
-import { colors, spacing, borderRadius } from '../../design-system/tokens';
+import { colors, borderRadius } from '../../design-system/tokens';
 import { useResponsive } from '../../hooks/useResponsive';
 
 interface RevolutHeaderProps {

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { Text, H1, Body } from '../../src/components/ui/Text';
+import { Text } from '../../src/components/ui/Text';
 import Button from '../../src/components/ui/Button';
 import Input from '../../src/components/ui/Input';
 import { MailIcon, LockIcon, LoginIcon } from '../../src/components/ui/Icons';

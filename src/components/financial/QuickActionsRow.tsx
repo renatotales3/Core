@@ -3,7 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text } from '../ui/Text';
 import { PlusIcon, MinusIcon, ArrowRightIcon, BarChartIcon } from '../ui/Icons';
-import { colors, borderRadius } from '../../design-system/tokens';
+import { colors } from '../../design-system/tokens';
 import { useResponsive } from '../../hooks/useResponsive';
 
 interface CircularActionButtonProps {

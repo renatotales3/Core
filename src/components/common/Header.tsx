@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ViewStyle } from 'react-native';
 import { Text } from '../ui/Text';
-import { colors, spacing } from '../../design-system/tokens';
+import { spacing } from '../../design-system/tokens';
 
 interface HeaderProps {
   title: string;

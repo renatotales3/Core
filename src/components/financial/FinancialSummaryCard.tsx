@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, TouchableOpacity, ViewStyle } from 'react-native';
 import { Text } from '../ui/Text';
-import { colors, spacing, shadows, borderRadius } from '../../design-system/tokens';
+import { colors, shadows, borderRadius } from '../../design-system/tokens';
 import { useResponsive } from '../../hooks/useResponsive';
 
 interface FinancialSummaryCardProps {
@@ -41,17 +41,7 @@ const getVariantStyles = (variant: FinancialSummaryCardProps['variant']) => {
   }
 };
 
-const getChangeColor = (changeType: FinancialSummaryCardProps['changeType']) => {
-  switch (changeType) {
-    case 'increase':
-      return colors.text.accent;
-    case 'decrease':
-      return colors.error[500];
-    case 'neutral':
-    default:
-      return colors.text.secondary;
-  }
-};
+
 
 const formatCurrency = (amount: number): string => {
   return new Intl.NumberFormat('pt-BR', {
@@ -69,7 +59,7 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   title,
   amount,
   change,
-  changeType = 'neutral',
+  changeType: _changeType = 'neutral',
   icon: Icon,
   variant,
   onPress,

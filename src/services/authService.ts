@@ -4,9 +4,10 @@ import {
   signOut,
   sendPasswordResetEmail,
   updateProfile,
-  User,
   AuthError,
+  User,
 } from 'firebase/auth';
+// User type removed — none used here currently
 import {
   doc,
   setDoc,
@@ -32,8 +33,8 @@ class AuthService {
       const { email, password, firstName, lastName } = data;
       
       // Criar usuário no Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const firebaseUser = userCredential.user;
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const firebaseUser = userCredential.user as User;
       
       console.log('🟢 AuthService - Usuário criado no Firebase:', firebaseUser.uid);
 
@@ -123,8 +124,8 @@ class AuthService {
       const { email, password, firstName, lastName } = data;
 
       // Criar usuário no Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const firebaseUser = userCredential.user;
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const firebaseUser = userCredential.user as User;
 
       console.log('🟢 AuthService - Usuário criado no Firebase Auth:', firebaseUser.uid);
 
@@ -209,8 +210,8 @@ class AuthService {
       
       const { email, password } = data;
       
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const firebaseUser = userCredential.user;
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const firebaseUser = userCredential.user as User;
 
       console.log('🟢 AuthService - Login no Firebase realizado:', firebaseUser.uid);
 
@@ -296,8 +297,8 @@ class AuthService {
    */
   async getCurrentUserData(): Promise<AppUser | null> {
     try {
-      const firebaseUser = auth.currentUser;
-      if (!firebaseUser) return null;
+  const firebaseUser = auth.currentUser as User | null;
+  if (!firebaseUser) return null;
 
       const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
       
@@ -374,8 +375,8 @@ class AuthService {
         };
       }
 
-      const firebaseUser = result.user;
-      console.log('🟢 AuthService - Login com Google realizado:', firebaseUser.uid);
+  const firebaseUser = result.user as User;
+  console.log('🟢 AuthService - Login com Google realizado:', firebaseUser.uid);
 
       // Verificar se o usuário já existe no Firestore
       const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));

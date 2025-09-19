@@ -16,7 +16,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
   bankName,
   accountType,
   balance,
-  color,
+  color: _color,
   onPress,
 }) => {
   const { getResponsiveValue, getResponsiveFontSize, getResponsiveSpacing } = useResponsive();

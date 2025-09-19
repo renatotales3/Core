@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import { Text } from '../../src/components/ui/Text';
 import { RevolutHeader } from '../../src/components/common/RevolutHeader';
-import { 
-  BarChartIcon, 
-  TrendingUpIcon, 
-  TrendingDownIcon,
-  PlusIcon,
-  MinusIcon,
-  PieChartIcon,
-  WalletIcon
-} from '../../src/components/ui/Icons';
+import { TrendingUpIcon, TrendingDownIcon } from '../../src/components/ui/Icons';
 import { 
   FinancialSummaryCard, 
-  QuickActionButton,
   QuickActionsRow,
   YourAccounts,
-  TransactionItem,
   TransactionTimeline,
   ExpensesByCategoryChart
 } from '../../src/components/financial';

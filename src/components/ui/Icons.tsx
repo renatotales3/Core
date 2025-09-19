@@ -1,6 +1,5 @@
 import React from 'react';
-import { 
-  // Navigation & Interface
+import {
   Home,
   Settings,
   User,
@@ -23,8 +22,6 @@ import {
   MoreHorizontal,
   MoreVertical,
   Bell,
-  
-  // Financial
   DollarSign,
   TrendingUp,
   TrendingDown,
@@ -37,8 +34,6 @@ import {
   BarChart3,
   PieChart,
   LineChart,
-  
-  // Categories
   ShoppingCart,
   Car,
   Home as HouseBase,
@@ -49,8 +44,6 @@ import {
   Heart,
   GraduationCap,
   Briefcase,
-  
-  // Actions
   Check,
   CheckCircle,
   AlertCircle,
@@ -63,8 +56,6 @@ import {
   Upload,
   Share,
   Copy,
-  
-  // Authentication
   Lock,
   Unlock,
   LogIn,
@@ -73,20 +64,15 @@ import {
   Mail,
   Phone,
   Shield,
-  
-  // Time & Date
   Calendar,
   Clock,
-  Clock3,
   
-  // Status
   Wifi,
   WifiOff,
   Battery,
-  BatteryLow,
   Signal,
-  
 } from 'lucide-react-native';
+import type { LucideProps } from 'lucide-react-native';
 import { colors } from '../../design-system/tokens';
 
 // Tamanhos padronizados dos ícones
@@ -124,17 +110,17 @@ const iconColors: Record<IconColor, string> = {
 };
 
 // Função helper para criar componentes de ícone
-const createIcon = (LucideIcon: any) => {
-  return ({ size = 'base', color = 'primary', strokeWidth = 2, ...props }: IconProps) => {
+const createIcon = (LucideIcon: React.ComponentType<LucideProps>) => {
+  return ({ size = 'base', color = 'primary', strokeWidth = 2, ...props }: IconProps & Partial<LucideProps>) => {
     const iconSize = typeof size === 'number' ? size : iconSizes[size];
     const iconColor = typeof color === 'string' && color.startsWith('#') ? color : iconColors[color as IconColor];
-    
+
     return (
       <LucideIcon
         size={iconSize}
         color={iconColor}
         strokeWidth={strokeWidth}
-        {...props}
+        {...(props as unknown as LucideProps)}
       />
     );
   };

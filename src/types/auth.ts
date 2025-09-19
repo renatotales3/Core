@@ -1,5 +1,3 @@
-import { User } from 'firebase/auth';
-
 // Interface para dados do usuário no app
 export interface AppUser {
   uid: string;
