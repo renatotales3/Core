@@ -77,13 +77,11 @@ import {
   // Time & Date
   Calendar,
   Clock,
-  Clock3,
   
   // Status
   Wifi,
   WifiOff,
   Battery,
-  BatteryLow,
   Signal,
   
 } from 'lucide-react-native';

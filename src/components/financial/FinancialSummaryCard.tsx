@@ -41,17 +41,7 @@ const getVariantStyles = (variant: FinancialSummaryCardProps['variant']) => {
   }
 };
 
-const getChangeColor = (changeType: FinancialSummaryCardProps['changeType']) => {
-  switch (changeType) {
-    case 'increase':
-      return colors.text.accent;
-    case 'decrease':
-      return colors.error[500];
-    case 'neutral':
-    default:
-      return colors.text.secondary;
-  }
-};
+// getChangeColor removed (not used)
 
 const formatCurrency = (amount: number): string => {
   return new Intl.NumberFormat('pt-BR', {
@@ -69,7 +59,7 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   title,
   amount,
   change,
-  changeType = 'neutral',
+  changeType: _changeType = 'neutral',
   icon: Icon,
   variant,
   onPress,
@@ -119,53 +109,51 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   const content = (
     <View style={cardStyle}>
       {/* Header com ícone À ESQUERDA e título */}
-      <View style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: responsive.getResponsiveSpacing(12),
-      }}>
-        {/* Ícone à esquerda - 60% maior */}
-        <View style={{
-          width: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
-          height: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
-          borderRadius: borderRadius.full,
-          backgroundColor: colors.icon.dot, // usar token icon.dot para contraste apropriado
+      <View
+        style={{
+          flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
-          marginRight: responsive.getResponsiveSpacing(12),
-        }}>
-          <Icon 
-            size={responsive.getResponsiveValue({ sm: 22, md: 26, lg: 30, default: 26 })} // 60% maior
-            color={colors.text.primary} // Ícone branco absoluto
-          />
+          marginBottom: responsive.getResponsiveSpacing(12),
+        }}
+      >
+        {/* Ícone à esquerda - container */}
+        <View
+          style={{
+            width: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
+            height: responsive.getResponsiveValue({ sm: 36, md: 42, lg: 48, default: 40 }),
+            borderRadius: borderRadius.full,
+            backgroundColor: colors.icon.dot, // usar token icon.dot para contraste apropriado
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: responsive.getResponsiveSpacing(12),
+          }}
+        >
+          {/* Renderiza o ícone passado como prop */}
+          {Icon && <Icon />}
         </View>
-        
+
         {/* Título */}
-        <Text numberOfLines={1} ellipsizeMode="tail" style={{
-          fontSize: responsive.getResponsiveValue({ sm: 14, md: 16, lg: 18, default: 16 }),
-          fontWeight: '600',
-          color: colors.text.primary, // BRANCO ABSOLUTO para títulos
-          flex: 1,
-          minWidth: 60,
-        }}>
-          {title}
-        </Text>
+        <Text style={{ color: styles.titleColor, fontWeight: '600' }}>{title}</Text>
       </View>
 
       {/* Valor principal */}
-      <Text style={{
-        fontSize: responsive.getResponsiveValue({ sm: 18, md: 22, lg: 26, default: 22 }),
-        fontWeight: '700', // Mais bold
-        color: getValueColor(), // Função que define a cor AMOLED correta
-        marginBottom: responsive.getResponsiveSpacing(2),
-      }} numberOfLines={1} ellipsizeMode="tail">
+      <Text
+        style={{
+          fontSize: responsive.getResponsiveValue({ sm: 18, md: 22, lg: 26, default: 22 }),
+          fontWeight: '700', // Mais bold
+          color: getValueColor(), // Função que define a cor AMOLED correta
+          marginBottom: responsive.getResponsiveSpacing(2),
+        }}
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
         {formattedValue}
       </Text>
 
       {/* Subtítulo (se houver) */}
       {subtitle && (
-        <Text 
-          color="secondary" 
+        <Text
+          color="secondary"
           style={{
             fontSize: responsive.getResponsiveValue({ sm: 13, md: 14, lg: 15, default: 14 }),
             fontWeight: '400',

@@ -80,9 +80,9 @@ export const signInWithGoogle = async (): Promise<GoogleSignInResult> => {
       }
 
       // Fazer login com Google
-  const userInfo = await GoogleSignin.signIn();
+  await GoogleSignin.signIn();
       
-  // Obter o ID token para autenticação no Firebase
+      // Obter o ID token para autenticação no Firebase
   const tokens = await GoogleSignin.getTokens();
   const idToken = tokens?.idToken;
       

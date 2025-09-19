@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, query, where, orderBy, limit, onSnapshot, Unsubscribe, Timestamp } from 'firebase/firestore';
+import { collection, query, where, limit, onSnapshot, Unsubscribe, Timestamp } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { colors } from '../design-system/tokens';
 import { useAuth } from '../context/AuthContext';
@@ -247,8 +247,8 @@ export function useExpensesByCategory() {
     };
 
     // Query para despesas do mês atual
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  // const now = new Date(); // not used currently
+  // const _startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1); // not used currently
     
     const expensesQuery = query(
       collection(db, 'transactions'),

@@ -8,10 +8,8 @@ import {
 } from '../../src/components/ui/Icons';
 import { 
   FinancialSummaryCard, 
-  QuickActionButton,
   QuickActionsRow,
   YourAccounts,
-  TransactionItem,
   TransactionTimeline,
   ExpensesByCategoryChart
 } from '../../src/components/financial';

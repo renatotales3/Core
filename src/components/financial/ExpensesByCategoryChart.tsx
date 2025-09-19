@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View /*, Dimensions */ } from 'react-native';
 import { Text } from '../ui/Text';
 import { colors, borderRadius } from '../../design-system/tokens';
 import { useResponsive } from '../../hooks/useResponsive';
@@ -15,7 +15,7 @@ interface ExpensesByCategoryChartProps {
   totalExpenses: number;
 }
 
-const { width: screenWidth } = Dimensions.get('window');
+// const { width: screenWidth } = Dimensions.get('window'); // unused
 
 export const ExpensesByCategoryChart: React.FC<ExpensesByCategoryChartProps> = ({
   data,

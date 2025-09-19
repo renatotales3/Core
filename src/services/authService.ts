@@ -4,7 +4,7 @@ import {
   signOut,
   sendPasswordResetEmail,
   updateProfile,
-  User,
+  
   AuthError,
 } from 'firebase/auth';
 import {
