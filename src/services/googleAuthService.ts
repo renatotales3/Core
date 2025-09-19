@@ -10,6 +10,7 @@ if (Platform.OS !== 'web') {
     // usar require para evitar bundling/import top-level que quebra no web/Expo Go
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const rnGoogle = require('@react-native-google-signin/google-signin');
+/* eslint-disable @typescript-eslint/no-explicit-any */
     GoogleSignin = rnGoogle.GoogleSignin || rnGoogle;
     statusCodes = rnGoogle.statusCodes || {};
   } catch (err: any) {

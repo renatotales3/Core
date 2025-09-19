@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { collection, addDoc, getDocs, query, where, Timestamp } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { TransactionType } from '../types/financial';

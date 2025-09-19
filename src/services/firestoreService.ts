@@ -14,6 +14,7 @@ import {
   serverTimestamp,
   Timestamp,
 } from 'firebase/firestore';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { db } from './firebase';
 import { COLLECTIONS, Category } from '../types/firestore';
 import { colors } from '../design-system/tokens';

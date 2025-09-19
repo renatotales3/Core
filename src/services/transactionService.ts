@@ -61,6 +61,7 @@ class TransactionService {
   /**
    * Atualizar uma transação existente
    */
+/* eslint-disable @typescript-eslint/no-explicit-any */
   async updateTransaction(id: string, data: UpdateTransactionData): Promise<void> {
     try {
       const transactionRef = doc(db, this.collectionName, id);

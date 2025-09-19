@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Feather, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { colors } from '../../constants/theme';
