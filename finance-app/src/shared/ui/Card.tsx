@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, ViewProps } from 'react-native';
-import { theme } from '../../theme';
+import { theme } from '../theme/index';
 
 interface CardProps extends ViewProps {
   variant?: 'primary' | 'secondary' | 'elevated';

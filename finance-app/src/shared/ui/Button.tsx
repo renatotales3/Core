@@ -8,7 +8,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { theme } from '../../theme';
+import { theme } from '../theme/index';
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
